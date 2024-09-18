@@ -438,7 +438,7 @@ class ApiRequestHandler(http.server.BaseHTTPRequestHandler):
             data_provider.fetch_inventory_pool().save()
             self.send_response(201)
             self.end_headers()
-        elif path[0] == "suppliers":        
+        elif path[0] == "suppliers":        # POST > api/v1/suppliers Content_type application/json {json data} > posts a new supplier with the given data
             content_length = int(self.headers["Content-Length"])
             post_data = self.rfile.read(content_length)
             new_supplier = json.loads(post_data.decode())
@@ -446,7 +446,7 @@ class ApiRequestHandler(http.server.BaseHTTPRequestHandler):
             data_provider.fetch_supplier_pool().save()
             self.send_response(201)
             self.end_headers()
-        elif path[0] == "orders":
+        elif path[0] == "orders":       # POST > api/v1/orders Content_type application/json {json data} > posts a new order with the given data
             content_length = int(self.headers["Content-Length"])
             post_data = self.rfile.read(content_length)
             new_order = json.loads(post_data.decode())
@@ -581,7 +581,7 @@ class ApiRequestHandler(http.server.BaseHTTPRequestHandler):
             data_provider.fetch_item_group_pool().save()
             self.send_response(200)
             self.end_headers()
-        elif path[0] == "item_types":
+        elif path[0] == "item_types":   #PUT > api/v1/item_types/id > Content_type -> application/json > select the item by id you want to change and changes the old dat with the given data.
             item_type_id = int(path[1])
             content_length = int(self.headers["Content-Length"])
             post_data = self.rfile.read(content_length)
@@ -590,7 +590,7 @@ class ApiRequestHandler(http.server.BaseHTTPRequestHandler):
             data_provider.fetch_item_type_pool().save()
             self.send_response(200)
             self.end_headers()
-        elif path[0] == "inventories":
+        elif path[0] == "inventories":  #PUT > api/v1/inventories/id > Content_type -> application/json > select the item by id you want to change and changes the old dat with the given data
             inventory_id = int(path[1])
             content_length = int(self.headers["Content-Length"])
             post_data = self.rfile.read(content_length)
