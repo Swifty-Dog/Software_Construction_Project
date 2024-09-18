@@ -708,7 +708,7 @@ class ApiRequestHandler(http.server.BaseHTTPRequestHandler):
             self.send_response(403)
             self.end_headers()
             return
-        if path[0] == "warehouses"          :# DELETE > api/v1/warehouses/id > deletes a warehouse by id
+        if path[0] == "warehouses":         # DELETE > api/v1/warehouses/id > deletes a warehouse by id
             warehouse_id = int(path[1])
             data_provider.fetch_warehouse_pool().remove_warehouse(warehouse_id)
             data_provider.fetch_warehouse_pool().save()
