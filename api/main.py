@@ -167,7 +167,7 @@ class ApiRequestHandler(http.server.BaseHTTPRequestHandler):
                 case _:
                     self.send_response(404)
                     self.end_headers()
-        elif path[0] == "item_groups":
+        elif path[0] == "item_groups":          # GET > api/v1/item_groups > returns all item groups
             paths = len(path)
             match paths:
                 case 1:
@@ -184,7 +184,7 @@ class ApiRequestHandler(http.server.BaseHTTPRequestHandler):
                     self.end_headers()
                     self.wfile.write(json.dumps(item_group).encode("utf-8"))
                 case 3:
-                    if path[2] == "items":
+                    if path[2] == "items":      # GET > api/v1/item_groups/1/items > returns items from a specific item group
                         item_group_id = int(path[1])
                         items = data_provider.fetch_item_pool().get_items_for_item_group(item_group_id)
                         self.send_response(200)
@@ -306,7 +306,7 @@ class ApiRequestHandler(http.server.BaseHTTPRequestHandler):
                 case _:
                     self.send_response(404)
                     self.end_headers()
-        elif path[0] == "clients":
+        elif path[0] == "clients":      # GET > api/v1/clients > returns all clients
             paths = len(path)
             match paths:
                 case 1:
@@ -323,7 +323,7 @@ class ApiRequestHandler(http.server.BaseHTTPRequestHandler):
                     self.end_headers()
                     self.wfile.write(json.dumps(client).encode("utf-8"))
                 case 3:
-                    if path[2] == "orders":
+                    if path[2] == "orders":     # GET > api/v1/clients/1/orders > returns orders from a specific client
                         client_id = int(path[1])
                         orders = data_provider.fetch_order_pool().get_orders_for_client(client_id)
                         self.send_response(200)
@@ -438,7 +438,7 @@ class ApiRequestHandler(http.server.BaseHTTPRequestHandler):
             data_provider.fetch_inventory_pool().save()
             self.send_response(201)
             self.end_headers()
-        elif path[0] == "suppliers":
+        elif path[0] == "suppliers":        
             content_length = int(self.headers["Content-Length"])
             post_data = self.rfile.read(content_length)
             new_supplier = json.loads(post_data.decode())
