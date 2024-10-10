@@ -1,0 +1,68 @@
+# Ignore build outputs
+bin/
+obj/
+
+# Ignore user-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Ignore Visual Studio files
+.vscode/
+.vs/
+.idea/
+
+# Ignore auto-generated files
+Generated_Code/
+
+# Ignore database files
+*.mdf
+*.ldf
+*.ndf
+*.db
+
+# Ignore entity framework migrations
+Migrations/
+
+# Ignore package directories
+packages/
+*.nupkg
+*.snupkg
+
+# Ignore logs and crash reports
+*.log
+*.dmp
+
+# Ignore environment settings
+.env
+.env.*
+
+# Ignore NuGet
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Ignore publish directory
+publish/
+
+# Ignore Rider files
+.idea/
+.idea_modules/
+.idea_settings/
+
+# Ignore Mac OS system files
+.DS_Store
+._*
+
+# Ignore Windows system files
+Thumbs.db
+desktop.ini
+
+# Ignore Recycle Bin files
+$RECYCLE.BIN/
+
+# Ignore JetBrains Rider-specific files
+.idea/
+*.sln.iml
