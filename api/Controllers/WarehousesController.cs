@@ -59,38 +59,35 @@ public class WarehouseController : ControllerBase
     [HttpPost("Warehouse")]
     public async Task<IActionResult> Add_Warehouse([FromBody] Warehouse warehouse)
     {
-        try
-        {
+        try{
             var result = await _warehouse.Add_Warehouse(warehouse);
-            if (result == null)
-            {
+            if (result == null){
                 return BadRequest("Warehouse could not be added or already exists.");
             }
-
             return Ok(result);
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex){
             return BadRequest(ex.Message);  // Return the error message in a bad request response
         }
     }
 
-
-
-
-
-
-
-
-
     // PUT /Warehouse/{id}: Updates warehouse information. 
     [HttpPut("Warehouse/{id}")]
     public async Task<IActionResult> Update_Warehouse([FromRoute]int id, [FromBody] Warehouse warehouse){
-        Warehouse WarehouseToUpdate = await _warehouse.Update_Warehouse(id, warehouse);
-        if(WarehouseToUpdate == null)
-            return BadRequest("Warehouse could not be updated.");
-        return Ok(WarehouseToUpdate);   
+        try{
+            var result = await _warehouse.Update_Warehouse(id, warehouse);
+            if (result == null) {
+                return BadRequest("Warehouse could not be updated.");
+            }
+            // if(id >=0)
+            //     return BadRequest("ID can not be a negative number");
+            return Ok(result);
+        }
+        catch (Exception ex){
+            return BadRequest(ex.Message);  // Return the error message in a bad request response
+        }
     }
+
 
     // DELETE /Warehouse/ {id}: Deletes a warehouse. 
     [HttpDelete("Warehouse/{id}")]
