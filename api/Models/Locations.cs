@@ -1,4 +1,9 @@
 public class Locations
 {
-    //this is a test for the renaming
+    public required int Id { get; set; }
+    public required int WarehouseId { get; set; }
+    public required string Code { get; set; }
+    public required string Name { get; set; }
+    public required DateTime CreatedAt { get; set; }
+    public required DateTime UpdatedAt { get; set; }
 }
