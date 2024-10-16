@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 [Route("/api/v1")]
 public class WarehousesController : ControllerBase{
     
-    private readonly MyContext _context;
+    // private readonly MyContext _context;
 
 
 
