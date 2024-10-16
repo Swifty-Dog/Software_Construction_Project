@@ -1,4 +1,4 @@
-public class Warehouses{
+public class Warehouse{
     public required int Id { get; set; }
     public required string code { get; set; }
     public required string name { get; set; }
@@ -8,5 +8,6 @@ public class Warehouses{
     public required string country { get; set; }
     public required Contact contact {get; set; }
     public required DateTime created_at { get; set; }
+    public required DateTime updated_at { get; set; }
 
 }
