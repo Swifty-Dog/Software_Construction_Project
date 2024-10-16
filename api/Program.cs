@@ -9,7 +9,7 @@ builder.Services.AddDbContext<MyContext>(x => x.UseSqlite(builder.Configuration.
 builder.Services.AddTransient<Warehouses>();
 builder.Services.AddTransient<Contact>();
 
+
 var app = builder.Build();
-app.Urls.Add("http://localhost:5000");
 app.MapControllers();
 app.Run();

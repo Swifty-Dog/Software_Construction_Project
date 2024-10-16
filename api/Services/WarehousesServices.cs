@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 public class WarehousesServices{
@@ -6,6 +7,19 @@ public class WarehousesServices{
         _context = context;
     }
 
+    public async Task<IEnumerable<Warehouses>> GetWarehouses(){
+        return await _context.Warehouses.ToListAsync();
+    }
+
+    public async Task<Warehouses> GetWarehouseById(int id){
+        if(id == null)
+            return null;
+        if(id <0)
+            return null;
+        return await _context.Warehouses.FindAsync(id);
+    }
+
+    public 
     // public async Task<IEnumerable<Warehouses>> GetWarehouses(){
     //     return await _context.Warehouses.ToListAsync();
     // }
