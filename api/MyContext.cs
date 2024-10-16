@@ -12,7 +12,7 @@ public class MyContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Warehouse>()
-            .HasOne(w => w.contact)
+            .HasOne(w => w.Contact)
             .WithMany()
             .HasForeignKey("ContactId");  // Optional: if you are setting up a foreign key
     }
