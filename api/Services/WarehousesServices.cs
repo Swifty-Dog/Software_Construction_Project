@@ -8,7 +8,7 @@ public class WarehouseServices: IWarehouse{
         _context = context;
     }
 
-    public async Task<IEnumerable<Warehouse>> Get_Warehouses()
+    public virtual async Task<IEnumerable<Warehouse>> Get_Warehouses()
     {
         return await _context.Warehouse
             .Include(w => w.Contact)  // Eagerly load the related Contact entities
