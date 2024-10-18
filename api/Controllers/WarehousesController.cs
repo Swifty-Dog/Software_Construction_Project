@@ -31,6 +31,7 @@ public class WarehouseController : ControllerBase
     }
 
     // GET /Warehouse/{id}/locations: Returns all locations within a specific warehouse. 
+    // Needs to wait untill locations is made 
 
     // [HttpGet("Warehouse/{id}/locations")]
     // public async Task<IActionResult> Get_Warehouse_Locations(int id){
@@ -41,20 +42,6 @@ public class WarehouseController : ControllerBase
     //     return Ok(locations);
     // }
     
-
-    // POST /Warehouse: Adds a new warehouse. 
-    // [HttpPost("Warehouse")]
-    // public async Task<IActionResult> Add_Warehouse([FromBody] Warehouse warehouse){
-    //     // if (!ModelState.IsValid)
-    //     // {
-    //     //     return BadRequest(ModelState);  // Return validation errors if any
-    //     // }
-    //     Warehouse WarehouseToUpdate = await _warehouse.Add_Warehouse(warehouse);
-    //     if(WarehouseToUpdate == null){
-    //         return BadRequest();
-    //     }
-    //     return Ok(WarehouseToUpdate);
-    // }
 
     [HttpPost("Warehouse")]
     public async Task<IActionResult> Add_Warehouse([FromBody] Warehouse warehouse)
