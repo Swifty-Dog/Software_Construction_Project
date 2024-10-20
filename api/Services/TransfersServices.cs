@@ -10,7 +10,7 @@ public class TransfersServices : ITransfers{
     
     public async Task<IEnumerable<Transfer>> Get_Transfers(){
         return await _context.Transfers
-            .Include(w => w.Items)  // Eagerly load the related Contact entities
+            .Include(w => w.Items)  
             .ToListAsync();
     }
 
@@ -33,50 +33,36 @@ public class TransfersServices : ITransfers{
         return transfer.Items;
     }
 
-    public async Task<Transfer> Add_Transfer(Transfer transfer)
-    {
-        if (transfer == null || transfer.Items == null || !transfer.Items.Any())
-        {
+    public async Task<Transfer> Add_Transfer(Transfer transfer){
+        if (transfer == null || transfer.Items == null || !transfer.Items.Any()){
             throw new ArgumentNullException("Transfer or its Items list cannot be null.");
         }
-
         // Get all existing items that match any of the incoming item IDs
-        var existingItems = await _context.Transfer_Items
+        var checkItems = await _context.Transfer_Items
             .Where(i => transfer.Items.Select(ti => ti.Item_Id).Contains(i.Item_Id))
             .ToListAsync();
-
         // If existing items are found, replace the incoming items with the existing ones
-        foreach (var item in transfer.Items)
-        {
-            var existingItem = existingItems.FirstOrDefault(ei => ei.Item_Id == item.Item_Id);
-            if (existingItem != null)
-            {
+        foreach (var item in transfer.Items){
+            var existingItem = checkItems.FirstOrDefault(ei => ei.Item_Id == item.Item_Id);
+            if (existingItem != null){
                 item.Item_Id = existingItem.Item_Id;
                 item.Amount = existingItem.Amount;
             }
         }
-
         // Check if the transfer already exists by checking the Reference (since it's unique)
         var existingTransfer = await _context.Transfers
             .FirstOrDefaultAsync(t => t.Id == transfer.Id);
-
-        if (existingTransfer == null)
-        {
-            // If no existing transfer found, add the new transfer
+        if (existingTransfer == null){
             _context.Transfers.Add(transfer);
             await _context.SaveChangesAsync();
-
-            // Set the TransferId for each item
-            foreach (var item in transfer.Items)
-            {
+            foreach (var item in transfer.Items){
                 item.TransferId = transfer.Id;
             }
-
-            await _context.SaveChangesAsync();  // Save the items with the updated TransferId
+            await _context.SaveChangesAsync();  
             return transfer;
         }
 
-        return null;  // Transfer already exists
+        return null; 
     }
 
     public async Task<Transfer> Update_Transfer(int id, Transfer transfer){
