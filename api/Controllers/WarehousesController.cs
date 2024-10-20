@@ -1,11 +1,90 @@
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("/api/v1")]
-public class WarehousesController : ControllerBase{
+[Route("/api/v1/")]
+public class WarehouseController : ControllerBase
+{
+    private readonly WarehouseServices _warehouse;
+
     
-    private readonly MyContext _context;
+    public WarehouseController(WarehouseServices warehouse)
+    {
+        _warehouse = warehouse;
+    }
+
+    // GET /Warehouse: Returns all Warehouse. 
+    [HttpGet("Warehouses")]
+    public async Task<IActionResult> Get_Warehouses()
+    {
+        var warehouses = await _warehouse.Get_Warehouses(); 
+        return Ok(warehouses); 
+    }
+
+    // GET /Warehouse/{id}: Returns the details of a specific warehouse by its ID. 
+    [HttpGet("Warehouse/{id}")]
+    public async Task<IActionResult> Get_Warehouse_By_Id(int id){    
+        var warehouse = await _warehouse.Get_Warehouse_By_Id(id);
+        if(warehouse == null){
+            return NotFound("No Warehouse found with that ID");
+        }
+        return Ok(warehouse);
+    }
+
+    // GET /Warehouse/{id}/locations: Returns all locations within a specific warehouse. 
+    // Needs to wait untill locations is made 
+
+    // [HttpGet("Warehouse/{id}/locations")]
+    // public async Task<IActionResult> Get_Warehouse_Locations(int id){
+    //     var locations = await _warehouse.Get_Warehouse_Locations(id);
+    //     if(locations == null){
+    //         return NotFound("No locations found for that Warehouse ID");
+    //     }
+    //     return Ok(locations);
+    // }
+    
+
+    [HttpPost("Warehouse")]
+    public async Task<IActionResult> Add_Warehouse([FromBody] Warehouse warehouse)
+    {
+        try{
+            var result = await _warehouse.Add_Warehouse(warehouse);
+            if (result == null){
+                return BadRequest("Warehouse could not be added or already exists.");
+            }
+            return Ok(result);
+        }
+        catch (Exception ex){
+            return BadRequest(ex.Message);  // Return the error message in a bad request response
+        }
+    }
+
+    // PUT /Warehouse/{id}: Updates warehouse information. 
+    [HttpPut("Warehouse/{id}")]
+    public async Task<IActionResult> Update_Warehouse([FromRoute]int id, [FromBody] Warehouse warehouse){
+        try{
+            var result = await _warehouse.Update_Warehouse(id, warehouse);
+            if (result == null) {
+                return BadRequest("Warehouse could not be updated.");
+            }
+            // if(id >=0)
+            //     return BadRequest("ID can not be a negative number");
+            return Ok(result);
+        }
+        catch (Exception ex){
+            return BadRequest(ex.Message);  // Return the error message in a bad request response
+        }
+    }
 
 
-
+    // DELETE /Warehouse/ {id}: Deletes a warehouse. 
+    [HttpDelete("Warehouse/{id}")]
+    public async Task<IActionResult> Delete_Warehouse(int id){
+        bool WarehouseToDeleted = await _warehouse.DeleteWarehouse(id);
+        if(WarehouseToDeleted == false)
+            return BadRequest("Warehouse could not be deleted.");
+        return Ok("Warehouse deleted successfully.");
+    }
 }
+
+
+
