@@ -1,10 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-// using Microsoft.EntityFrameworkCore.Storage;
 
 public class MyContext : DbContext
 {
     public MyContext(DbContextOptions<MyContext> options) : base(options) {}
-    
+
     public DbSet<Warehouse> Warehouse { get; set; }
     public DbSet<Contact> Contact { get; set; }
     public DbSet<Item> Items { get; set; }
@@ -13,7 +12,7 @@ public class MyContext : DbContext
     public DbSet<Item_type> ItemTypes { get; set; }
     public DbSet<Supplier> Suppliers { get; set; }
     public DbSet<Transfer> Transfers { get; set; }
-    public DbSet<Transfers_item> TransferItems { get; set; }
+    public DbSet<Transfers_item> Transfer_Items { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -32,7 +31,7 @@ public class MyContext : DbContext
         // Item entity configuration
         modelBuilder.Entity<Item>()
             .HasKey(i => i.Uid);
-        
+
         modelBuilder.Entity<Item>()
             .HasOne(i => i.Item_group)
             .WithMany()
@@ -65,16 +64,19 @@ public class MyContext : DbContext
         modelBuilder.Entity<Item_type>()
             .HasKey(t => t.Id);
 
+        // Transfer configuration
         modelBuilder.Entity<Transfer>()
-            .HasKey(t => t.Id);
+            .HasKey(t => t.Id);  // Primary key for Transfer
 
         modelBuilder.Entity<Transfer>()
-            .HasOne(t => t.Items)
+            .HasMany(t => t.Items)
             .WithOne()
-            .HasForeignKey<Transfers_item>("Transfer_id");  
-        
+            .HasForeignKey(ti => ti.TransferId)
+            .OnDelete(DeleteBehavior.Cascade);  // remove items if transfer is deleted
+
+        // Transfers_item configuration
         modelBuilder.Entity<Transfers_item>()
-            .HasKey(ti => ti.Item_id);
+            .HasKey(ti => new { ti.TransferId, ti.Item_Id });  // Composite key using TransferId and Item_Id
 
         base.OnModelCreating(modelBuilder);
     }

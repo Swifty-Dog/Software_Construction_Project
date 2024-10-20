@@ -62,6 +62,9 @@ public class WarehouseController : ControllerBase
     [HttpPut("Warehouse/{id}")]
     public async Task<IActionResult> Update_Warehouse([FromRoute]int id, [FromBody] Warehouse warehouse){
         try{
+            if(id <= 0 || id != warehouse.Id){
+                return BadRequest("Warehouse ID is invalid or does not match the warehouse ID in the request body.");
+            }
             var result = await _warehouse.Update_Warehouse(id, warehouse);
             if (result == null) {
                 return BadRequest("Warehouse could not be updated.");
