@@ -1,19 +1,18 @@
-using Microsoft.AspNetCore.Mvc;
-
 using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<MyContext>(x => x.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddTransient<Warehouses>();
-builder.Services.AddTransient<Contact>();
 builder.Services.AddTransient<LocationServices>();
 
-var app = builder.Build();
-app.Urls.Add("http://localhost:5000");
-app.MapGet("/" , () => "Hello");
+// Register services
+builder.Services.AddTransient<Warehouse>();
+builder.Services.AddTransient<Contact>();   
+builder.Services.AddTransient<WarehouseServices>(); 
+builder.Services.AddTransient<TransfersServices>();
+
 app.MapControllers();
+app.Urls.Add("http://localhost:5000");
+app.MapGet("/", () => "Hello World!");
 app.Run();
-
-
