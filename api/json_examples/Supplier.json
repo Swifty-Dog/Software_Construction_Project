@@ -1,0 +1,16 @@
+{
+    "id": 1,
+    "code": "SUP0001",
+    "name": "Lee, Parks and Johnson",
+    "address": "5989 Sullivan Drives",
+    "address_extra": "Apt. 996",
+    "city": "Port Anitaburgh",
+    "zip_code": "91688",
+    "province": "Illinois",
+    "country": "Czech Republic",
+    "contact_name": "Toni Barnett",
+    "phonenumber": "363.541.7282x36825",
+    "reference": "LPaJ-SUP0001",
+    "created_at": "1971-10-20 18:06:17",
+    "updated_at": "1985-06-08 00:13:46"
+}
