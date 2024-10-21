@@ -42,7 +42,6 @@ public class WarehouseController : ControllerBase
     //     return Ok(locations);
     // }
     
-
     [HttpPost("Warehouse")]
     public async Task<IActionResult> Add_Warehouse([FromBody] Warehouse warehouse)
     {
