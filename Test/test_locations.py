@@ -6,6 +6,8 @@ class LocationsTest(unittest.TestCase):
         API_KEY = "a1b2c3d4e5"
         self.client = Client(base_url='http://localhost:3000/api/v1/', headers={"API_KEY": API_KEY})
 
+    # python -m unittest Test/test_locations.py
+    
     def test_get_locations(self):
         # Test to fetch all locations
         response = self.client.get('locations')
