@@ -8,8 +8,10 @@ builder.Services.AddDbContext<MyContext>(x => x.UseSqlite(builder.Configuration.
 // Register services
 builder.Services.AddTransient<Warehouse>();
 builder.Services.AddTransient<Contact>();   
+builder.Services.AddTransient<Client>();   
 builder.Services.AddTransient<WarehouseServices>(); 
 builder.Services.AddTransient<TransfersServices>();
+builder.Services.AddTransient<ClientServices>();
 
 var app = builder.Build();
 
