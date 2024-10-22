@@ -1,7 +1,7 @@
 import unittest
 from httpx import Client
 
-class WarehousesTest(unittest.TestCase):
+class Warehouses_Test(unittest.TestCase):
     def setUp(self):  
         API_KEY = "a1b2c3d4e5"
         self.client = Client(base_url='http://localhost:3000/api/v1/', headers={"API_KEY": API_KEY})
@@ -36,12 +36,12 @@ class WarehousesTest(unittest.TestCase):
 
     def test_get_locations_in_warehouse(self): # Test fetching all locations for a specific warehouse
         response = self.client.get('warehouses/1/locations')
-        self.assertEqual(response.status_code, 200)  # check for status code
-        self.assertGreater(len(response.json()), 0)  # Ensure locations are returned
+        self.assertEqual(response.status_code, 200)  
+        self.assertGreater(len(response.json()), 0)  
 
     def test_post_warehouse(self):
         warehouse_data = {
-            "id": 9999999999999,
+            "id": 50000001,
             "code": "YQZZNL56",
             "name": "Heemskerk cargo hub",
             "address": "Karlijndreef 281",
@@ -50,7 +50,7 @@ class WarehousesTest(unittest.TestCase):
             "province": "Friesland",
             "country": "NL",
             "contact": {
-                "name": "null",
+                "name": "Jason",
                 "phone": "(078) 0013363",
                 "email": "blamore@example.net"
             },
