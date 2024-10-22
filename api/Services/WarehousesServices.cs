@@ -8,8 +8,7 @@ public class WarehouseServices: IWarehouse{
         _context = context;
     }
 
-    public virtual async Task<IEnumerable<Warehouse>> Get_Warehouses()
-    {
+    public async Task<IEnumerable<Warehouse>> Get_Warehouses(){
         return await _context.Warehouse
             .Include(w => w.Contact)  // Eagerly load the related Contact entities
             .ToListAsync();
@@ -21,7 +20,7 @@ public class WarehouseServices: IWarehouse{
         return await _context.Warehouse
                     .Include(w => w.Contact)  
                     .FirstOrDefaultAsync(w => w.Id == id);
-}
+    }
 
 
     public async Task<Warehouse> Add_Warehouse(Warehouse warehouse){
@@ -42,8 +41,7 @@ public class WarehouseServices: IWarehouse{
         return null;
     }
 
-    public async Task<Warehouse> Update_Warehouse(int id, Warehouse warehouse)
-    {
+    public async Task<Warehouse> Update_Warehouse(int id, Warehouse warehouse){
         if (id <= 0 || warehouse == null) 
             return null;
 
