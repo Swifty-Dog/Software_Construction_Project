@@ -14,6 +14,7 @@ public class MyContext : DbContext
     public DbSet<Supplier> Suppliers { get; set; }
     public DbSet<Transfer> Transfers { get; set; }
     public DbSet<Transfers_item> Transfer_Items { get; set; }
+    public DbSet<Client> Client { get; set; }
     public DbSet<Inventory> Inventories { get; set; }
     public DbSet<Inventories_locations> Inventories_Locations { get; set; }
 
@@ -81,6 +82,10 @@ public class MyContext : DbContext
         modelBuilder.Entity<Transfers_item>()
             .HasKey(ti => new { ti.TransferId, ti.Item_Id });  // Composite key using TransferId and Item_Id
 
+        // Client configuration
+        modelBuilder.Entity<Client>()
+            .HasKey(c => c.Id);
+            
         // Inventory configuration
         modelBuilder.Entity<Inventory>()
             .HasKey(i => i.Id);  // Primary key for Inventory
