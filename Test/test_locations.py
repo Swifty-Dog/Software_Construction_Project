@@ -1,7 +1,7 @@
 import unittest
 from httpx import Client
 
-class LocationsTest(unittest.TestCase):
+class Locations_Test(unittest.TestCase):
     def setUp(self):  
         API_KEY = "a1b2c3d4e5"
         self.client = Client(base_url='http://localhost:3000/api/v1/', headers={"API_KEY": API_KEY})
@@ -12,14 +12,20 @@ class LocationsTest(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertGreater(len(response.json()), 0)
 
-    def test_get_single_location(self):
-        location_id = 1  # Ensure this ID exists in your data
+    def test_get_single_location(self):   # Test to fetch a specific location by its ID
+        location_id = 1  
         response = self.client.get(f'locations/{location_id}')
-        self.assertEqual(response.status_code, 200)
         location = response.json()
         self.assertEqual(location['id'], location_id)
 
-    def test_get_single_location_fail(self):
+    def test_get_single_location_with_False(self):  # Test to fetch a specific location by its ID
+        location_id = 1
+        response = self.client.get(f'locations/{location_id}')
+        self.assertEqual(response.status_code, 200)
+        location = response.json()
+        self.assertFalse('invalid_field' in location)
+
+    def test_get_single_location_fail(self): # Test to fetch a specific location that does not exist 
         response = self.client.get('locations/500000000')
         self.assertEqual(response.status_code, 404)
 
@@ -46,6 +52,28 @@ class LocationsTest(unittest.TestCase):
         self.assertEqual(returned_location['code'], location_data['code'])
         self.assertEqual(returned_location['name'], location_data['name'])
         self.assertEqual(returned_location['description'], location_data['description'])
+
+    def test_update_location(self):
+        location_id = 50000010  # Make sure this ID matches the ID from the post test
+        updated_data = {
+            "warehouse_id": 1,
+            "code": "LOC001-updated",
+            "name": "Updated Warehouse Location",
+            "description": "Updated storage area",
+            "created_at": "2024-10-22T10:00:00",
+            "updated_at": "2024-10-22T10:00:00"
+        }
+
+        put_response = self.client.put(f'locations/{location_id}', json=updated_data)
+        self.assertEqual(put_response.status_code, 200)
+
+        get_response = self.client.get(f'locations/{location_id}')
+        self.assertEqual(get_response.status_code, 200)
+
+        returned_location = get_response.json()
+        self.assertEqual(returned_location['id'], location_id)
+        self.assertEqual(returned_location['code'], updated_data['code'])
+        self.assertEqual(returned_location['name'], updated_data['name'])
 
 if __name__ == '__main__':
     unittest.main()
