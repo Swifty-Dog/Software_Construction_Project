@@ -1,7 +1,7 @@
 import unittest
 from httpx import Client
 
-class Warehouses_Test(unittest.TestCase):
+class Warehouses_Test(unittest.TestCase): # 6 maar 7 met post 
     def setUp(self):  
         API_KEY = "a1b2c3d4e5"
         self.client = Client(base_url='http://localhost:3000/api/v1/', headers={"API_KEY": API_KEY})
@@ -61,11 +61,10 @@ class Warehouses_Test(unittest.TestCase):
     #     }
 
     #     # Post the new warehouse
-    #     post_response = self.client.post('warehouses', json=warehouse_data)
+    #     post_response = self.client.post('http://localhost:3000/api/v1/warehouses', json=warehouse_data)
     #     self.assertEqual(post_response.status_code, 201)
-    #     get_response = self.client.get(f'warehouses/{warehouse_data["id"]}')
-    #     # self.assertEqual(get_response.status_code, 200)
-
+    #     get_response = self.client.get(f'http://localhost:3000/api/v1/warehouses/1234567/')
+    #     self.assertEqual(get_response.status_code, 200)
     #     returned_warehouse = get_response.json()
     #     self.assertEqual(returned_warehouse['id'], warehouse_data['id'])
     #     self.assertEqual(returned_warehouse['code'], warehouse_data['code'])
@@ -76,7 +75,6 @@ class Warehouses_Test(unittest.TestCase):
     #     self.assertEqual(returned_warehouse['province'], warehouse_data['province'])
     #     self.assertEqual(returned_warehouse['country'], warehouse_data['country'])
     #     self.assertEqual(returned_warehouse['contact'], warehouse_data['contact'])
-
 
     def test_post_warehouse_succesful(self):
         response = self.client.get('warehouses')
