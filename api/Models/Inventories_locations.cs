@@ -1,5 +1,6 @@
 public class Inventories_locations
 {
+    [System.Text.Json.Serialization.JsonIgnore]
     public int InventoryId { get; set; }
     public required int LocationId { get; set; }
 
