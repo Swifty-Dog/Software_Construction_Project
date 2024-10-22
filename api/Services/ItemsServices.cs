@@ -37,7 +37,7 @@ public class ItemsServices : I_Items
     {
         // if (id <= 0 || item == null) 
         //     return null;
-        if (uid == null)
+        if (uid == null || uid.Length == 0)
             return null;
         Item itemToUpdate = await _context.Items.FindAsync(uid);
         if (itemToUpdate == null){
