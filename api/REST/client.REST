@@ -19,8 +19,8 @@ Content-Type: application/json
     "contact_name": "Bryan Clark",
     "contact_phone": "242.732.3483x2573",
     "contact_email": "robertcharles@example.net",
-    "created_at": "2010-04-28 02:22:53",
-    "updated_at": "2022-02-09 20:22:35"
+    "created_at": "2010-04-28T02:22:53Z",
+    "updated_at": "2022-02-09T20:22:35Z"
 }
 
 
@@ -39,8 +39,8 @@ Content-Type: application/json
     "contact_name": "Bryan Clark",
     "contact_phone": "242.732.3483x2573",
     "contact_email": "robertcharles@example.net",
-    "created_at": "2010-04-28 02:22:53",
-    "updated_at": "2022-02-09 20:22:35"
+    "created_at": "2010-04-28T02:22:53Z",
+    "updated_at": "2022-02-09T20:22:35Z"
 }
 
 ### Del Delete Client by id
