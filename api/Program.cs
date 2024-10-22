@@ -21,6 +21,7 @@ builder.Services.AddTransient<Inventory>();
 builder.Services.AddTransient<Inventories_locations>();
 builder.Services.AddTransient<InventoriesServices>();
 builder.Services.AddTransient<Item_lineServices>();
+builder.Services.AddTransient<Item_TypeServices>();
 
 var app = builder.Build();
 
