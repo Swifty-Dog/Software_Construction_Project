@@ -44,7 +44,7 @@ Content-Type: application/json
     }
 
 
-### Put Update transfer based on body given
+### Put Update inventory based on body given
 PUT  http://localhost:5000/api/v1/Inventory/1 HTTP/1.1
 Content-Type: application/json
 

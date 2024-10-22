@@ -10,6 +10,8 @@ builder.Services.AddTransient<Warehouse>();
 builder.Services.AddTransient<Contact>();   
 builder.Services.AddTransient<WarehouseServices>(); 
 builder.Services.AddTransient<TransfersServices>();
+builder.Services.AddTransient<Inventory>();
+builder.Services.AddTransient<Inventories_locations>();
 builder.Services.AddTransient<InventoriesServices>();
 
 var app = builder.Build();
