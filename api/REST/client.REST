@@ -1,0 +1,47 @@
+### Get all Clients
+GET http://localhost:5000/api/v1/Clients HTTP/1.1
+
+###  Get Client by id
+GET http://localhost:5000/api/v1/Client/1 HTTP/1.1
+
+### Post Client based on body given
+POST http://localhost:5000/api/v1/Client HTTP/1.1
+Content-Type: application/json
+
+{
+    "id": 1,
+    "name": "Raymond Inc",
+    "address": "1296 Daniel Road Apt. 349",
+    "city": "Pierceview",
+    "zip_code": "28301",
+    "province": "Colorado",
+    "country": "United States",
+    "contact_name": "Bryan Clark",
+    "contact_phone": "242.732.3483x2573",
+    "contact_email": "robertcharles@example.net",
+    "created_at": "2010-04-28 02:22:53",
+    "updated_at": "2022-02-09 20:22:35"
+}
+
+
+### Put Update Client based on body given
+PUT  http://localhost:5000/api/v1/Client/1 HTTP/1.1
+Content-Type: application/json
+
+{
+    "id": 1,
+    "name": "Change",
+    "address": "1296 Daniel Road Apt. 349",
+    "city": "Pierceview",
+    "zip_code": "28301",
+    "province": "Colorado",
+    "country": "United States",
+    "contact_name": "Bryan Clark",
+    "contact_phone": "242.732.3483x2573",
+    "contact_email": "robertcharles@example.net",
+    "created_at": "2010-04-28 02:22:53",
+    "updated_at": "2022-02-09 20:22:35"
+}
+
+### Del Delete Client by id
+DELETE http://localhost:5000/api/v1/Client/1 HTTP/1.1
