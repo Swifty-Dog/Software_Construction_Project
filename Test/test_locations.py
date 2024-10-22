@@ -7,13 +7,25 @@ class LocationsTest(unittest.TestCase):
         self.client = Client(base_url='http://localhost:3000/api/v1/', headers={"API_KEY": API_KEY})
 
     def test_get_locations(self):
+        # Test to fetch all locations
         response = self.client.get('locations')
         self.assertEqual(response.status_code, 200)
         self.assertGreater(len(response.json()), 0)
 
+    def test_get_single_location(self):
+        location_id = 1  # Ensure this ID exists in your data
+        response = self.client.get(f'locations/{location_id}')
+        self.assertEqual(response.status_code, 200)
+        location = response.json()
+        self.assertEqual(location['id'], location_id)
+
+    def test_get_single_location_fail(self):
+        response = self.client.get('locations/500000000')
+        self.assertEqual(response.status_code, 404)
+
     def test_post_location(self):
         location_data = {
-            "id": 50000003, #unique one
+            "id": 50000010,  # Ensure this ID is unique
             "warehouse_id": 1,
             "code": "LOC001",
             "name": "Main Warehouse Location",
@@ -34,13 +46,6 @@ class LocationsTest(unittest.TestCase):
         self.assertEqual(returned_location['code'], location_data['code'])
         self.assertEqual(returned_location['name'], location_data['name'])
         self.assertEqual(returned_location['description'], location_data['description'])
-
-    def test_get_existing_location(self):
-        location_id = 1
-        response = self.client.get(f'locations/{location_id}')
-        self.assertEqual(response.status_code, 200)
-        location = response.json()
-        self.assertEqual(location['id'], location_id)
 
 if __name__ == '__main__':
     unittest.main()
