@@ -30,7 +30,7 @@ Content-Type: application/json
 
 {
     "id": 1,
-    "name": "Change",
+    "name": "update worked",
     "address": "1296 Daniel Road Apt. 349",
     "city": "Pierceview",
     "zip_code": "28301",
