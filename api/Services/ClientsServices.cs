@@ -8,7 +8,7 @@ public class ClientServices: IClients{
         _context = context;
     }
 
-    public virtual async Task<IEnumerable<Client>> Get_Clients()
+    public async Task<IEnumerable<Client>> Get_Clients()
     {
         return await _context.Client
             .ToListAsync();
