@@ -6,6 +6,7 @@ public class MyContext : DbContext
 
     public DbSet<Warehouse> Warehouse { get; set; }
     public DbSet<Contact> Contact { get; set; }
+    public DbSet<Locations> Locations {get;set;}
     public DbSet<Item> Items { get; set; }
     public DbSet<Item_group> ItemGroups { get; set; }
     public DbSet<Item_line> ItemLines { get; set; }
