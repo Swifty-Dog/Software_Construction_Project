@@ -20,7 +20,7 @@ builder.Services.AddTransient<ISuppliersInterface, SuppliersServices>();
 builder.Services.AddTransient<Inventory>();
 builder.Services.AddTransient<Inventories_locations>();
 builder.Services.AddTransient<InventoriesServices>();
-
+builder.Services.AddTransient<Item_lineServices>();
 
 var app = builder.Build();
 
