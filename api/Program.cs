@@ -24,6 +24,7 @@ builder.Services.AddTransient<Shipment>();
 builder.Services.AddTransient<Shipments_item>();
 builder.Services.AddTransient<ShipmentsServices>();
 builder.Services.AddTransient<Item_lineServices>();
+builder.Services.AddTransient<Item_TypeServices>();
 
 var app = builder.Build();
 
