@@ -13,6 +13,8 @@ public class MyContext : DbContext
     public DbSet<Supplier> Suppliers { get; set; }
     public DbSet<Transfer> Transfers { get; set; }
     public DbSet<Transfers_item> Transfer_Items { get; set; }
+    public DbSet<Inventory> Inventories { get; set; }
+    public DbSet<Inventories_locations> Inventories_Locations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -78,6 +80,22 @@ public class MyContext : DbContext
         modelBuilder.Entity<Transfers_item>()
             .HasKey(ti => new { ti.TransferId, ti.Item_Id });  // Composite key using TransferId and Item_Id
 
+        // Inventory configuration
+        modelBuilder.Entity<Inventory>()
+            .HasKey(i => i.Id);  // Primary key for Inventory
+
+        modelBuilder.Entity<Inventory>()
+            .HasMany(i => i.Locations)
+            .WithOne()
+            .HasForeignKey(il => il.InventoryId)
+            .OnDelete(DeleteBehavior.Cascade);  // remove locations if inventory is deleted
+
+        // Inventories_locations configuration
+        modelBuilder.Entity<Inventories_locations>()
+            .HasKey(il => new { il.InventoryId, il.LocationId });  // Composite key using InventoryId and LocationId
+
+
         base.OnModelCreating(modelBuilder);
+
     }
 }
