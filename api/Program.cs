@@ -14,9 +14,7 @@ builder.Services.AddTransient<TransfersServices>();
 builder.Services.AddTransient<ClientServices>();
 
 var app = builder.Build();
-
 app.MapControllers();
-
 app.Urls.Add("http://localhost:5000");
 app.MapGet("/", () => "Hello World!");
 app.Run();
