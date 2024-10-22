@@ -18,14 +18,12 @@ class Transfers_Test(unittest.TestCase):
         transfer = response.json()
         self.assertEqual(transfer['id'], transfer_id)
     
-    def test_get_single_transfer_with_False(self):
-        transfer_id = 1
+    def test_get_nonexistent_transfer(self):
+        transfer_id = 1234567
         response = self.client.get(f'transfers/{transfer_id}')
-        self.assertEqual(response.status_code, 200)
-        transfer = response.json()
-        self.assertFalse('invalid_field' in transfer)
+        self.assertEqual(response.text, "null")
     
-    def test_get_single_transfer_fail(self):
+    def test_get_nonexistent_transfer_id(self):
         response = self.client.get('transfers/500000000')
         transfer = response.json()
         self.assertIsNone(transfer)
@@ -56,6 +54,22 @@ class Transfers_Test(unittest.TestCase):
         self.assertEqual(transfer['id'], 50000001)
         self.assertEqual(transfer['from_warehouse'], 1)
         
+    def test_post_transfer_success(self):
+        response = self.client.get('transfers')
+        old_transfer_length = len(response.json())
+        transfer_data = {
+            "id": 50000002,
+            "from_warehouse": 1,
+            "to_warehouse": 2,
+            "status": "pending",
+            "created_at": "1983-04-13 04:59:55",
+            "updated_at": "2007-02-08 20:11:00"
+        }
+        self.client.post('transfers', json=transfer_data)
+        new_response = self.client.get('transfers')
+        newLength = len(new_response.json())
+
+        self.assertTrue(newLength > old_transfer_length)
 
 if __name__ == '__main__':
     unittest.main()
