@@ -16,6 +16,9 @@ public class MyContext : DbContext
     public DbSet<Transfers_item> Transfer_Items { get; set; }
     public DbSet<Inventory> Inventories { get; set; }
     public DbSet<Inventories_locations> Inventories_Locations { get; set; }
+    public DbSet<Shipment> Shipments { get; set; }
+    public DbSet<Shipments_item> Shipments_items { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -94,6 +97,20 @@ public class MyContext : DbContext
         // Inventories_locations configuration
         modelBuilder.Entity<Inventories_locations>()
             .HasKey(il => new { il.InventoryId, il.LocationId });  // Composite key using InventoryId and LocationId
+
+        // Shipment configuration
+        modelBuilder.Entity<Shipment>()
+            .HasKey(s => s.Id);  // Primary key for Shipment
+
+        modelBuilder.Entity<Shipment>()
+            .HasMany(s => s.Items)
+            .WithOne()
+            .HasForeignKey(si => si.ShippingId)
+            .OnDelete(DeleteBehavior.Cascade);  // remove items if shipment is deleted
+
+        // Transfers_item configuration
+        modelBuilder.Entity<Shipments_item>()
+            .HasKey(si => new { si.ShippingId, si.ItemId });  // Composite key using ShippingId and ItemId
 
 
         base.OnModelCreating(modelBuilder);

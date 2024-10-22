@@ -17,6 +17,9 @@ builder.Services.AddTransient<ISuppliersInterface, SuppliersServices>();
 builder.Services.AddTransient<Inventory>();
 builder.Services.AddTransient<Inventories_locations>();
 builder.Services.AddTransient<InventoriesServices>();
+builder.Services.AddTransient<Shipment>();
+builder.Services.AddTransient<Shipments_item>();
+builder.Services.AddTransient<ShipmentsServices>();
 
 var app = builder.Build();
 app.MapControllers();
