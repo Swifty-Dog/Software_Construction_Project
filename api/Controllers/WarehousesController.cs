@@ -80,11 +80,11 @@ public class WarehouseController : ControllerBase
 
     // DELETE /Warehouse/ {id}: Deletes a warehouse. 
     [HttpDelete("Warehouse/{id}")]
-    public async Task<IActionResult> Delete_Warehouse(int id){
+    public async Task<bool> Delete_Warehouse(int id){
         bool WarehouseToDeleted = await _warehouse.DeleteWarehouse(id);
         if(WarehouseToDeleted == false)
-            return BadRequest("Warehouse could not be deleted.");
-        return Ok("Warehouse deleted successfully.");
+            return false;
+        return true;
     }
 }
 
