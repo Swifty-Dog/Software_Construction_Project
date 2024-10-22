@@ -1,0 +1,62 @@
+
+GET http://localhost:5000/api/v1/suppliers
+Content-Type: application/json
+Accept: application/json
+
+###
+
+GET http://localhost:5000/api/v1/suppliers/1
+Content-Type: application/json
+Accept: application/json
+
+###
+
+POST http://localhost:5000/api/v1/suppliers
+Content-Type: application/json
+Accept: application/json
+
+{
+    "id": 2,
+    "code": "SUPP002",
+    "name": "REST REST",
+    "address": "456 Tech Park",
+    "address_extra": "Suite 101",
+    "zip_code": "67890",
+    "province": "California",
+    "country": "USA",
+    "contact_name": "Jane Doe",
+    "phonenumber": "098-765-4321",
+    "email": "janedoe@techsupplies.com",
+    "reference": "REF1234",
+    "created_at": "2024-10-22T10:00:00",
+    "updated_at": "2024-10-22T10:00:00"
+}
+
+###
+
+PUT http://localhost:5000/api/v1/suppliers/2
+Content-Type: application/json
+Accept: application/json
+
+{
+    "id": 2,
+    "code": "REST TEST UPDATED",
+    "name": "Tech Supplies Updated",
+    "address": "789 New Tech Park",
+    "address_extra": "Suite 202",
+    "zip_code": "54321",
+    "province": "California",
+    "country": "USA",
+    "contact_name": "Jane Doe Updated",
+    "phonenumber": "098-765-9999",
+    "email": "jane.doe.updated@techsupplies.com",
+    "reference": "REF5678",
+    "created_at": "2024-10-22T10:00:00",
+    "updated_at": "2024-10-22T12:00:00"
+}
+
+###
+
+DELETE http://localhost:5000/api/v1/suppliers/2
+Content-Type: application/json
+Accept: application/json
