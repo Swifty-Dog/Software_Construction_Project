@@ -21,6 +21,7 @@ builder.Services.AddTransient<Inventories_locations>();
 builder.Services.AddTransient<InventoriesServices>();
 
 var app = builder.Build();
+
 app.MapControllers();
 app.Urls.Add("http://localhost:5000");
 app.MapGet("/", () => "Hello World!");
