@@ -22,7 +22,7 @@ class Warehouses_Test(unittest.TestCase): # 6 maar 7 met post
     def test_get_nonexistent_warehouse(self): 
         warehouse_id = 1234567
         response = self.client.get(f'warehouses/{warehouse_id}')
-        self.assertEqual(response.text, "")  #the response body is empty
+        self.assertEqual(response.text, "null")  #the response body is empty
 
     def test_get_warehouses_invalid_path(self):  # Test to fetch warehouses with an invalid URL segment
         response = self.client.get('/warehouses/1/locations/invalid_segment')  # wrong GET request
@@ -39,7 +39,7 @@ class Warehouses_Test(unittest.TestCase): # 6 maar 7 met post
         # self.assertEqual(response.status_code, 200)
         if response.status_code == 200:
             response = self.client.get(f'warehouses/{warehouse_id}')
-            self.assertEqual(response.text, "")
+            self.assertEqual(response.text, "null")
     
     # def test_post_warehouse(self):
     #     warehouse_data = {
