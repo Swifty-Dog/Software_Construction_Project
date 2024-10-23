@@ -125,32 +125,8 @@ class Shipments_Test(unittest.TestCase):
         self.assertEqual(shipment['id'], shipment_id)
         self.assertEqual(shipment['order_id'], 1391)
 
+    
+
 if __name__ == '__main__':
     unittest.main()
 
-{
-        "id": 3,
-        "order_id": 3,
-        "source_id": 52,
-        "order_date": "1973-01-28",
-        "request_date": "1973-01-30",
-        "shipment_date": "1973-02-01",
-        "shipment_type": "I",
-        "shipment_status": "Pending",
-        "notes": "Hoog genot springen afspraak mond bus.",
-        "carrier_code": "DHL",
-        "carrier_description": "DHL Express",
-        "service_code": "NextDay",
-        "payment_type": "Automatic",
-        "transfer_mode": "Ground",
-        "total_package_count": 29,
-        "total_package_weight": 463.0,
-        "created_at": "1973-01-28T20:09:11Z",
-        "updated_at": "1973-01-29T22:09:11Z",
-        "items": [
-            {
-                "item_id": "P010669",
-                "amount": 16
-            }
-        ]
-    }
