@@ -5,6 +5,12 @@ class Items_Test(unittest.TestCase): #9
     def setUp(self):
         API_KEY = "a1b2c3d4e5"
         self.client = Client(base_url='http://localhost:3000/api/v1/', headers={"API_KEY": API_KEY})
+
+    
+    def test_item_authentication(self):
+        self.client_fail = Client(base_url='http://localhost:3000/api/v1/')
+        response = self.client_fail.get('items')
+        self.assertEqual(response.status_code, 401)
     
     def test_get_items(self):
         response = self.client.get('items')

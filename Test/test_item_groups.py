@@ -5,6 +5,11 @@ class Item_Groups_Test(unittest.TestCase):
     def setUp(self):
         API_KEY = "a1b2c3d4e5"
         self.client = Client(base_url='http://localhost:3000/api/v1/', headers={"API_KEY": API_KEY})
+    
+    def test_item_group_authentication(self):
+        self.client_fail = Client(base_url='http://localhost:3000/api/v1/')
+        response = self.client_fail.get('item_groups')
+        self.assertEqual(response.status_code, 401)
 
     def test_get_item_groups(self):
         response = self.client.get('item_groups')

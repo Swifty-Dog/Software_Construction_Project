@@ -6,6 +6,11 @@ class Transfers_Test(unittest.TestCase): #8
         API_KEY = "a1b2c3d4e5"
         self.client = Client(base_url='http://localhost:3000/api/v1/', headers={"API_KEY": API_KEY})
     
+    def test_transfer_authentication(self):
+        self.client_fail = Client(base_url= 'http://localhost:3000/api/v1/')
+        response = self.client_fail.get('transfers')
+        self.assertEqual(response.status_code, 401)
+    
     def test_get_Transfers(self):
         # Test to fetch all transfers
         response = self.client.get('transfers')

@@ -6,11 +6,16 @@ class Locations_Test(unittest.TestCase):
         API_KEY = "a1b2c3d4e5"
         self.client = Client(base_url='http://localhost:3000/api/v1/', headers={"API_KEY": API_KEY})
     
+    def test_location_authentication(self):
+        self.client_fail = Client(base_url='http://localhost:3000/api/v1/')
+        response = self.client_fail.get('locations')
+        self.assertEqual(response.status_code, 401)
+    
     def test_get_locations(self):
         response = self.client.get('locations')
         self.assertEqual(response.status_code, 200)
         self.assertGreater(len(response.json()), 0)
-    
+
     def test_get_single_location(self):
         location_id = 2
         response = self.client.get(f'locations/{location_id}')

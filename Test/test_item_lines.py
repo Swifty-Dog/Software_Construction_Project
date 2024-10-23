@@ -6,6 +6,11 @@ class TestItemLines(unittest.TestCase): #5 - 7 met post
         API_KEY = "a1b2c3d4e5"
         self.client = Client(base_url='http://localhost:3000/api/v1/', headers={"API_KEY": API_KEY})
     
+    def test_item_line_authentication(self):
+        self.client_fail = Client(base_url='http://localhost:3000/api/v1/')
+        response = self.client_fail.get('item_lines')
+        self.assertEqual(response.status_code, 401)
+    
     def test_item_lines(self):
         response = self.client.get('item_lines')
         self.assertEqual(response.status_code, 200)

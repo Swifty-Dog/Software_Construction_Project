@@ -1,11 +1,15 @@
 import unittest
 from httpx import Client
 
-class Orders_Test(unittest.TestCase): # 6 maar 7 met post
+class Orders_Test(unittest.TestCase):
     def setUp(self):
         API_KEY = "a1b2c3d4e5"
-        self.client = Client(base_url='http://localhost:3000/api/v1/', headers={"API_KEY": API_KEY})
-    
+        self.client = Client(base_url='http://localhost:3000/api/v1/', headers={"API_KEY": API_KEY})   
+
+    def test_order_authentication(self):
+        self.client_fail = Client(base_url= 'http://localhost:3000/api/v1/')
+        response = self.client_fail.get('orders')
+        self.assertEqual(response.status_code, 401) 
 
     def test_get_orders(self):
         # Test to fetch all orders
