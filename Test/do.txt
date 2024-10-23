@@ -5,4 +5,8 @@ start new terminal
 run the test 
 for macbook python3 -m unittest discover test 
 
+seperate files testen 
+
+mac: python3 -m unittest {filename}.py
+
 other  python -m unittest discover test
