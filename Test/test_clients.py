@@ -1,77 +1,162 @@
 import unittest
 from httpx import Client
 
-class Clients_Test(unittest.TestCase): # 6 maar 7 met post
+class clients_Test(unittest.TestCase): 
     def setUp(self):
-        API_KEY = "a1b2c3d4e5"
-        self.client = Client(base_url='http://localhost:3000/api/v1/', headers={"API_KEY": API_KEY})
-    
-    def test_get_clients(self):
-        # Test to fetch all clients
-        response = self.client.get('clients')
+        self.reader_token = "f6g7h8i9j0"
+        self.client = Client(base_url="http://localhost:3000/api/v1/",
+                             headers={"Content-Type": "application/json", "API_KEY": "a1b2c3d4e5"})
+ 
+    def test_get_all_readertoken(self):
+        self.client.headers["API_KEY"] = self.reader_token
+        response = self.client.get("/clients")
+ 
         self.assertEqual(response.status_code, 200)
-        self.assertGreater(len(response.json()), 0)
-    
-    def test_get_single_client(self):
-        client_id = 1
-        response = self.client.get(f'clients/{client_id}')
-        client = response.json()
-        self.assertEqual(client['id'], client_id)
-    
-    def test_get_nonexistent_client(self):
-        client_id = 1234567
-        response = self.client.get(f'clients/{client_id}')
-        self.assertEqual(response.text, "null")
-    
-    def test_get_empty_client_by_id(self):
-        response = self.client.get('clients/500000000')
-        client = response.json()
-        self.assertIsNone(client)
-    
-    def test_get_client_invalid_path(self):
-        response = self.client.get('/clients/1/locations/invalid')
+   
+    def test_get_single_readertoken(self):
+        self.client.headers["API_KEY"] = self.reader_token
+        response = self.client.get("/clients/8")
+ 
+        self.assertEqual(response.status_code, 200)
+   
+    def test_unauthorized_get_all(self):
+        self.client.headers["API_KEY"] = "wrong_key"
+        response = self.client.get("/clients")
+ 
+        self.assertEqual(response.status_code, 401)
+ 
+    def test_get_single_incorrect_unauthorized(self):
+        self.client.headers["API_KEY"] = "wrong_key"
+        response = self.client.get("/clients/-90")
+ 
+        self.assertEqual(response.status_code, 401)
+ 
+    def test_get_single_unauthorized(self):
+        self.client.headers["API_KEY"] = "wrong_key"
+        response = self.client.get("/clients/8")
+ 
+        self.assertEqual(response.status_code, 401)
+ 
+    def test_create_client_unauthorized(self):
+        self.client.headers["API_KEY"] = "wrong_key"
+        new_client = {
+            "id": 1,
+            "name": "John Doe",
+            "address": "Wijnhaven 500",
+            "city": "Rotterdam",
+            "zip_code": "3000",
+            "province": "Zuid-Holland",
+            "country": "Netherlands",
+            "contact_name": "John",
+            "contact_phone": "0611111111",
+            "contact_email": "test@gmail.com",
+            "created_at": "2024-01-01 00:00:00",
+            "updated_at": "2024-01-01 00:00:01"
+ 
+        }
+ 
+        response = self.client.post("/clients", json=new_client)
+        self.assertEqual(response.status_code, 401)
+ 
+    def test_update_client_unauthorized(self):
+        self.client.headers["API_KEY"] = "wrong_key"
+        updated_client = {
+            "id": 1,
+            "name": "John does",
+            "address": "Wijnhaven 555",
+            "city": "Amsterdam",
+            "zip_code": "3000",
+            "province": "Zuid-Holland",
+            "country": "Netherlands",
+            "contact_name": "John",
+            "contact_phone": "0622222222",
+            "contact_email": "test2@gmail.com",
+            "created_at": "2024-01-01 00:00:00",
+            "updated_at": "2024-01-01 00:00:05"
+        }
+ 
+        response = self.client.put("/clients/3", json=updated_client)
+ 
+        self.assertEqual(response.status_code, 401)
+ 
+    def test_delete_client_unauthorized(self):
+        self.client.headers["API_KEY"] = "wrong_key"
+        response = self.client.delete("/clients/90")
+ 
+        self.assertEqual(response.status_code, 401)
+ 
+    def test_delete_incorrect_id_unauthorized(self):
+        self.client.headers["API_KEY"] = "wrong_key"
+        response = self.client.delete("/clients/-10")
+ 
+        self.assertEqual(response.status_code, 401)
+ 
+    def test_get_all(self):
+        response = self.client.get("/clients")
+ 
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(len(response.json()) > 0)
+ 
+    def test_get_single(self):
+        response = self.client.get("/clients/8")
+ 
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("id", response.json())
+ 
+    def test_get_incorrect_id(self):
+        response = self.client.get("/clients/-1")
+ 
         self.assertEqual(response.status_code, 404)
-    
-    def test_post_client(self):
-        self.base_url = 'http://localhost:3000/api/v1/'
-        response = self.client.post(self.base_url + "clients", json={
-            "id": 1,
-            "name": "Raymond Inc",
-            "address": "1296 Daniel Road Apt. 349",
-            "city": "Pierceview",
-            "zip_code": "28301",
-            "province": "Colorado",
-            "country": "United States",
-            "contact_name": "Bryan Clark",
-            "contact_phone": "242.732.3483x2573",
-            "contact_email": "test@",
-            "created_at": "2010-04-28 02:22:53",
-            "updated_at": "2022-02-09 20:22:35"
-        })
+ 
+    def test_create_client(self):
+        new_client = {
+            "id": 15,
+            "name": "Test Doe",
+            "address": "Wijnhaven  107",
+            "city": "Rotterdam",
+            "zip_code": "idk",
+            "province": "Zuid-Holland",
+            "country": "NL",
+            "contact_name": "Thomas",
+            "contact_phone": "0612345678",
+            "contact_email": "Thomas@gmail.com",
+            "created_at": "2000-01-01 00:00:00",
+            "updated_at": "2020-01-01 00:00:00"
+        }
+
+        response = self.client.post("/clients", json=new_client)
         self.assertEqual(response.status_code, 201)
-    
-    def test_post_client_success_with_length(self):
-        response = self.client.get('clients')
-        old_client_length = len(response.json())
-        response = self.client.post('clients', json={
-            "id": 1,
-            "name": "Raymond Inc",
-            "address": "1296 Daniel Road Apt. 349",
-            "city": "Pierceview",
-            "zip_code": "28301",
-            "province": "Colorado",
-            "country": "United States",
-            "contact_name": "Bryan Clark",
-            "contact_phone": "242.732.3483x2573",
-            "contact_email": "test@",
-            "created_at": "2010-04-28 02:22:53",
-            "updated_at": "2022-02-09 20:22:35"
-        })
-        self.assertEqual(response.status_code, 201)
-        response = self.client.get('clients')
-        new_client_length = len(response.json())
-        self.assertTrue(new_client_length > old_client_length)
-       
+ 
+    def test_update_client(self):
+        updated_client = {
+            "id": 15,
+            "name": "Test Test",
+            "address": "Wijnhaven  999",
+            "city": "Amsterdam",
+            "zip_code": "00000000",
+            "province": "Noord-Holland",
+            "country": "NL",
+            "contact_name": "Tim",
+            "contact_phone": "0699999999",
+            "contact_email": "Tim@gmail.com",
+            "created_at": "2000-01-01 00:00:00",
+            "updated_at": "2020-01-01 00:00:00"
+        }
+ 
+        response = self.client.put("/clients/3", json=updated_client)
+ 
+        self.assertEqual(response.status_code, 200)
+ 
+    def test_delete_client(self):
+        response = self.client.delete("/clients/90")
+ 
+        self.assertEqual(response.status_code, 200)
+ 
+    def test_delete_incorrect_id(self):
+        response = self.client.delete("/clients/-10")
+ 
+        self.assertEqual(response.status_code, 404)
+
 
 if __name__ == '__main__':
     unittest.main()
