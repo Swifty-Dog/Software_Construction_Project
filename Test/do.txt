@@ -10,3 +10,4 @@ seperate files testen
 mac: python3 -m unittest {filename}.py
 
 other  python -m unittest discover test
+Berkan: python3.12 -m unittest Test/file_name.py
