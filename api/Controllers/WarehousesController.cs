@@ -33,14 +33,14 @@ public class WarehouseController : ControllerBase
     // GET /Warehouse/{id}/locations: Returns all locations within a specific warehouse. 
     // Needs to wait untill locations is made 
 
-    // [HttpGet("Warehouse/{id}/locations")]
-    // public async Task<IActionResult> Get_Warehouse_Locations(int id){
-    //     var locations = await _warehouse.Get_Warehouse_Locations(id);
-    //     if(locations == null){
-    //         return NotFound("No locations found for that Warehouse ID");
-    //     }
-    //     return Ok(locations);
-    // }
+    [HttpGet("Warehouse/{id}/locations")]
+    public async Task<IActionResult> Get_Warehouse_Locations(int id){
+        var locations = await _warehouse.Get_Warehouse_With_LocationsAsync(id);
+        if(locations == null){
+            return NotFound("No locations found for that Warehouse ID");
+        }
+        return Ok(locations);
+    }
     
     [HttpPost("Warehouse")]
     public async Task<IActionResult> Add_Warehouse([FromBody] Warehouse warehouse)
@@ -81,7 +81,7 @@ public class WarehouseController : ControllerBase
     // DELETE /Warehouse/ {id}: Deletes a warehouse. 
     [HttpDelete("Warehouse/{id}")]
     public async Task<bool> Delete_Warehouse(int id){
-        bool WarehouseToDeleted = await _warehouse.DeleteWarehouse(id);
+        bool WarehouseToDeleted = await _warehouse.Delete_Warehouse(id);
         if(WarehouseToDeleted == false)
             return false;
         return true;

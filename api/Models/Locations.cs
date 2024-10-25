@@ -6,6 +6,4 @@ public class Locations
     public required string Name { get; set; }
     public required DateTime CreatedAt { get; set; }
     public required DateTime UpdatedAt { get; set; }
-
-    //public virtual Warehouses Warehouse { get; set; }
 }
