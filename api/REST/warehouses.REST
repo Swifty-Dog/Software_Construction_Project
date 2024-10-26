@@ -50,5 +50,7 @@ Content-Type: application/json
 }
 
 ### Delete warehouse by id
-DELETE http://localhost:5000/api/v1/Warehouse/5 HTTP/1.1
+DELETE http://localhost:5000/api/v1/Warehouse/1 HTTP/1.1
 
+### Get all locations based on warehouse id
+GET http://localhost:5000/api/v1/Warehouse/1/locations HTTP/1.1

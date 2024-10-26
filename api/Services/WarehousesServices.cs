@@ -64,7 +64,7 @@ public class WarehouseServices: IWarehouse{
     }
 
 
-    public async Task<bool> DeleteWarehouse(int id){
+    public async Task<bool> Delete_Warehouse(int id){
         var warehouseToDelete = await _context.Warehouse.FindAsync(id);
         if(warehouseToDelete != null){
             _context.Warehouse.Remove(warehouseToDelete);
@@ -73,5 +73,20 @@ public class WarehouseServices: IWarehouse{
         }
         return false;
     }
+
+    public async Task<List<Locations>> Get_Warehouse_LocationsAsync(int id)
+    {
+        if (id <= 0)
+            return null;
+
+        var warehouse = await _context.Warehouse
+            .Include(w => w.Locations)
+            .Where(w => w.Id == id)
+            .Select(w => w.Locations)
+            .FirstOrDefaultAsync();
+
+        return warehouse?.ToList() ?? new List<Locations>(); // Return only the locations list
+    }
+
     
 }

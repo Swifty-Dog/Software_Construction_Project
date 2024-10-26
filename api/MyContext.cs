@@ -34,6 +34,12 @@ public class MyContext : DbContext
 
         modelBuilder.Entity<Contact>()
             .HasKey(c => c.Id);
+    
+        modelBuilder.Entity<Warehouse>()
+            .HasMany(w => w.Locations)
+            .WithOne()
+            .HasForeignKey(l => l.WarehouseId)
+            .OnDelete(DeleteBehavior.Cascade);   
 
         // Item entity configuration
         modelBuilder.Entity<Item>()

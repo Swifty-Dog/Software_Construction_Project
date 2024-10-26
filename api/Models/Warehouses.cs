@@ -9,5 +9,7 @@ public class Warehouse{
     public required Contact Contact {get; set; }
     public required DateTime Created_at { get; set; }
     public required DateTime Updated_at { get; set; }
+    public ICollection<Locations> Locations { get; set; } = new List<Locations>();
+
 
 }
