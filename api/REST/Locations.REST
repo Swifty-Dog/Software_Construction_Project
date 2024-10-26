@@ -2,9 +2,9 @@ POST http://localhost:5000/api/v1/locations
 Content-Type: application/json
 
 {
-    "id": 2,
-    "warehouseId": 1, 
-    "code": "B.1.0",
+    "id": 4,
+    "warehouseId": 2, 
+    "code": "AA.1.0",
     "name": "Row: A, Rack: 1, Shelf: 0",
     "createdAt": "1992-05-15T03:21:32",
     "updatedAt": "1992-05-15T03:21:32"

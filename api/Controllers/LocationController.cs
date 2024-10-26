@@ -52,7 +52,11 @@ public class LocationController : ControllerBase
     public async Task<IActionResult> UpdateLocation(int id, [FromBody] Locations location)
     {
         try
-        {
+        {   
+            if(id <= 0 || location.Id != id)
+            {
+                return BadRequest("Invalid location ID or location ID does not match the location object.");
+            }
             var result = await _locationServices.Update_Location(id, location);
             if (result == null)
             {

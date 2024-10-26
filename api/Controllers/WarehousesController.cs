@@ -35,7 +35,10 @@ public class WarehouseController : ControllerBase
 
     [HttpGet("Warehouse/{id}/locations")]
     public async Task<IActionResult> Get_Warehouse_Locations(int id){
-        var locations = await _warehouse.Get_Warehouse_With_LocationsAsync(id);
+        if(id <= 0){
+            return BadRequest("Invalid Warehouse ID");
+        }
+        var locations = await _warehouse.Get_Warehouse_LocationsAsync(id);
         if(locations == null){
             return NotFound("No locations found for that Warehouse ID");
         }

@@ -74,14 +74,19 @@ public class WarehouseServices: IWarehouse{
         return false;
     }
 
-    public async Task<Warehouse> Get_Warehouse_With_LocationsAsync(int id)
+    public async Task<List<Locations>> Get_Warehouse_LocationsAsync(int id)
     {
-        // Fetch warehouse with associated locations
         if (id <= 0)
             return null;
-        return await _context.Warehouse
+
+        var warehouse = await _context.Warehouse
             .Include(w => w.Locations)
-            .FirstOrDefaultAsync(w => w.Id == id);
+            .Where(w => w.Id == id)
+            .Select(w => w.Locations)
+            .FirstOrDefaultAsync();
+
+        return warehouse?.ToList() ?? new List<Locations>(); // Return only the locations list
     }
+
     
 }
