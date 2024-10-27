@@ -27,7 +27,7 @@ builder.Services.AddTransient<Item_lineServices>();
 builder.Services.AddTransient<Item_TypeServices>();
 
 var app = builder.Build();
-
+app.UseMiddleware<Authentication>();  // Register custom API key middleware
 app.MapControllers();
 app.Urls.Add("http://localhost:5000");
 app.MapGet("/", () => "Hello World!");

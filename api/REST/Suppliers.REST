@@ -1,16 +1,18 @@
 GET http://localhost:5000/api/v1/suppliers
+X-Api-Key: fullAccessApiKey
 
 ###
 
 GET http://localhost:5000/api/v1/suppliers/1
-
+X-Api-Key: fullAccessApiKey
 ###
 
 POST http://localhost:5000/api/v1/suppliers
 Content-Type: application/json
+X-Api-Key: fullAccessApiKey
 
 {
-    "id": 2,
+    "id": 1,
     "code": "SUPP002",
     "name": "REST REST",
     "address": "456 Tech Park",
@@ -27,12 +29,12 @@ Content-Type: application/json
 }
 
 ###
-
-PUT http://localhost:5000/api/v1/suppliers/2
+PUT http://localhost:5000/api/v1/suppliers/1
 Content-Type: application/json
+X-Api-Key: fullAccessApiKey
 
 {
-    "id": 2,
+    "id": 1,
     "code": "REST TEST UPDATED",
     "name": "Tech Supplies Updated",
     "address": "789 New Tech Park",
@@ -51,6 +53,7 @@ Content-Type: application/json
 //deze hieronder is om modelstate in controller te testen
 POST http://localhost:5000/api/v1/suppliers
 Content-Type: application/json
+X-Api-Key: fullAccessApiKey
 
 {
     "name": "Tech Supplies",
@@ -61,3 +64,4 @@ Content-Type: application/json
 ###
 
 DELETE http://localhost:5000/api/v1/suppliers/2
+X-Api-Key: fullAccessApiKey
