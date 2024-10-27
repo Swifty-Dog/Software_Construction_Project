@@ -9,7 +9,7 @@ public class Authentication
     }
 
     public async Task InvokeAsync(HttpContext context){
-        if (!context.Request.Headers.TryGetValue("X-Api-Key", out var apiKeyValues)){
+        if (!context.Request.Headers.TryGetValue("Api-Key", out var apiKeyValues)){
             context.Response.StatusCode = 401; // Unauthorized
             await context.Response.WriteAsync("API Key was not provided.");
             return;

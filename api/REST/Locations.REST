@@ -1,6 +1,6 @@
 POST http://localhost:5000/api/v1/locations
 Content-Type: application/json
-X-Api-Key: fullAccessApiKey
+Api-Key: a1b2c3d4e5
 
 {
     "id": 2,
@@ -13,14 +13,14 @@ X-Api-Key: fullAccessApiKey
 //ik ben bijna zeker ervan dat warehouseid gepakt moet worden van de andere classes moet hier later op terug komen
 ### Get all locations
 GET http://localhost:5000/api/v1/locations
-X-Api-Key: fullAccessApiKey
+Api-Key: a1b2c3d4e5
 #######
 GET http://localhost:5000/api/v1/locations/1
-X-Api-Key: fullAccessApiKey
+Api-Key: a1b2c3d4e5
 #####
 PUT http://localhost:5000/api/v1/locations/1
 Content-Type: application/json
-X-Api-Key: fullAccessApiKey
+Api-Key: a1b2c3d4e5
 
 {
     "id": 1,
@@ -33,4 +33,4 @@ X-Api-Key: fullAccessApiKey
 }
 #####
 DELETE http://localhost:5000/api/v1/locations/1
-X-Api-Key: fullAccessApiKey
+Api-Key: a1b2c3d4e5

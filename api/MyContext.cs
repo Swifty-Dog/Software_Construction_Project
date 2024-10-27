@@ -133,7 +133,7 @@ public class MyContext : DbContext
             new User
             {
                 Id = 1, // Required to be unique
-                ApiKey = "fullAccessApiKey",
+                ApiKey = "a1b2c3d4e5",
                 AppName = "CargoHUB Dashboard Full",
                 HasFullAccess = true
             }
