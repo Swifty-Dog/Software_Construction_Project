@@ -1,16 +1,18 @@
 GET http://localhost:5000/api/v1/suppliers
+Api-Key: a1b2c3d4e5
 
 ###
 
 GET http://localhost:5000/api/v1/suppliers/1
-
+Api-Key: a1b2c3d4e5
 ###
 
 POST http://localhost:5000/api/v1/suppliers
 Content-Type: application/json
+Api-Key: a1b2c3d4e5
 
 {
-    "id": 2,
+    "id": 1,
     "code": "SUPP002",
     "name": "REST REST",
     "address": "456 Tech Park",
@@ -27,12 +29,12 @@ Content-Type: application/json
 }
 
 ###
-
-PUT http://localhost:5000/api/v1/suppliers/2
+PUT http://localhost:5000/api/v1/suppliers/1
 Content-Type: application/json
+Api-Key: a1b2c3d4e5
 
 {
-    "id": 2,
+    "id": 1,
     "code": "REST TEST UPDATED",
     "name": "Tech Supplies Updated",
     "address": "789 New Tech Park",
@@ -51,6 +53,7 @@ Content-Type: application/json
 //deze hieronder is om modelstate in controller te testen
 POST http://localhost:5000/api/v1/suppliers
 Content-Type: application/json
+Api-Key: a1b2c3d4e5
 
 {
     "name": "Tech Supplies",
@@ -61,3 +64,4 @@ Content-Type: application/json
 ###
 
 DELETE http://localhost:5000/api/v1/suppliers/2
+Api-Key: a1b2c3d4e5
