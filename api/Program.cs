@@ -26,7 +26,7 @@ builder.Services.AddTransient<ShipmentsServices>();
 builder.Services.AddTransient<Item_lineServices>();
 builder.Services.AddTransient<Item_TypeServices>();
 builder.Services.AddTransient<ItemServices>();
-
+builder.Services.AddTransient<IOrdersInterface,OrdersServices>();
 
 var app = builder.Build();
 app.UseMiddleware<Authentication>();  // Register custom API key middleware
