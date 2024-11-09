@@ -146,6 +146,8 @@ public class MyContext : DbContext
             new EndpointAccess { Id = 10, Endpoint = "clients", CanGet = true, CanPost = false, CanPut = false, CanDelete = false, UserId = 2 },
             new EndpointAccess { Id = 11, Endpoint = "shipments",  CanGet = true, CanPost = false, CanPut = false, CanDelete = false, UserId = 2 }
         );
+            
+
 
         base.OnModelCreating(modelBuilder);
 
