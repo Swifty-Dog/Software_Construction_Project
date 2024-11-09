@@ -19,6 +19,7 @@ public class MyContext : DbContext
     public DbSet<Inventories_locations> Inventories_Locations { get; set; }
     public DbSet<Shipment> Shipments { get; set; }
     public DbSet<Shipments_item> Shipments_items { get; set; }
+    public DbSet<Orders> Orders { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -116,6 +117,8 @@ public class MyContext : DbContext
         // Transfers_item configuration
         modelBuilder.Entity<Shipments_item>()
             .HasKey(si => new { si.ShippingId, si.ItemId });  // Composite key using ShippingId and ItemId
+
+            
 
 
         base.OnModelCreating(modelBuilder);
