@@ -54,7 +54,7 @@ Api-Key: a1b2c3d4e5
 }
 
 ### Delete warehouse by id
-DELETE http://localhost:5000/api/v1/Warehouse/1 HTTP/1.1
+DELETE http://localhost:5000/api/v1/Warehouse/50000002 HTTP/1.1
 Api-Key: a1b2c3d4e5
 
 ### Get all locations based on warehouse id
