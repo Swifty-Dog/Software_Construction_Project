@@ -10,7 +10,8 @@ public class WarehouseServices: IWarehouse{
 
     public async Task<IEnumerable<Warehouse>> Get_Warehouses(){
         return await _context.Warehouse
-            .Include(w => w.Contact)  // Eagerly load the related Contact entities
+            .Include(w => w.Contact)
+            .Include(l => l.Locations)  // Eagerly load the related Contact entities
             .ToListAsync();
     }
 
@@ -19,7 +20,9 @@ public class WarehouseServices: IWarehouse{
             return null;
         return await _context.Warehouse
                     .Include(w => w.Contact)  
+                    .Include(l => l.Locations)
                     .FirstOrDefaultAsync(w => w.Id == id);
+                    
     }
 
 
@@ -87,6 +90,4 @@ public class WarehouseServices: IWarehouse{
 
         return warehouse?.ToList() ?? new List<Locations>(); // Return only the locations list
     }
-
-    
 }

@@ -3,7 +3,7 @@ GET http://localhost:5000/api/v1/warehouses HTTP/1.1
 Api-Key: a1b2c3d4e5
 
 ### Get warehouse by id
-GET http://localhost:5000/api/v1/warehouse/3 HTTP/1.1
+GET http://localhost:5000/api/v1/warehouse/1 HTTP/1.1
 Api-Key: a1b2c3d4e5
 
 ### Post warehouse based on body given
@@ -36,7 +36,7 @@ Content-Type: application/json
 Api-Key: a1b2c3d4e5
 
 {
-    "id": 3,
+    "id": ,
     "code": "SHOULD NOT BE ALLOW",
     "name": "NOT ALLOWD",
     "address": "Karlijndreef 281",
@@ -54,7 +54,7 @@ Api-Key: a1b2c3d4e5
 }
 
 ### Delete warehouse by id
-DELETE http://localhost:5000/api/v1/Warehouse/1 HTTP/1.1
+DELETE http://localhost:5000/api/v1/Warehouse/50000002 HTTP/1.1
 Api-Key: a1b2c3d4e5
 
 ### Get all locations based on warehouse id
