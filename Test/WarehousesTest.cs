@@ -81,6 +81,7 @@ public class WarehousesTest
         Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 
+    [Fact]
     public async Task Test_Get_Locations_in_Warehouse()
     {
     int warehouseId = 1;
@@ -103,7 +104,7 @@ public class WarehousesTest
         var initialContent = await initialResponse.Content.ReadAsStringAsync();
         var initialWarehouses = JsonConvert.DeserializeObject<List<Warehouse>>(initialContent);
         var oldLength = initialWarehouses.Count;
-
+        
         var warehouseData = new
         {
             id = 50000003,
