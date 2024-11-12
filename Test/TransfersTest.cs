@@ -76,4 +76,62 @@ public class TransfersTest
         Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 
+    [Fact]
+    public async Task Test_Post_Transfer()
+    {
+        var initialResponse = await _client.GetAsync("transfers");
+        var initialContent = await initialResponse.Content.ReadAsStringAsync(); 
+        var initialTransfers = JsonConvert.DeserializeObject<List<Transfer>>(initialContent);
+        int oldLength = initialTransfers.Count;
+        int newTransferId = oldLength + 1;
+        var transferData = new
+        {
+            id = newTransferId,
+            reference = "TR12345",
+            transfer_from = 2323,
+            transfer_to = 9299,
+            transfer_status = "pending",
+            created_at = "2021-09-01T00:00:00",
+            updated_at = "2021-10-01T00:00:00",
+            items = new List<Transfers_item>{
+                new Transfers_item
+                {
+                    Item_Id = "P007435",
+                    Amount = 2
+                },
+                new Transfers_item
+                {
+                    Item_Id = "P007436",
+                    Amount = 3
+                },
+            }
+        };
+        var postResponse = await _client.PostAsJsonAsync("transfers", transferData);
+        Xunit.Assert.Equal(HttpStatusCode.OK, postResponse.StatusCode);
+
+        var newResponse = await _client.GetAsync("transfers");
+        var newContent = await newResponse.Content.ReadAsStringAsync();
+        var newTransfers = JsonConvert.DeserializeObject<List<Transfer>>(newContent);
+        int newLength = newTransfers.Count;
+        Xunit.Assert.True(newLength > oldLength);
+    }
+
+    [Fact]
+    public async Task Test_Delete_Transfer()
+    {
+        var initialResponse = await _client.GetAsync("transfers");
+        var initialContent = await initialResponse.Content.ReadAsStringAsync();
+        var initialTransfers = JsonConvert.DeserializeObject<List<Transfer>>(initialContent);
+        int oldLength = initialTransfers.Count;
+        int transfer_id = 1;
+        var deleteResponse = await _client.DeleteAsync($"transfer/{transfer_id}");
+        Xunit.Assert.Equal(HttpStatusCode.OK, deleteResponse.StatusCode);
+
+        var newResponse = await _client.GetAsync("transfers");
+        var newContent = await newResponse.Content.ReadAsStringAsync();
+        var newTransfers = JsonConvert.DeserializeObject<List<Transfer>>(newContent);
+        int newLength = newTransfers.Count;
+        Xunit.Assert.True(newLength < oldLength);
+    }
+
 }
