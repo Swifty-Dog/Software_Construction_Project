@@ -52,12 +52,14 @@ public class TransfersTest
     [Fact]
     public async Task Test_Get_Transfer_By_Id()
     {
-        int transfer_id = 1;
-        var response = await _client.GetAsync($"transfer/{transfer_id}");
+        int transfer_id = 2;
+        var response = await _client.GetAsync($"Transfer/{transfer_id}");
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         var content = await response.Content.ReadAsStringAsync();
+        Xunit.Assert.False(string.IsNullOrEmpty(content), "Response content should not be empty");
         var transfer = JsonConvert.DeserializeObject<Transfer>(content);
+        Xunit.Assert.NotNull(transfer);
         Xunit.Assert.Equal(transfer_id, transfer.Id);  
     }
 
@@ -93,7 +95,8 @@ public class TransfersTest
             transfer_status = "pending",
             created_at = "2021-09-01T00:00:00",
             updated_at = "2021-10-01T00:00:00",
-            items = new List<Transfers_item>{
+            items = new List<Transfers_item>
+            {
                 new Transfers_item
                 {
                     Item_Id = "P007435",
@@ -103,10 +106,10 @@ public class TransfersTest
                 {
                     Item_Id = "P007436",
                     Amount = 3
-                },
+                }
             }
         };
-        var postResponse = await _client.PostAsJsonAsync("transfers", transferData);
+        var postResponse = await _client.PostAsJsonAsync("transfer", transferData);
         Xunit.Assert.Equal(HttpStatusCode.OK, postResponse.StatusCode);
 
         var newResponse = await _client.GetAsync("transfers");
@@ -123,7 +126,7 @@ public class TransfersTest
         var initialContent = await initialResponse.Content.ReadAsStringAsync();
         var initialTransfers = JsonConvert.DeserializeObject<List<Transfer>>(initialContent);
         int oldLength = initialTransfers.Count;
-        int transfer_id = 1;
+        int transfer_id = 2;
         var deleteResponse = await _client.DeleteAsync($"transfer/{transfer_id}");
         Xunit.Assert.Equal(HttpStatusCode.OK, deleteResponse.StatusCode);
 
