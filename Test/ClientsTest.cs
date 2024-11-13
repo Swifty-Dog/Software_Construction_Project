@@ -57,4 +57,13 @@ public class ClientsTest
         Xunit.Assert.Equal(clientId, client.Id);
     }
 
+    [Fact]
+    public async Task TestGetNonexistentClient()
+    {
+        int clientId = 1000000;
+        var response = await _client.GetAsync($"Client/{clientId}");
+
+        Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
 }
