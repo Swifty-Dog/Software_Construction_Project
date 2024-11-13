@@ -37,11 +37,11 @@ public class ClientsTest
     [Fact]
     public async Task TestGetClients()
     {
-        var response = await _client.GetAsync("clients");
+        var response = await _client.GetAsync("Clients");
         Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         var content = await response.Content.ReadAsStringAsync();
         Xunit.Assert.True(!string.IsNullOrEmpty(content), "Response content should not be empty");
     }
-    
+
 }
