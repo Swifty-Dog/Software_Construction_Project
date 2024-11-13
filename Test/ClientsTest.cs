@@ -27,4 +27,21 @@ public class ClientsTest
             BaseAddress = new System.Uri("http://localhost:5000/api/v1/")
         };
     }
+
+    // [Fact]
+    // public async Task TestClientAuthentication()
+    // {
+
+    // }
+
+    [Fact]
+    public async Task TestGetClients()
+    {
+        var response = await _client.GetAsync("clients");
+        Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var content = await response.Content.ReadAsStringAsync();
+        Xunit.Assert.True(!string.IsNullOrEmpty(content), "Response content should not be empty");
+    }
+    
 }
