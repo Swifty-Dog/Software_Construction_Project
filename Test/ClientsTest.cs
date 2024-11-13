@@ -6,6 +6,25 @@ using Newtonsoft.Json;
 using Xunit;
 using System.Collections.Generic;
 
-public class ClientsTest{
-    
+public class ClientsTest
+{
+    private readonly HttpClient _client;
+    private readonly HttpClient _clientFail;
+
+    public ClientsTest()
+    {
+        var apiKey = "a1b2c3d4e5";
+
+        _client = new HttpClient
+        {
+            BaseAddress = new System.Uri("http://localhost:5000/api/v1/")
+            
+        };
+        _client.DefaultRequestHeaders.Add("Api-Key", apiKey);
+
+        _clientFail = new HttpClient
+        {
+            BaseAddress = new System.Uri("http://localhost:5000/api/v1/")
+        };
+    }
 }
