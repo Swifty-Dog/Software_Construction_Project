@@ -46,26 +46,6 @@ public class MyContext : DbContext
         modelBuilder.Entity<Item>()
             .HasKey(i => i.Uid);
 
-        modelBuilder.Entity<Item>()
-            .HasOne(i => i.Item_group)
-            .WithMany()
-            .HasForeignKey("Item_group_id"); // Foreign key to Item_group
-
-        modelBuilder.Entity<Item>()
-            .HasOne(i => i.Item_line)
-            .WithMany()
-            .HasForeignKey("Item_line_id");  // Foreign key to Item_line
-
-        modelBuilder.Entity<Item>()
-            .HasOne(i => i.item_type)
-            .WithMany()
-            .HasForeignKey("Item_type_id");  // Foreign key to Item_type
-
-        modelBuilder.Entity<Item>()
-            .HasOne(i => i.supplier_id)
-            .WithMany()
-            .HasForeignKey("Supplier_id");   // Foreign key to Supplier
-
         modelBuilder.Entity<Supplier>()
             .HasKey(s => s.Id);
 
