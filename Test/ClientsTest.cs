@@ -44,4 +44,17 @@ public class ClientsTest
         Xunit.Assert.True(!string.IsNullOrEmpty(content), "Response content should not be empty");
     }
 
+    [Fact]
+    public async Task TestGetClientById()
+    {
+        int clientId = 1;
+        var response = await _client.GetAsync($"Client/{clientId}");
+        Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var content = await response.Content.ReadAsStringAsync();
+        var client = JsonConvert.DeserializeObject<Client>(content);
+
+        Xunit.Assert.Equal(clientId, client.Id);
+    }
+
 }
