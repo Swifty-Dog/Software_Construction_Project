@@ -24,7 +24,8 @@ public class Item_groupService: I_Item_group{
     //         .FirstOrDefaultAsync(i => i.Item.Id == id);
     // }
 
-    public async Task<Item_group> Update_Item_group(Item_group item_group){
+    public async Task<Item_group> Update_Item_group(Item_group item_group)
+    {
         if (item_group == null)
             return null;
         Item_group item_groupToUpdate = await _context.ItemGroups.FindAsync(item_group.Id);
@@ -39,6 +40,24 @@ public class Item_groupService: I_Item_group{
 
         await _context.SaveChangesAsync();
         return item_groupToUpdate;
+    }
+
+    public async Task<Item_group> AddItemGroup(Item_group item_group)
+    {
+        if (item_group == null)
+            return null;
+
+        var existingItemGroup = await _context.ItemGroups
+            .FirstOrDefaultAsync(ig => ig.Id == item_group.Id);
+        if(existingItemGroup == null)
+        {
+            _context.ItemGroups.Add(item_group);
+            await _context.SaveChangesAsync();
+            return item_group;
+        }
+        return null;
+
+        
     }
 
     public async Task<bool> Delete_Item_group(int id){

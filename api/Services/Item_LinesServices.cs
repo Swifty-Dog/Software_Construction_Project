@@ -15,6 +15,22 @@ public class Item_lineServices : I_Item_Lines
     {
         return await _context.ItemLines.FindAsync(id);
     }
+    public async Task<Item_line> AddItemGroup(Item_line item_Line)
+    {
+        if(item_Line == null)
+        {
+            return null;
+        }
+        var item_LineExists = await _context.ItemLines
+            .FirstOrDefaultAsync(ig => ig.Id == item_Line.Id);  
+        if(item_LineExists == null){
+            _context.ItemLines.Add(item_Line);
+            await _context.SaveChangesAsync();
+            return item_Line;
+        }
+        return null;
+        
+    }
     public async Task<Item_line> Update_Item_group(Item_line item_group)
     {
         _context.Entry(item_group).State = EntityState.Modified;

@@ -14,13 +14,23 @@ public class ItemLinesController : ControllerBase{
         return Ok(item_groups);
     }
 
-    [HttpGet("ItemLine/{id}")]
+    [HttpGet("ItemLines/{id}")]
     public async Task<IActionResult> Get_Item_group_By_Id(int id){
         var item_group = await _item_line.Get_Item_group_By_Id(id);
         if (item_group == null){
             return NotFound("No Item Group found with that ID");
         }
         return Ok(item_group);
+    }
+
+    [HttpPost("ItemLine")]
+    public async Task<IActionResult> AddItemLine([FromBody] Item_line item_group){
+        if (item_group == null)
+            return BadRequest("Item Line is null.");
+        var result = await _item_line.AddItemGroup(item_group);
+        if (result == null)
+            return BadRequest("Item Line already exists.");
+        return Ok(result);
     }
 
     [HttpPut("ItemLine/{id}")]
