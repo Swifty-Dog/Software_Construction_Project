@@ -15,7 +15,7 @@ public class ItemTypeController : ControllerBase{
         return Ok(item_types);
     }
 
-    [HttpGet("ItemType/{id}")]
+    [HttpGet("ItemTypes/{id}")]
     public async Task<IActionResult> GetItem_types_By_Id(int id){
         var item_types = await _item_types.GetItem_types_By_Id(id);
         if (item_types == null){
@@ -24,6 +24,16 @@ public class ItemTypeController : ControllerBase{
         return Ok(item_types);
     }
     
+    [HttpPost("ItemType")]
+    public async Task<IActionResult> AddItem_types([FromBody] Item_type item_types){
+        if (item_types == null)
+            return BadRequest("Item Type is null.");
+        var result = await _item_types.AddItem_types(item_types);
+        if (result == null)
+            return BadRequest("Item Type already exists.");
+        return Ok(result);
+    }
+
     [HttpPut("ItemType/{id}")]
     public async Task<IActionResult> UpdateItem_types([FromRoute] int id, [FromBody] Item_type item_types){
         if(id <= 0 || id != item_types.Id)

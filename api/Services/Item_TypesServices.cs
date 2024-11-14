@@ -18,6 +18,19 @@ public class Item_TypeServices : I_Item_Types{
         return await myContext.ItemTypes.FirstOrDefaultAsync(i => i.Id == id);
     }
 
+    public async Task<Item_type> AddItem_types(Item_type item_types)
+    {
+        if(item_types == null) return null;
+        var item_typesExists = await myContext.ItemTypes.FirstOrDefaultAsync(i => i.Id == item_types.Id);
+        if(item_typesExists != null){
+            return null;
+        }
+        await myContext.ItemTypes.AddAsync(item_types);
+        await myContext.SaveChangesAsync();
+        return item_types;
+    }
+
+
     public async Task<Item_type> UpdateItem_types(Item_type item_types)
     {
         if(item_types == null) return null;
