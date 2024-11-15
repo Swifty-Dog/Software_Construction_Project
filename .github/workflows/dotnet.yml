@@ -2,9 +2,13 @@ name: .NET Tests for WarehousesTest
 
 on:
   push:
-    branches: [ 6.0_cicd ]
+    branches: 
+      - main
+      - 6.0_cicd
   pull_request:
-    branches: [ 6.0_cicd ]
+    branches: 
+      - main
+      - 6.0_cicd
 
 jobs:
   build:
@@ -17,7 +21,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '8.0.2'  
+        dotnet-version: '8.0.100'  # Latest supported version of .NET 8
 
     - name: Restore dependencies
       run: dotnet restore
