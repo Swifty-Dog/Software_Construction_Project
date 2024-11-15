@@ -1,0 +1,29 @@
+name: .NET Tests for WarehousesTest
+
+on:
+  push:
+    branches: [ 6.0_cicd ]
+  pull_request:
+    branches: [ 6.0_cicd ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.2'  
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build the project
+      run: dotnet build --no-restore --configuration Release
+
+    - name: Run WarehousesTest.cs only
+      run: dotnet test --no-build --verbosity normal --filter FullyQualifiedName~WarehousesTest --configuration Release

@@ -1,5 +1,5 @@
 ### Get all warehouses
-GET http://localhost:5000/api/v1/warehouses HTTP/1.1
+GET http://localhost:5000/api/v1/Warehouses HTTP/1.1
 Api-Key: a1b2c3d4e5
 
 ### Get warehouse by id
