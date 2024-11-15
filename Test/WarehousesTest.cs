@@ -1,151 +1,145 @@
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Xunit;
 
 public class WarehousesTest
 {
-    private readonly HttpClient _client;
-    private readonly HttpClient _clientFail;
+    private readonly MyContext _context;
+    private readonly WarehouseController _controller;
 
     public WarehousesTest()
     {
-        // API key for authentication
-        var apiKey = "a1b2c3d4e5";
+        var options = new DbContextOptionsBuilder<MyContext>()
+            .UseInMemoryDatabase(databaseName: "WarehousesTest")
+            .Options;
 
-        // Set up authenticated client
-        _client = new HttpClient
-        {
-            BaseAddress = new System.Uri("http://localhost:5000/api/v1/")
-            
-        };
-         _client.DefaultRequestHeaders.Add("Api-Key", apiKey);
+        _context = new MyContext(options);
+        SeedData();
 
-        // Set up unauthenticated client
-        _clientFail = new HttpClient
-        {
-            BaseAddress = new System.Uri("http://localhost:5000/api/v1/")
-        };
+        var service = new WarehouseServices(_context); // Initialize the service with the context
+        _controller = new WarehouseController(service); // Pass the service to the controller
     }
 
+    private void SeedData()
+    {
+        _context.Warehouse.RemoveRange(_context.Warehouse);
+        _context.Contact.RemoveRange(_context.Contact);
+        _context.Locations.RemoveRange(_context.Locations);
+        _context.SaveChanges();
 
-    // doesnt work untill we add authentication 
-    // [Fact]
-    // public async Task TestWarehouseAuthentication()
-    // {
-    //     // Attempt to fetch warehouses without authentication
-    //     var response = await _clientFail.GetAsync("warehouses");
-    //     Xunit.Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
-    // }
+        var contact = new Contact
+        {
+            Id = 2,
+            Name = "Jason",
+            Phone = "(078) 0013363",
+            Email = "rotterdam@ger"
+        };
+
+        var warehouse = new Warehouse
+        {
+            Id = 50000003,
+            Code = "YQZZNL56",
+            Name = "Heemskerk cargo hub",
+            Address = "Karlijndreef 281",
+            Zip = "4002 AS",
+            City = "Heemskerk",
+            Province = "Friesland",
+            Country = "NL",
+            Contact = contact,
+            Created_at = DateTime.Parse("1992-05-15T03:21:32"),
+            Updated_at = DateTime.Parse("1992-05-15T03:21:32"),
+            Locations = new List<Locations>
+            {
+                new Locations
+                {
+                    Id = 1,
+                    WarehouseId = 50000003,
+                    Code = "LOC001",
+                    Name = "Main Storage",
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                }
+            }
+        };
+
+        _context.Warehouse.Add(warehouse);
+        _context.SaveChanges();
+    }
 
     [Fact]
     public async Task Test_Get_Warehouses()
     {
-        // Fetch all warehouses with authentication
-        var response = await _client.GetAsync("warehouses");
-        Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-        var content = await response.Content.ReadAsStringAsync();
-        Xunit.Assert.True(!string.IsNullOrEmpty(content), "Response content should not be empty");
+        var result = await _controller.Get_Warehouses();
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var warehouses = Xunit.Assert.IsType<List<Warehouse>>(okResult.Value);
+        Xunit.Assert.NotEmpty(warehouses);
     }
 
     [Fact]
     public async Task Test_Get_Warehouse_By_Id()
     {
-        int warehouse_id = 1;
-        var response = await _client.GetAsync($"warehouse/{warehouse_id}");
-        Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-        var content = await response.Content.ReadAsStringAsync();
-        var warehouse = JsonConvert.DeserializeObject<Warehouse>(content);
-
-        Xunit.Assert.Equal(warehouse_id, warehouse.Id);
+        var result = await _controller.Get_Warehouse_By_Id(50000003);
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var warehouse = Xunit.Assert.IsType<Warehouse>(okResult.Value);
+        Xunit.Assert.Equal("Heemskerk cargo hub", warehouse.Name);
+        Xunit.Assert.Equal(50000003, warehouse.Id);
     }
 
     [Fact]
     public async Task Test_Get_Non_Existent_Warehouse()
     {
-        int warehouse_id = 1000;
-        var response = await _client.GetAsync($"warehouse/{warehouse_id}");
-        
-        Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-    }
-
-    [Fact]
-    public async Task Test_Get_Warehouse_Invalid_Path()
-    {
-        var response = await _client.GetAsync("warehouse/abc");
-        Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        var result = await _controller.Get_Warehouse_By_Id(9999);
+        Xunit.Assert.IsType<NotFoundObjectResult>(result);
     }
 
     [Fact]
     public async Task Test_Get_Locations_in_Warehouse()
     {
-    int warehouseId = 1;
-    var response = await _client.GetAsync($"warehouse/{warehouseId}/locations");
-    Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-    var content = await response.Content.ReadAsStringAsync();
-    var locations = JsonConvert.DeserializeObject<List<Locations>>(content); // Assuming Location is the correct type
-
-    // Check that the list contains one or more locations
-    Xunit.Assert.NotNull(locations);
-    Xunit.Assert.True(locations.Count > 0);
+        var result = await _controller.Get_Warehouse_Locations(50000003);
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var locations = Xunit.Assert.IsType<List<Locations>>(okResult.Value);
+        Xunit.Assert.Single(locations);
     }
 
-    // Does not work if there is already a warehouse with that id
     [Fact]
     public async Task TestPostWarehouse()
     {
-        var initialResponse = await _client.GetAsync("warehouses");
-        var initialContent = await initialResponse.Content.ReadAsStringAsync();
-        var initialWarehouses = JsonConvert.DeserializeObject<List<Warehouse>>(initialContent);
-        var oldLength = initialWarehouses.Count;
-        
-        var warehouseData = new
+        var newWarehouse = new Warehouse
         {
-            id = 50000003,
-            code = "YQZZNL56",
-            name = "Heemskerk cargo hub",
-            address = "Karlijndreef 281",
-            zip = "4002 AS",
-            city = "Heemskerk",
-            province = "Friesland",
-            country = "NL",
-            contact = new
+            Id = 50000004,
+            Code = "NEWWARE01",
+            Name = "New Warehouse",
+            Address = "New Address",
+            Zip = "12345",
+            City = "Test City",
+            Province = "Test Province",
+            Country = "Test Country",
+            Contact = new Contact
             {
-                id = 23,
-                name = "Jason",
-                phone = "(078) 0013363",
-                email = "rotterdam@ger"
+                Id = 24,
+                Name = "Test Contact",
+                Phone = "123-456-7890",
+                Email = "test@test.com"
             },
-            created_at = "1992-05-15T03:21:32",
-            updated_at = "1992-05-15T03:21:32"
+            Created_at = DateTime.UtcNow,
+            Updated_at = DateTime.UtcNow
         };
 
-        var postResponse = await _client.PostAsJsonAsync("Warehouse", warehouseData);
-        Xunit.Assert.Equal(HttpStatusCode.OK, postResponse.StatusCode);
-
-        var newResponse = await _client.GetAsync("warehouses");
-        var newContent = await newResponse.Content.ReadAsStringAsync();
-        var newWarehouses = JsonConvert.DeserializeObject<List<Warehouse>>(newContent);
-        var newLength = newWarehouses.Count;
-
-        Xunit.Assert.True(newLength > oldLength);
+        var result = await _controller.Add_Warehouse(newWarehouse);
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var warehouse = Xunit.Assert.IsType<Warehouse>(okResult.Value);
+        Xunit.Assert.Equal("New Warehouse", warehouse.Name);
+        Xunit.Assert.Equal("NEWWARE01", warehouse.Code);
     }
 
-    // cant now work if there is not a warehouse with "that" id
     [Fact]
     public async Task TestDeleteWarehouse()
     {
-        int warehouseId = 50000002; 
-        var deleteResponse = await _client.DeleteAsync($"Warehouse/{warehouseId}");
-        Xunit.Assert.Equal(HttpStatusCode.OK, deleteResponse.StatusCode);
-        
+        var result = await _controller.Delete_Warehouse(50000003);
+        Xunit.Assert.IsType<NoContentResult>(result);
+
+        // check that the warehouse is no longer accessible
+        var getResult = await _controller.Get_Warehouse_By_Id(50000003);
+        Xunit.Assert.IsType<NotFoundObjectResult>(getResult);
     }
-
-
 }
