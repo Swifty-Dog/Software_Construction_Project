@@ -48,7 +48,7 @@ jobs:
     - name: Build Test Project
       run: dotnet build --no-restore --configuration Release Test/Test.csproj
 
-    - name: Run WarehousesTest only
+    - name: Run WarehousesTest only # For now this is the only test we do. We can add more tests later. 
       run: |
         mkdir -p ./coverage
         dotnet test Test/Test.csproj --no-build --configuration Release \
