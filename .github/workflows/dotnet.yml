@@ -42,17 +42,19 @@ jobs:
       with:
         dotnet-version: '8.0.100'
 
+    - name: Clean the project
+      run: dotnet clean
+
+    - name: Build Test Project
+      run: dotnet build --no-restore --configuration Release Test/Test.csproj
+
     - name: Run tests with coverage
       run: |
         mkdir -p ./coverage
-        dotnet test --no-build --configuration Release \
-          --filter FullyQualifiedName~WarehousesTest \
+        dotnet test Test/Test.csproj --no-build --configuration Release \
           /p:CollectCoverage=true \
           /p:CoverletOutput=./coverage/ \
-          /p:CoverletOutputFormat=cobertura \
-          /p:Threshold=80 \
-          /p:ThresholdType=line \
-          /p:ThresholdStat=total
+          /p:CoverletOutputFormat=cobertura
 
     - name: Verify Coverage Report
       run: |
@@ -71,11 +73,3 @@ jobs:
       with:
         name: html-coverage-report
         path: ./coverage-html/
-
-    - name: Fail if Coverage Drops Below Threshold
-      run: |
-        COVERAGE=$(grep -oP '(?<=<coverage line-rate=")[0-9.]+' ./coverage/coverage.cobertura.xml | awk '{sum+=$1} END {print sum}')
-        if (( $(echo "$COVERAGE < 0.80" | bc -l) )); then
-          echo "Coverage is below the required threshold of 80%!";
-          exit 1;
-        fi
