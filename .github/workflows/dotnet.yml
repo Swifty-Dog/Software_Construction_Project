@@ -1,4 +1,4 @@
-name: .NET Tests with Coverage for WarehousesTest
+name: .NET Build and Test Workflow
 
 on:
   push:
@@ -12,6 +12,7 @@ on:
 
 jobs:
   build:
+    name: Build the Project
     runs-on: ubuntu-latest
 
     steps:
@@ -29,11 +30,31 @@ jobs:
     - name: Build the project
       run: dotnet build --no-restore --configuration Release
 
-    - name: Ensure coverage directory exists
-      run: mkdir -p ./coverage
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-artifacts
+        path: ./ # Adjust this to specify relevant build outputs if needed
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    needs: build # Ensure the test job runs only after the build job completes successfully
+
+    steps:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: build-artifacts
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.100'
 
     - name: Run tests with coverage
       run: |
+        mkdir -p ./coverage
         dotnet test --no-build --configuration Release \
           --filter FullyQualifiedName~WarehousesTest \
           /p:CollectCoverage=true \
