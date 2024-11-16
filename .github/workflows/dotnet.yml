@@ -42,8 +42,8 @@ jobs:
       with:
         dotnet-version: '8.0.100'
 
-    - name: Clean the project
-      run: dotnet clean
+    - name: Restore Test Project Dependencies
+      run: dotnet restore Test/Test.csproj
 
     - name: Build Test Project
       run: dotnet build --no-restore --configuration Release Test/Test.csproj
