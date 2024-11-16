@@ -56,7 +56,7 @@ jobs:
           --filter FullyQualifiedName~WarehousesTest \
           /p:CollectCoverage=true \
           /p:CoverletOutput=./coverage/ \
-          /p:CoverletOutputFormat=cobertura
+          /p:CoverletOutputFormat=json
 
     - name: Verify Coverage Report
       run: |
