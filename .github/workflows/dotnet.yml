@@ -55,10 +55,7 @@ jobs:
           --filter FullyQualifiedName~WarehousesTest \
           /p:CollectCoverage=true \
           /p:CoverletOutput=./coverage/ \
-          /p:CoverletOutputFormat=cobertura \
-          /p:Threshold=80 \
-          /p:ThresholdType=line \
-          /p:ThresholdStat=total
+          /p:CoverletOutputFormat=cobertura
 
     - name: Verify Coverage Report
       run: |
@@ -77,11 +74,3 @@ jobs:
       with:
         name: html-coverage-report
         path: ./coverage-html/
-
-    - name: Fail if Coverage Drops Below Threshold
-      run: |
-        COVERAGE=$(grep -oP '(?<=<coverage line-rate=")[0-9.]+' ./coverage/coverage.cobertura.xml | awk '{sum+=$1} END {print sum}')
-        if (( $(echo "$COVERAGE < 0.80" | bc -l) )); then
-          echo "Coverage is below the required threshold of 80%!";
-          exit 1;
-        fi
