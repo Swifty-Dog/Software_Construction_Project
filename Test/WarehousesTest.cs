@@ -58,6 +58,15 @@ public class WarehousesTest
                     Name = "Main Storage",
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
+                },
+                new Locations
+                {
+                    Id = 2,
+                    WarehouseId = 50000003,
+                    Code = "LOC001",
+                    Name = "Main Storage",
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
                 }
             }
         };
@@ -98,7 +107,7 @@ public class WarehousesTest
         var result = await _controller.Get_Warehouse_Locations(50000003);
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
         var locations = Xunit.Assert.IsType<List<Locations>>(okResult.Value);
-        Xunit.Assert.Single(locations);
+        Xunit.Assert.Equal(2, locations.Count);
     }
 
     [Fact]
