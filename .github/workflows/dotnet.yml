@@ -15,25 +15,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Checkout the code
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # Step 2: Setup .NET
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '8.0.202'  # Latest supported .NET version
+        dotnet-version: '8.0.100'
 
-    # Step 3: Restore dependencies
     - name: Restore dependencies
       run: dotnet restore
 
-    # Step 4: Build the project
     - name: Build the project
       run: dotnet build --no-restore --configuration Release
 
-    # Step 5: Run tests with coverage for WarehousesTest.cs
+    - name: Ensure coverage directory exists
+      run: mkdir -p ./coverage
+
     - name: Run tests with coverage
       run: |
         dotnet test --no-build --configuration Release \
@@ -42,22 +40,20 @@ jobs:
           /p:CoverletOutput=./coverage/ \
           /p:CoverletOutputFormat=cobertura
 
-    # Step 6: Upload coverage report as an artifact
-    - name: Upload coverage report
-      uses: actions/upload-artifact@v3
-      with:
-        name: coverage-report
-        path: ./coverage/
+    - name: Verify Coverage Report
+      run: |
+        if [ ! -f ./coverage/coverage.cobertura.xml ]; then
+          echo "Coverage report not found!";
+          exit 1;
+        fi
 
-    # Step 7: Generate HTML coverage report
     - name: Generate HTML Coverage Report
       run: |
-          dotnet tool install --global dotnet-reportgenerator-globaltool
-          reportgenerator "-reports:./coverage/coverage.cobertura.xml" "-targetdir:./coverage-html" -reporttypes:Html
+        dotnet tool install --global dotnet-reportgenerator-globaltool
+        reportgenerator "-reports:./coverage/coverage.cobertura.xml" "-targetdir:./coverage-html" -reporttypes:Html
 
-      # Step 8: Upload HTML report
     - name: Upload HTML Coverage Report
       uses: actions/upload-artifact@v3
       with:
-          name: html-coverage-report
-          path: ./coverage-html/
+        name: html-coverage-report
+        path: ./coverage-html/
