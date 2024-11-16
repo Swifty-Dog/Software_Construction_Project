@@ -15,21 +15,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Checkout the code
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # Step 2: Setup .NET
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '8.0.202'  # Latest supported .NET version
+        dotnet-version: '8.0.100'
 
-    # Step 3: Restore dependencies
     - name: Restore dependencies
       run: dotnet restore
 
-    # Step 4: Build the project
     - name: Build the project
       run: dotnet build --no-restore --configuration Release
 
