@@ -30,12 +30,6 @@ jobs:
     - name: Build the project
       run: dotnet build --no-restore --configuration Release
 
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: build-artifacts
-        path: ./ # Adjust this to specify relevant build outputs if needed
-
   test:
     name: Run Tests
     runs-on: ubuntu-latest
@@ -59,7 +53,7 @@ jobs:
           --filter FullyQualifiedName~WarehousesTest \
           /p:CollectCoverage=true \
           /p:CoverletOutput=./coverage/ \
-          /p:CoverletOutputFormat=cobertura
+          /p:CoverletOutputFormat=json
 
     - name: Verify Coverage Report
       run: |
