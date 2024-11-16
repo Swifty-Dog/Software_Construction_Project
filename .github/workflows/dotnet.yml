@@ -1,18 +1,17 @@
-name: .NET Build and Test Workflow
+name: .NET Tests with Coverage Checks
 
 on:
   push:
-    branches: 
+    branches:
       - main
       - 6.0_cicd
   pull_request:
-    branches: 
+    branches:
       - main
       - 6.0_cicd
 
 jobs:
   build:
-    name: Build the Project
     runs-on: ubuntu-latest
 
     steps:
@@ -31,15 +30,12 @@ jobs:
       run: dotnet build --no-restore --configuration Release
 
   test:
-    name: Run Tests
     runs-on: ubuntu-latest
-    needs: build # Ensure the test job runs only after the build job completes successfully
+    needs: build
 
     steps:
-    - name: Download build artifacts
-      uses: actions/download-artifact@v3
-      with:
-        name: build-artifacts
+    - name: Checkout code
+      uses: actions/checkout@v3
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
@@ -53,7 +49,10 @@ jobs:
           --filter FullyQualifiedName~WarehousesTest \
           /p:CollectCoverage=true \
           /p:CoverletOutput=./coverage/ \
-          /p:CoverletOutputFormat=json
+          /p:CoverletOutputFormat=cobertura \
+          /p:Threshold=80 \
+          /p:ThresholdType=line \
+          /p:ThresholdStat=total
 
     - name: Verify Coverage Report
       run: |
@@ -72,3 +71,11 @@ jobs:
       with:
         name: html-coverage-report
         path: ./coverage-html/
+
+    - name: Fail if Coverage Drops Below Threshold
+      run: |
+        COVERAGE=$(grep -oP '(?<=<coverage line-rate=")[0-9.]+' ./coverage/coverage.cobertura.xml | awk '{sum+=$1} END {print sum}')
+        if (( $(echo "$COVERAGE < 0.80" | bc -l) )); then
+          echo "Coverage is below the required threshold of 80%!";
+          exit 1;
+        fi
