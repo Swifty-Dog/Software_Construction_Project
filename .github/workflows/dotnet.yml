@@ -1,4 +1,4 @@
-name: .NET Tests for WarehousesTest
+name: .NET Tests with Coverage for WarehousesTest
 
 on:
   push:
@@ -15,19 +15,49 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # Step 1: Checkout the code
     - name: Checkout code
       uses: actions/checkout@v3
 
+    # Step 2: Setup .NET
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '8.0.100'  # Latest supported version of .NET 8
+        dotnet-version: '8.0.202'  # Latest supported .NET version
 
+    # Step 3: Restore dependencies
     - name: Restore dependencies
       run: dotnet restore
 
+    # Step 4: Build the project
     - name: Build the project
       run: dotnet build --no-restore --configuration Release
 
-    - name: Run WarehousesTest.cs only
-      run: dotnet test --no-build --verbosity normal --filter FullyQualifiedName~WarehousesTest --configuration Release
+    # Step 5: Run tests with coverage for WarehousesTest.cs
+    - name: Run tests with coverage
+      run: |
+        dotnet test --no-build --configuration Release \
+          --filter FullyQualifiedName~WarehousesTest \
+          /p:CollectCoverage=true \
+          /p:CoverletOutput=./coverage/ \
+          /p:CoverletOutputFormat=cobertura
+
+    # Step 6: Upload coverage report as an artifact
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-report
+        path: ./coverage/
+
+    # Step 7: Generate HTML coverage report
+    - name: Generate HTML Coverage Report
+      run: |
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+          reportgenerator "-reports:./coverage/coverage.cobertura.xml" "-targetdir:./coverage-html" -reporttypes:Html
+
+      # Step 8: Upload HTML report
+    - name: Upload HTML Coverage Report
+      uses: actions/upload-artifact@v3
+      with:
+          name: html-coverage-report
+          path: ./coverage-html/
