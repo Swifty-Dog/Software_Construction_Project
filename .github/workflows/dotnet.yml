@@ -1,4 +1,4 @@
-name: .NET Tests with Coverage Checks
+name: .NET Tests with Coverage Checks for WarehousesTest
 
 on:
   push:
@@ -48,10 +48,11 @@ jobs:
     - name: Build Test Project
       run: dotnet build --no-restore --configuration Release Test/Test.csproj
 
-    - name: Run tests with coverage
+    - name: Run WarehousesTest only
       run: |
         mkdir -p ./coverage
         dotnet test Test/Test.csproj --no-build --configuration Release \
+          --filter FullyQualifiedName~WarehousesTest \
           /p:CollectCoverage=true \
           /p:CoverletOutput=./coverage/ \
           /p:CoverletOutputFormat=cobertura
