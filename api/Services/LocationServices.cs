@@ -20,7 +20,7 @@ public class LocationServices
 
     public async Task<Locations> Add_Location(Locations location)
     {
-        var existingLocation = await _context.Locations.FirstOrDefaultAsync(_ => _.Code == location.Code);
+        var existingLocation = await _context.Locations.FirstOrDefaultAsync(_ => _.Code == location.Code || _.Id == location.Id);
 
         if (existingLocation != null)
         {

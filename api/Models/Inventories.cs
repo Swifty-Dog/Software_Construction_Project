@@ -4,7 +4,6 @@ public class Inventory {
     public required string Description { get; set; }
     public required string Item_reference { get; set; }
     public required List<Inventories_locations> Locations { get; set; }
-    //public required ICollection<Inventories_locations> Locations { get; set; }
     public required int Total_on_hand { get; set; }
     public required int Total_expected { get; set; }
     public required int Total_ordered { get; set; }
