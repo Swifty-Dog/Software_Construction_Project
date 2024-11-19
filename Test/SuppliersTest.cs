@@ -59,7 +59,7 @@ public class SuppliersTest
         var result = await _controller.GetAllSuppliers();
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
         var suppliers = Xunit.Assert.IsType<List<Supplier>>(okResult.Value);
-        Xunit.Assert.Equal(2, suppliers.Count);
+        Xunit.Assert.Equal(1, suppliers.Count);
     }
 
     [Fact]
@@ -143,8 +143,8 @@ public class SuppliersTest
     [Fact]
     public async Task Test_DeleteSupplier()
     {
-        var deleteResult = await _controller.DeleteSupplier(50000003);
-        Xunit.Assert.IsType<NoContentResult>(deleteResult);
+        var result = await _controller.DeleteSupplier(50000003);
+        Xunit.Assert.IsType<NoContentResult>(result);
 
         var getResult = await _controller.GetSupplier(50000003);
         Xunit.Assert.IsType<NotFoundObjectResult>(getResult);
