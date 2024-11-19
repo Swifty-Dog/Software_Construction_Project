@@ -48,5 +48,5 @@ Api-Key: a1b2c3d4e5
 }
 
 ### Del Delete Client by id
-DELETE http://localhost:5000/api/v1/Client/2 HTTP/1.1
+DELETE http://localhost:5000/api/v1/Client/1 HTTP/1.1
 Api-Key: a1b2c3d4e5
