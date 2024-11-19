@@ -1,131 +1,117 @@
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Xunit;
-using System.Collections.Generic;
 
 public class LocationsTest
 {
-    private readonly HttpClient _client;
-    private readonly HttpClient _clientFail;
+    private readonly MyContext _context;
+    private readonly LocationController _controller;
 
     public LocationsTest()
     {
-        var apiKey = "a1b2c3d4e5";
+        var options = new DbContextOptionsBuilder<MyContext>()
+            .UseInMemoryDatabase(databaseName: "LocationsTest")
+            .Options;
 
-        _client = new HttpClient
-        {
-            BaseAddress = new System.Uri("http://localhost:5000/api/v1/")
-        };
-        _client.DefaultRequestHeaders.Add("Api-Key", apiKey);
+        _context = new MyContext(options);
+        SeedData();
 
-        _clientFail = new HttpClient
+        var service = new LocationServices(_context);
+        _controller = new LocationController(service);
+    }
+
+    private void SeedData()
+    {
+        _context.Locations.RemoveRange(_context.Locations);
+        _context.SaveChanges();
+
+        var location = new Locations
         {
-            BaseAddress = new System.Uri("http://localhost:5000/api/v1/")
+            Id = 1,
+            WarehouseId = 50000003,
+            Code = "LOC001",
+            Name = "Main Storage",
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
+
+        _context.Locations.Add(location);
+        _context.SaveChanges();
     }
 
     [Fact]
     public async Task Test_Get_Locations()
     {
-        var response = await _client.GetAsync("locations");
-        Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-        var content = await response.Content.ReadAsStringAsync();
-        Xunit.Assert.True(!string.IsNullOrEmpty(content), "Response content should not be empty");
+        var result = await _controller.GetAllLocations();
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var locations = Xunit.Assert.IsType<List<Locations>>(okResult.Value);
+        Xunit.Assert.NotEmpty(locations);
     }
 
     [Fact]
     public async Task Test_Get_Location_By_Id()
     {
-        int location_id = 1;
-        var response = await _client.GetAsync($"locations/{location_id}");
-        Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-        var content = await response.Content.ReadAsStringAsync();
-        var location = JsonConvert.DeserializeObject<Locations>(content);
-
-        Xunit.Assert.Equal(location_id, location.Id);
+        var result = await _controller.GetLocation(1);
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var location = Xunit.Assert.IsType<Locations>(okResult.Value);
+        Xunit.Assert.Equal("Main Storage", location.Name);
+        Xunit.Assert.Equal(1, location.Id);
     }
 
     [Fact]
     public async Task Test_Get_Non_Existent_Location()
     {
-        int location_id = 1000;
-        var response = await _client.GetAsync($"locations/{location_id}");
-        
-        Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-    }
-
-    [Fact]
-    public async Task Test_Get_Location_Invalid_Path()
-    {
-        var response = await _client.GetAsync("locations/abc");
-        Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        var result = await _controller.GetLocation(9999);
+        Xunit.Assert.IsType<NotFoundObjectResult>(result);
     }
 
     [Fact]
     public async Task TestPostLocation()
     {
-        var initialResponse = await _client.GetAsync("locations");
-        var initialContent = await initialResponse.Content.ReadAsStringAsync();
-        var initialLocations = JsonConvert.DeserializeObject<List<Locations>>(initialContent);
-        var oldLength = initialLocations.Count;
-
-        var locationData = new
+        var newLocation = new Locations
         {
-            id = 50000003,
-            warehouseId = 2, 
-            code = ".1.0",
-            name = "Row: A, Rack: 1, Shelf: 0",
-            createdAt = "1992-05-15T03:21:32",
-            updatedAt = "1992-05-15T03:21:32"
+            Id = 50000004,
+            WarehouseId = 50000003,
+            Code = "LOC002",
+            Name = "Secondary Storage",
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
 
-        var postResponse = await _client.PostAsJsonAsync("locations", locationData);
-
-        Xunit.Assert.Equal(HttpStatusCode.OK, postResponse.StatusCode);
-
-        var newResponse = await _client.GetAsync("locations");
-        var newContent = await newResponse.Content.ReadAsStringAsync();
-        var newLocations = JsonConvert.DeserializeObject<List<Locations>>(newContent);
-        var newLength = newLocations.Count;
-
-        Xunit.Assert.True(newLength > oldLength);
+        var result = await _controller.AddLocation(newLocation);
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var location = Xunit.Assert.IsType<Locations>(okResult.Value);
+        Xunit.Assert.Equal("Secondary Storage", location.Name);
+        Xunit.Assert.Equal("LOC002", location.Code);
     }
 
     [Fact]
     public async Task TestPutLocation()
     {
-        int locationId = 1;
-
-        var locationData = new
+        var updatedLocation = new Locations
         {
-            id = locationId,
-            warehouseId = 1,
-            code = "SAMI TEST",
-            name = "Row: A, Rack: 1, Shelf: 1",
-            createdAt = "1992-05-15T03:21:32",
-            updatedAt = "2024-10-19T10:00:00"
+            Id = 1,
+            WarehouseId = 50000003,
+            Code = "LOC001_UPDATED",
+            Name = "Main Storage Updated",
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
 
-        var putResponse = await _client.PutAsJsonAsync($"locations/{locationId}", locationData);
-        Xunit.Assert.Equal(HttpStatusCode.OK, putResponse.StatusCode);
-
-        var getResponse = await _client.GetAsync($"locations/{locationId}");
-        var content = await getResponse.Content.ReadAsStringAsync();
-        var updatedLocation = JsonConvert.DeserializeObject<Locations>(content);
-
-        Xunit.Assert.Equal("SAMI TEST", updatedLocation.Code);
+        var result = await _controller.UpdateLocation(1, updatedLocation);
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var location = Xunit.Assert.IsType<Locations>(okResult.Value);
+        Xunit.Assert.Equal("LOC001_UPDATED", location.Code);
+        Xunit.Assert.Equal("Main Storage Updated", location.Name);
     }
 
     [Fact]
     public async Task TestDeleteLocation()
     {
-        int locationId = 50000003;
-        var deleteResponse = await _client.DeleteAsync($"locations/{locationId}");
-        Xunit.Assert.Equal(HttpStatusCode.OK, deleteResponse.StatusCode);
+        var result = await _controller.DeleteLocation(1);
+        Xunit.Assert.IsType<OkObjectResult>(result);
+
+        var getResult = await _controller.GetLocation(1);
+        Xunit.Assert.IsType<NotFoundObjectResult>(getResult);
     }
 }

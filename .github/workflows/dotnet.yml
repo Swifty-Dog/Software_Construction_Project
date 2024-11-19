@@ -1,0 +1,76 @@
+name: .NET Tests with Coverage Checks for WarehousesTest
+
+on:
+  push:
+    branches:
+      - main
+      - 6.0_cicd
+  pull_request:
+    branches:
+      - main
+      - 6.0_cicd
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.100'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build the project
+      run: dotnet build --no-restore --configuration Release
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.100'
+
+    - name: Restore Test Project Dependencies
+      run: dotnet restore Test/Test.csproj
+
+    - name: Build Test Project
+      run: dotnet build --no-restore --configuration Release Test/Test.csproj
+
+    - name: Run WarehousesTest only # For now this is the only test we do. We can add more tests later. 
+      run: |
+        mkdir -p ./coverage
+        dotnet test Test/Test.csproj --no-build --configuration Release \
+          --filter FullyQualifiedName~WarehousesTest \
+          /p:CollectCoverage=true \
+          /p:CoverletOutput=./coverage/ \
+          /p:CoverletOutputFormat=cobertura
+
+    - name: Verify Coverage Report
+      run: |
+        if [ ! -f ./coverage/coverage.cobertura.xml ]; then
+          echo "Coverage report not found!";
+          exit 1;
+        fi
+
+    - name: Generate HTML Coverage Report
+      run: |
+        dotnet tool install --global dotnet-reportgenerator-globaltool
+        reportgenerator "-reports:./coverage/coverage.cobertura.xml" "-targetdir:./coverage-html" -reporttypes:Html
+
+    - name: Upload HTML Coverage Report
+      uses: actions/upload-artifact@v3
+      with:
+        name: html-coverage-report
+        path: ./coverage-html/
