@@ -1,148 +1,152 @@
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Xunit;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public class SuppliersTest
 {
-    private readonly HttpClient _client;
-    private readonly HttpClient _clientFail;
+    private readonly MyContext _context;
+    private readonly SuppliersController _controller;
 
     public SuppliersTest()
     {
-        var apiKey = "a1b2c3d4e5";
+        var options = new DbContextOptionsBuilder<MyContext>()
+            .UseInMemoryDatabase(databaseName: "SuppliersTest")
+            .Options;
 
-        _client = new HttpClient
+        _context = new MyContext(options);
+        SeedData();
+
+        var service = new SuppliersServices(_context);
+        _controller = new SuppliersController(service);
+    }
+
+    private void SeedData()
+    {
+        _context.Suppliers.RemoveRange(_context.Suppliers);
+        _context.SaveChanges();
+
+        var suppliers = new List<Supplier>
         {
-            BaseAddress = new System.Uri("http://localhost:5000/api/v1/")
+            new Supplier
+            {
+                Id = 1,
+                Code = "SUPP001",
+                Name = "Tech Supplies",
+                Address = "123 Tech Park",
+                Address_extra = "Suite 101",
+                Zip_code = "67890",
+                Province = "California",
+                Country = "USA",
+                Contact_name = "John Doe",
+                Phonenumber = "123-456-7890",
+                Email = "johndoe@techsupplies.com",
+                Reference = "REF1234",
+                Created_at = DateTime.UtcNow,
+                Updated_at = DateTime.UtcNow
+            }
         };
-        _client.DefaultRequestHeaders.Add("Api-Key", apiKey);
+        //adress_extra is a must?
 
-        _clientFail = new HttpClient
+        _context.Suppliers.AddRange(suppliers);
+        _context.SaveChanges();
+    }
+
+    [Fact]
+    public async Task Test_GetAllSuppliers()
+    {
+        var result = await _controller.GetAllSuppliers();
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var suppliers = Xunit.Assert.IsType<List<Supplier>>(okResult.Value);
+        Xunit.Assert.Equal(2, suppliers.Count);
+    }
+
+    [Fact]
+    public async Task Test_GetSupplier()
+    {
+        var result = await _controller.GetSupplier(1);
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var supplier = Xunit.Assert.IsType<Supplier>(okResult.Value);
+
+        Xunit.Assert.Equal(1, supplier.Id);
+        Xunit.Assert.Equal("SUPP001", supplier.Code);
+    }
+
+    [Fact]
+    public async Task Test_Get_NonExistentSupplier()
+    {
+        var result = await _controller.GetSupplier(999);
+        var notFoundResult = Xunit.Assert.IsType<NotFoundObjectResult>(result);
+
+        Xunit.Assert.Equal("Supplier not found.", notFoundResult.Value);
+    }
+
+    [Fact]
+    public async Task Test_AddSupplier()
+    {
+        var newSupplier = new Supplier
         {
-            BaseAddress = new System.Uri("http://localhost:5000/api/v1/")
-        };
-    }
-
-    [Fact]
-    public async Task Test_Get_All_Suppliers()
-    {
-        var response = await _client.GetAsync("suppliers");
-        Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-        var content = await response.Content.ReadAsStringAsync();
-        Xunit.Assert.True(!string.IsNullOrEmpty(content), "Response content should not be empty");
-    }
-
-    [Fact]
-    public async Task Test_Get_Supplier_By_Id()
-    {
-        int supplierId = 1;
-        var response = await _client.GetAsync($"suppliers/{supplierId}");
-        Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-        var content = await response.Content.ReadAsStringAsync();
-        var supplier = JsonConvert.DeserializeObject<Supplier>(content);
-
-        Xunit.Assert.Equal(supplierId, supplier.Id);
-    }
-
-    [Fact]
-    public async Task Test_Get_Non_Existent_Supplier()
-    {
-        int supplierId = 1000;
-        var response = await _client.GetAsync($"suppliers/{supplierId}");
-        
-        Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-    }
-
-    [Fact]
-    public async Task Test_Get_Supplier_Invalid_Path()
-    {
-        var response = await _client.GetAsync("suppliers/abc");
-        Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-    }
-
-    [Fact]
-    public async Task TestPostSupplier()
-    {
-        var initialResponse = await _client.GetAsync("suppliers");
-        var initialContent = await initialResponse.Content.ReadAsStringAsync();
-        var initialSuppliers = JsonConvert.DeserializeObject<List<Supplier>>(initialContent);
-        var oldLength = initialSuppliers.Count;
-
-        var supplierData = new
-        {
-            id = 50000003,
-            code = "SUPP003",
-            name = "Tech Supplies",
-            address = "123 Tech Park",
-            address_extra = "Suite 101",
-            zip_code = "67890",
-            province = "California",
-            country = "USA",
-            contact_name = "Jane Doe",
-            phonenumber = "098-765-4321",
-            email = "janedoe@techsupplies.com",
-            reference = "REF1234",
-            created_at = "2024-10-22T10:00:00",
-            updated_at = "2024-10-22T10:00:00"
-        };
-
-        var postResponse = await _client.PostAsJsonAsync("suppliers", supplierData);
-
-        Xunit.Assert.Equal(HttpStatusCode.Created, postResponse.StatusCode);
-
-        var newResponse = await _client.GetAsync("suppliers");
-        var newContent = await newResponse.Content.ReadAsStringAsync();
-        var newSuppliers = JsonConvert.DeserializeObject<List<Supplier>>(newContent);
-        var newLength = newSuppliers.Count;
-
-        Xunit.Assert.True(newLength > oldLength);
-    }
-
-    [Fact]
-    public async Task TestPutSupplier()
-    {
-        int supplierId = 1;
-
-        var supplierData = new
-        {
-            id = supplierId,
-            code = "SUPP001_UPDATED",
-            name = "Tech Supplies Updated",
-            address = "456 Tech Lane",
-            address_extra = "Apt 101",
-            zip_code = "54321",
-            province = "California",
-            country = "USA",
-            contact_name = "John Doe Updated",
-            phonenumber = "555-6789",
-            email = "johndoe.updated@techsupplies.com",
-            reference = "REF1234_UPDATED",
-            created_at = "2024-01-01T10:00:00",
-            updated_at = "2024-10-22T12:00:00"
+            Id = 50000003,
+            Code = "SUPP003",
+            Name = "Tech Supplies",
+            Address = "123 Tech Park",
+            Address_extra = "Suite 101",
+            Zip_code = "67890",
+            Province = "California",
+            Country = "USA",
+            Contact_name = "Jane Doe",
+            Phonenumber = "098-765-4321",
+            Email = "janedoe@techsupplies.com",
+            Reference = "REF1234",
+            Created_at = DateTime.UtcNow,
+            Updated_at = DateTime.UtcNow
         };
 
-        var putResponse = await _client.PutAsJsonAsync($"suppliers/{supplierId}", supplierData);
-        Xunit.Assert.Equal(HttpStatusCode.OK, putResponse.StatusCode);
+        var result = await _controller.AddSupplier(newSupplier);
+        var createdResult = Xunit.Assert.IsType<CreatedAtActionResult>(result);
+        var supplier = Xunit.Assert.IsType<Supplier>(createdResult.Value);
 
-        var getResponse = await _client.GetAsync($"suppliers/{supplierId}");
-        var content = await getResponse.Content.ReadAsStringAsync();
-        var updatedSupplier = JsonConvert.DeserializeObject<Supplier>(content);
-
-        Xunit.Assert.Equal("SUPP001_UPDATED", updatedSupplier.Code);
+        Xunit.Assert.Equal("SUPP003", supplier.Code);
+        Xunit.Assert.Equal("Tech Supplies", supplier.Name);
     }
 
     [Fact]
-    public async Task TestDeleteSupplier()
+    public async Task Test_UpdateSupplier()
     {
-        int supplierId = 50000003;
-        var deleteResponse = await _client.DeleteAsync($"suppliers/{supplierId}");
-        Xunit.Assert.Equal(HttpStatusCode.NoContent, deleteResponse.StatusCode);
+        var updatedSupplier = new Supplier
+        {
+            Id = 50000003,
+            Code = "SUPP001_UPDATED",
+            Name = "Tech Supplies Updated",
+            Address = "123 Tech Park",
+            Address_extra = "Suite 101",
+            Zip_code = "67890",
+            Province = "California",
+            Country = "USA",
+            Contact_name = "Jane Doe",
+            Phonenumber = "098-765-4321",
+            Email = "janedoe.updated@techsupplies.com",
+            Reference = "REF1234_UPDATED",
+            Created_at = DateTime.UtcNow,
+            Updated_at = DateTime.UtcNow
+        };
+
+        var result = await _controller.UpdateSupplier(1, updatedSupplier);
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var supplier = Xunit.Assert.IsType<Supplier>(okResult.Value);
+
+        Xunit.Assert.Equal("SUPP001_UPDATED", supplier.Code);
+        Xunit.Assert.Equal("Tech Supplies Updated", supplier.Name);
+    }
+
+    [Fact]
+    public async Task Test_DeleteSupplier()
+    {
+        var deleteResult = await _controller.DeleteSupplier(50000003);
+        Xunit.Assert.IsType<NoContentResult>(deleteResult);
+
+        var getResult = await _controller.GetSupplier(50000003);
+        Xunit.Assert.IsType<NotFoundObjectResult>(getResult);
     }
 }
-
