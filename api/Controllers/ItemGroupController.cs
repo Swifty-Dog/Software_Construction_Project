@@ -14,7 +14,7 @@ public class ItemGroupController : ControllerBase{
         return Ok(item_groups);
     }
 
-    [HttpGet("ItemGroup/{id}")]
+    [HttpGet("ItemGroups/{id}")]
     public async Task<IActionResult> Get_Item_group_By_Id(int id){
         var item_group = await _item_group.Get_Item_group_By_Id(id);
         if (item_group == null){
@@ -23,7 +23,19 @@ public class ItemGroupController : ControllerBase{
         return Ok(item_group);
     }
     
-    [HttpPut("ItemGroup/{id}")]
+    [HttpPost("ItemGroup")]
+    public async Task<IActionResult> Add_Item_group([FromBody] Item_group item_group)
+    {
+        if (item_group == null)
+            return BadRequest("Item Group is null.");
+        var result = await _item_group.AddItemGroup(item_group);
+        if (result != null)
+            return Ok(result);
+        return BadRequest("Item Group already exists.");
+        
+    }
+
+    [HttpPut("ItemGroups/{id}")]
     public async Task<IActionResult> Update_Item_group([FromRoute] int id, [FromBody] Item_group item_group){
         if(id <= 0 || id != item_group.Id)
             return BadRequest("Item Group ID in the body does not match the ID in the URL.");

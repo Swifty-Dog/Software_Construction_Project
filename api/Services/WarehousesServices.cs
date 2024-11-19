@@ -57,6 +57,7 @@ public class WarehouseServices: IWarehouse{
         warehouseToUpdate.Address = warehouse.Address;
         warehouseToUpdate.Zip = warehouse.Zip;
         warehouseToUpdate.City = warehouse.City;
+        warehouseToUpdate.Province = warehouse.Province;
         warehouseToUpdate.Country = warehouse.Country;
         warehouseToUpdate.Contact = warehouse.Contact;
         warehouseToUpdate.Created_at = warehouse.Created_at;
