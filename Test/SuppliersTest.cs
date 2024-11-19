@@ -143,10 +143,10 @@ public class SuppliersTest
     [Fact]
     public async Task Test_DeleteSupplier()
     {
-        var result = await _controller.DeleteSupplier(50000003);
+        var result = await _controller.DeleteSupplier(1);
         Xunit.Assert.IsType<NoContentResult>(result);
 
-        var getResult = await _controller.GetSupplier(50000003);
+        var getResult = await _controller.GetSupplier(1);
         Xunit.Assert.IsType<NotFoundObjectResult>(getResult);
     }
 }
