@@ -21,6 +21,19 @@ public class ItemLinesTest
     }
     public void SeedData()
     {
+        _context.ItemLines.RemoveRange(_context.ItemLines);
+        _context.SaveChanges();
 
+        var itemLine = new Item_line
+        {
+            Id = 0,
+            Name = "Tech Gadgets",
+            Description = "",
+            Created_at = DateTime.UtcNow,
+            Updated_at = DateTime.UtcNow
+        };
+
+        _context.ItemLines.Add(itemLine);
+        _context.SaveChanges();
     }
 }
