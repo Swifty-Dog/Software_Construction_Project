@@ -19,6 +19,7 @@ public class MyContext : DbContext
     public DbSet<Inventories_locations> Inventories_Locations { get; set; }
     public DbSet<Shipment> Shipments { get; set; }
     public DbSet<Shipments_item> Shipments_items { get; set; }
+    public DbSet<Orders> Orders { get; set; }
     public DbSet<User> Users { get; set; }
 
 
@@ -71,6 +72,9 @@ public class MyContext : DbContext
         // Transfers_item configuration
         modelBuilder.Entity<Transfers_item>()
             .HasKey(ti => new { ti.TransferId, ti.Item_Id });  // Composite key using TransferId and Item_Id
+
+        modelBuilder.Entity<Orders_Item>()
+            .HasKey(o => new { o.OrderId});
 
         // Client configuration
         modelBuilder.Entity<Client>()
@@ -142,6 +146,8 @@ public class MyContext : DbContext
             new EndpointAccess { Id = 10, Endpoint = "clients", CanGet = true, CanPost = false, CanPut = false, CanDelete = false, UserId = 2 },
             new EndpointAccess { Id = 11, Endpoint = "shipments",  CanGet = true, CanPost = false, CanPut = false, CanDelete = false, UserId = 2 }
         );
+            
+
 
         base.OnModelCreating(modelBuilder);
 
