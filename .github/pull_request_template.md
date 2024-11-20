@@ -10,9 +10,9 @@ _selecteer wat van toepassing is [x] of [ ]_
 - 
 
 ## Is de nieuwe functionaliteit getest of gevalideerd? Zo ja, hoe?**  
-   Antwoord:_ (bijv. Ja, gevalideerd via handmatige tests; alle antwoorden geven de verwachte resultaten.)
+_(bijv. Ja, gevalideerd via handmatige tests; alle antwoorden geven de verwachte resultaten.)_
 - 
 
 ## Algemene status van de functionaliteit:**   
-   Antwoord:_ (bijv. Alles werkt naar verwachting en is klaar voor gebruik.)
+_(bijv. Alles werkt naar verwachting en is klaar voor gebruik.)_
 - 
