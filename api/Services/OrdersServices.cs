@@ -31,21 +31,16 @@ public class OrdersServices : IOrdersInterface
 
     public async Task<Orders> AddOrder(Orders order)
     {
-        if (order == null) return null;
+        if (order == null || order.Items == null || !order.Items.Any())
+            throw new Exception("Order or its Items list cannot be null.");
 
-        var existingOrder = await _context.Orders
-            .FirstOrDefaultAsync(o => o.Reference == order.Reference && o.ShipmentId == order.ShipmentId);
-
-        if (existingOrder != null)
-        {
-
-            order = existingOrder;
-        }
-        else
-        {
-            _context.Orders.Add(order);
-        }
-
+        var checkOrder = await _context.Orders
+            .FirstOrDefaultAsync(o => o.Id == order.Id);
+        
+        if( checkOrder != null)
+            throw new Exception("Order already exists.");
+        
+        _context.Orders.Add(order);
         await _context.SaveChangesAsync();
         return order;
     }
