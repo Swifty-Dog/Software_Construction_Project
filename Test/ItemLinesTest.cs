@@ -36,4 +36,14 @@ public class ItemLinesTest
         _context.ItemLines.Add(itemLine);
         _context.SaveChanges();
     }
+
+    [Fact]
+    public async Task TestGetItemLine()
+    {
+        var result = await _controller.Get_Item_groups();
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var itemLine = Xunit.Assert.IsType<List<Item_line>>(okResult.Value);
+        Xunit.Assert.NotEmpty(itemLine);
+
+    }
 }
