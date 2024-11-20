@@ -22,6 +22,8 @@ Generated_Code/
 *.ldf
 *.ndf
 *.db
+*.db-shm
+*.db-wal
 
 # Ignore entity framework migrations
 Migrations/
