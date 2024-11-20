@@ -1,7 +1,10 @@
-## Taken
-_[x] of [ ]_ 
-- [ ] functies toevegoegt
-- [ ] tests gemaakt
-- [ ] bug fixes
-
+## onderwerp
+_selecteer wat van toepassing is [x] of [ ]_ 
+- [ ] Functies toegevoegt
+- [ ] Tests gemaakt
+- [ ] Bug fixes
+- [ ] Anders
+- 
 ## Details
+- 
+- 
