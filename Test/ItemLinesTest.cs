@@ -55,4 +55,12 @@ public class ItemLinesTest // data in de database en wat hier staat en de rest f
         Xunit.Assert.Equal(1, itemLine.Id);
         Xunit.Assert.Equal("Tech Gadgets", itemLine.Name);
     }
+
+    [Fact]
+    public async Task TestGetNonexistentItemLine()
+    {
+        var result = await _controller.Get_Item_group_By_Id(9999);
+        Xunit.Assert.IsType<NotFoundObjectResult>(result);
+    }
+
 }
