@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
 
-public class ItemLinesTest
+public class ItemLinesTest // data in de database en wat hier staat en de rest file nog vergelijken 
 {
     private readonly MyContext _context;
     private readonly ItemLinesController _controller;
@@ -44,6 +44,15 @@ public class ItemLinesTest
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
         var itemLine = Xunit.Assert.IsType<List<Item_line>>(okResult.Value);
         Xunit.Assert.NotEmpty(itemLine);
+    }
 
+    [Fact]
+    public async Task TestGetItemLineById()
+    {
+        var result = await _controller.Get_Item_group_By_Id(1);
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var itemLine = Xunit.Assert.IsType<Item_line>(okResult.Value);
+        Xunit.Assert.Equal(1, itemLine.Id);
+        Xunit.Assert.Equal("Tech Gadgets", itemLine.Name);
     }
 }
