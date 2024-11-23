@@ -63,4 +63,34 @@ public class ItemLinesTest // data in de database en wat hier staat en de rest f
         Xunit.Assert.IsType<NotFoundObjectResult>(result);
     }
 
+// to do in client test: test delete
+    [Fact]
+    public async Task TestPostItemLine()
+    {
+        var newItemLine = new Item_line
+        {
+            Id = 123,
+            Name = "New Gadgets",
+            Description = "stuff",
+            Created_at = DateTime.UtcNow,
+            Updated_at = DateTime.UtcNow
+        };
+        var result = await _controller.AddItemLine(newItemLine);
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var itemLine = Xunit.Assert.IsType<Item_line>(okResult.Value);
+        Xunit.Assert.Equal(123, itemLine.Id);
+        Xunit.Assert.Equal("New Gadgets", itemLine.Name);
+    }
+//
+//  [Fact]
+//  public async Task TestPutItemLine()
+//  {
+//
+//  }
+//
+//  [Fact]
+//  public async Task TestDeleteItemLine()
+//  {
+//
+//  }
 }
