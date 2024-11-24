@@ -1,4 +1,4 @@
-public interface IItemLines
+public interface IItemLine
 {
     public Task<IEnumerable<ItemLine>> GetItemLine();
     public Task<ItemLine> GetItemLineById(int id);
