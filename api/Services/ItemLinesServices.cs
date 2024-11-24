@@ -23,7 +23,8 @@ public class ItemLineServices : IItemLine
         }
         var itemLineExists = await _context.ItemLines
             .FirstOrDefaultAsync(ig => ig.Id == itemLine.Id);  
-        if(itemLineExists == null){
+        if(itemLineExists == null)
+        {
             _context.ItemLines.Add(itemLine);
             await _context.SaveChangesAsync();
             return itemLine;
