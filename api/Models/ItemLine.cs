@@ -1,4 +1,4 @@
-public class Item_line {
+public class Itemline {
     public required int Id { get; set; }
     public required string Name { get; set; }
     public required string Description { get; set; }
