@@ -1,50 +1,61 @@
 using Microsoft.EntityFrameworkCore;
 
-public class Item_lineServices : I_Item_Lines
+public class ItemLineServices : IItemLine
 {
     private readonly MyContext _context;
-    public Item_lineServices( MyContext context)
+    public ItemLineServices( MyContext context)
     {
         _context = context;
     }
-    public async Task<IEnumerable<Item_line>> Get_Item_groups()
+    public async Task<IEnumerable<ItemLine>> GetItemLine()
     {
         return await _context.ItemLines.ToListAsync();
     }
-    public async Task<Item_line> Get_Item_group_By_Id(int id)
+    public async Task<ItemLine> GetItemLineById(int id)
     {
         return await _context.ItemLines.FindAsync(id);
     }
-    public async Task<Item_line> AddItemGroup(Item_line item_Line)
+    public async Task<ItemLine> AddItemLine(ItemLine itemLine)
     {
-        if(item_Line == null)
+        if(itemLine == null)
         {
             return null;
         }
-        var item_LineExists = await _context.ItemLines
-            .FirstOrDefaultAsync(ig => ig.Id == item_Line.Id);  
-        if(item_LineExists == null){
-            _context.ItemLines.Add(item_Line);
+        var itemLineExists = await _context.ItemLines
+            .FirstOrDefaultAsync(ig => ig.Id == itemLine.Id);  
+        if(itemLineExists == null){
+            _context.ItemLines.Add(itemLine);
             await _context.SaveChangesAsync();
-            return item_Line;
+            return itemLine;
         }
         return null;
         
     }
-    public async Task<Item_line> Update_Item_group(Item_line item_group)
+    public async Task<ItemLine> UpdateItemLine(ItemLine itemLine, int id)
     {
-        _context.Entry(item_group).State = EntityState.Modified;
+        if (itemLine == null)
+            return null;
+        ItemLine itemLineToUpdate = await _context.ItemLines.FindAsync(id);
+        if (itemLineToUpdate == null)
+        {
+            throw new Exception("Item line not found or has been deleted.");
+        }
+        itemLineToUpdate.Name = itemLine.Name;
+        itemLineToUpdate.Description = itemLine.Description;
+        itemLineToUpdate.CreatedAt = itemLine.CreatedAt;
+        itemLineToUpdate.UpdatedAt = itemLine.UpdatedAt;
+
         await _context.SaveChangesAsync();
-        return item_group;
+        return itemLineToUpdate;
     }
-    public async Task<bool> Delete_Item_group(int id)
+    public async Task<bool> DeleteItemLine(int id)
     {
-        var item_group = await _context.ItemLines.FindAsync(id);
-        if (item_group == null)
+        var itemLine = await _context.ItemLines.FindAsync(id);
+        if (itemLine == null)
         {
             return false;
         }
-        _context.ItemLines.Remove(item_group);
+        _context.ItemLines.Remove(itemLine);
         await _context.SaveChangesAsync();
         return true;
     }
