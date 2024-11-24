@@ -16,7 +16,7 @@ public class ItemLinesTest // data in de database en wat hier staat en de rest f
         _context = new MyContext(options);
         SeedData();
 
-        var service = new Item_lineServices(_context);
+        var service = new ItemLineServices(_context);
         _controller = new ItemLinesController(service);
     }
     public void SeedData()
@@ -24,13 +24,13 @@ public class ItemLinesTest // data in de database en wat hier staat en de rest f
         _context.ItemLines.RemoveRange(_context.ItemLines);
         _context.SaveChanges();
 
-        var itemLine = new Item_line
+        var itemLine = new ItemLine
         {
-            Id = 0,
+            Id = 1,
             Name = "Tech Gadgets",
             Description = "",
-            Created_at = DateTime.UtcNow,
-            Updated_at = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
 
         _context.ItemLines.Add(itemLine);
@@ -40,18 +40,18 @@ public class ItemLinesTest // data in de database en wat hier staat en de rest f
     [Fact]
     public async Task TestGetItemLine()
     {
-        var result = await _controller.Get_Item_groups();
+        var result = await _controller.GetItemLines();
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
-        var itemLine = Xunit.Assert.IsType<List<Item_line>>(okResult.Value);
+        var itemLine = Xunit.Assert.IsType<List<ItemLine>>(okResult.Value);
         Xunit.Assert.NotEmpty(itemLine);
     }
 
     [Fact]
     public async Task TestGetItemLineById()
     {
-        var result = await _controller.Get_Item_group_By_Id(1);
+        var result = await _controller.GetItemLineById(1);
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
-        var itemLine = Xunit.Assert.IsType<Item_line>(okResult.Value);
+        var itemLine = Xunit.Assert.IsType<ItemLine>(okResult.Value);
         Xunit.Assert.Equal(1, itemLine.Id);
         Xunit.Assert.Equal("Tech Gadgets", itemLine.Name);
     }
@@ -59,7 +59,7 @@ public class ItemLinesTest // data in de database en wat hier staat en de rest f
     [Fact]
     public async Task TestGetNonexistentItemLine()
     {
-        var result = await _controller.Get_Item_group_By_Id(9999);
+        var result = await _controller.GetItemLineById(9999);
         Xunit.Assert.IsType<NotFoundObjectResult>(result);
     }
 
@@ -67,30 +67,48 @@ public class ItemLinesTest // data in de database en wat hier staat en de rest f
     [Fact]
     public async Task TestPostItemLine()
     {
-        var newItemLine = new Item_line
+        var newItemLine = new ItemLine
         {
             Id = 123,
             Name = "New Gadgets",
             Description = "stuff",
-            Created_at = DateTime.UtcNow,
-            Updated_at = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
         var result = await _controller.AddItemLine(newItemLine);
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
-        var itemLine = Xunit.Assert.IsType<Item_line>(okResult.Value);
+        var itemLine = Xunit.Assert.IsType<ItemLine>(okResult.Value);
         Xunit.Assert.Equal(123, itemLine.Id);
         Xunit.Assert.Equal("New Gadgets", itemLine.Name);
     }
-//
-//  [Fact]
-//  public async Task TestPutItemLine()
-//  {
-//
-//  }
-//
-//  [Fact]
-//  public async Task TestDeleteItemLine()
-//  {
-//
-//  }
+
+    [Fact]
+    public async Task TestPutItemLine()
+    {
+        var updatedItemline = new ItemLine
+        {
+            Id = 333,
+            Name = "Changed Gadgets",
+            Description = "stuff has changed",
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
+        };
+        var result = await _controller.UpdateItemLine(1, updatedItemline);
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var itemLine = Xunit.Assert.IsType<ItemLine>(okResult.Value);
+        Xunit.Assert.Equal(333, itemLine.Id);
+        Xunit.Assert.Equal("Changed Gadgets", itemLine.Name);
+        Xunit.Assert.Equal("stuff has changed", itemLine.Description);
+    }
+
+    [Fact]
+    public async Task TestDeleteItemLine()
+    {
+        var result = await _controller.DeleteItemLine(333);
+        Xunit.Assert.IsType<NoContentResult>(result);
+
+        var getResult = await _controller.GetItemLineById(333);
+        Xunit.Assert.IsType<NotFoundObjectResult>(getResult);
+    }
+
 }
