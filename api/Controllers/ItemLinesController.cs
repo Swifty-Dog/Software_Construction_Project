@@ -3,53 +3,53 @@ using Microsoft.AspNetCore.Mvc;
 [ApiController]
 [Route("/api/v1/")]
 public class ItemLinesController : ControllerBase{
-    private readonly Item_lineServices _item_line;
-    public ItemLinesController(Item_lineServices item_line){
-        _item_line = item_line;
+    private readonly ItemLineServices _itemLine;
+    public ItemLinesController(ItemLineServices itemLine){
+        _itemLine = itemLine;
     }
 
     [HttpGet("ItemLines")]
-    public async Task<IActionResult> Get_Item_groups(){
-        var item_groups = await _item_line.Get_Item_groups();
-        return Ok(item_groups);
+    public async Task<IActionResult> GetItemLines(){
+        var itemLines = await _itemLine.GetItemLine();
+        return Ok(itemLines);
     }
 
     [HttpGet("ItemLines/{id}")]
-    public async Task<IActionResult> Get_Item_group_By_Id(int id){
-        var item_group = await _item_line.Get_Item_group_By_Id(id);
-        if (item_group == null){
-            return NotFound("No Item Group found with that ID");
+    public async Task<IActionResult> GetItemLineById(int id){
+        var itemLine = await _itemLine.GetItemLineById(id);
+        if (itemLine == null){
+            return NotFound("No Item Line found with that ID");
         }
-        return Ok(item_group);
+        return Ok(itemLine);
     }
 
     [HttpPost("ItemLine")]
-    public async Task<IActionResult> AddItemLine([FromBody] Item_line item_group){
-        if (item_group == null)
+    public async Task<IActionResult> AddItemLine([FromBody] ItemLine itemLine){
+        if (itemLine == null)
             return BadRequest("Item Line is null.");
-        var result = await _item_line.AddItemGroup(item_group);
+        var result = await _itemLine.AddItemLine(itemLine);
         if (result == null)
             return BadRequest("Item Line already exists.");
         return Ok(result);
     }
 
     [HttpPut("ItemLine/{id}")]
-    public async Task<IActionResult> Update_Item_group([FromRoute] int id, [FromBody] Item_line item_group){
-        if(id <= 0 || id != item_group.Id)
-            return BadRequest("Item Group ID in the body does not match the ID in the URL.");
-        if (item_group == null)
-            return BadRequest("Item Group is null.");
-        var result = await _item_line.Update_Item_group(item_group);
+    public async Task<IActionResult> UpdateItemLine([FromRoute] int id, [FromBody] ItemLine itemLine){
+        if(id <= 0 || id != itemLine.Id)
+            return BadRequest("Item Line ID in the body does not match the ID in the URL.");
+        if (itemLine == null)
+            return BadRequest("Item Line is null.");
+        var result = await _itemLine.UpdateItemLine(itemLine, id);
         if (result == null)
-            return NotFound("Item Group not found or has been deleted.");        
+            return NotFound("Item Line not found or has been deleted.");        
         return Ok(result);
     }
 
     [HttpDelete("ItemLine/{id}")]
-    public async Task<bool> Delete_Item_group([FromRoute] int id){
+    public async Task<bool> DeleteItemLine([FromRoute] int id){
         if(id <= 0)
             return false;
-        var result = await _item_line.Delete_Item_group(id);
+        var result = await _itemLine.DeleteItemLine(id);
         if (result == false)
             return false;
         return true;
