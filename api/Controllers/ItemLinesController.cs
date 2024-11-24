@@ -4,27 +4,32 @@ using Microsoft.AspNetCore.Mvc;
 [Route("/api/v1/")]
 public class ItemLinesController : ControllerBase{
     private readonly ItemLineServices _itemLine;
-    public ItemLinesController(ItemLineServices itemLine){
+    public ItemLinesController(ItemLineServices itemLine)
+    {
         _itemLine = itemLine;
     }
 
     [HttpGet("ItemLines")]
-    public async Task<IActionResult> GetItemLines(){
+    public async Task<IActionResult> GetItemLines()
+    {
         var itemLines = await _itemLine.GetItemLine();
         return Ok(itemLines);
     }
 
     [HttpGet("ItemLines/{id}")]
-    public async Task<IActionResult> GetItemLineById(int id){
+    public async Task<IActionResult> GetItemLineById(int id)
+    {
         var itemLine = await _itemLine.GetItemLineById(id);
-        if (itemLine == null){
+        if (itemLine == null)
+        {
             return NotFound("No Item Line found with that ID");
         }
         return Ok(itemLine);
     }
 
     [HttpPost("ItemLine")]
-    public async Task<IActionResult> AddItemLine([FromBody] ItemLine itemLine){
+    public async Task<IActionResult> AddItemLine([FromBody] ItemLine itemLine)
+    {
         if (itemLine == null)
             return BadRequest("Item Line is null.");
         var result = await _itemLine.AddItemLine(itemLine);
@@ -34,7 +39,8 @@ public class ItemLinesController : ControllerBase{
     }
 
     [HttpPut("ItemLine/{id}")]
-    public async Task<IActionResult> UpdateItemLine([FromRoute] int id, [FromBody] ItemLine itemLine){
+    public async Task<IActionResult> UpdateItemLine([FromRoute] int id, [FromBody] ItemLine itemLine)
+    {
         if(id <= 0 || id != itemLine.Id)
             return BadRequest("Item Line ID in the body does not match the ID in the URL.");
         if (itemLine == null)
@@ -46,7 +52,8 @@ public class ItemLinesController : ControllerBase{
     }
 
     [HttpDelete("ItemLine/{id}")]
-    public async Task<bool> DeleteItemLine([FromRoute] int id){
+    public async Task<bool> DeleteItemLine([FromRoute] int id)
+    {
         if(id <= 0)
             return false;
         var result = await _itemLine.DeleteItemLine(id);
