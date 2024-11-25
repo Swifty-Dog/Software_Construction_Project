@@ -19,6 +19,7 @@ public class MyContext : DbContext
     public DbSet<Inventories_locations> Inventories_Locations { get; set; }
     public DbSet<Shipment> Shipments { get; set; }
     public DbSet<Shipments_item> Shipments_items { get; set; }
+    public DbSet<Orders> Orders { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Orders> Orders { get; set; }
 
