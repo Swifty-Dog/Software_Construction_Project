@@ -21,7 +21,6 @@ public class MyContext : DbContext
     public DbSet<Shipments_item> Shipments_items { get; set; }
     public DbSet<Orders> Orders { get; set; }
     public DbSet<User> Users { get; set; }
-    public DbSet<Orders> Orders { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
