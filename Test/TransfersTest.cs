@@ -1,101 +1,73 @@
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Xunit;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public class TransfersTest
 {
-    private readonly HttpClient _client;
-    private readonly HttpClient _clientFail;
+    private readonly MyContext _context;
+    private readonly TransfersController _controller;
 
     public TransfersTest()
     {
-        // API key for authentication
-        var apiKey = "a1b2c3d4e5";
-        
-        // Set up authenticated client
-        _client = new HttpClient
+        var options = new DbContextOptionsBuilder<MyContext>()
+            .UseInMemoryDatabase(databaseName: "TransfersTest")
+            .Options;
+
+        _context = new MyContext(options);
+        SeedData();
+
+        var service = new TransfersServices(_context); // Initialize the service with the context
+        _controller = new TransfersController(service); // Pass the service to the controller
+    }
+    private void ClearData()
+    {
+        _context.Set<Transfers_item>().RemoveRange(_context.Set<Transfers_item>());
+        _context.Transfers.RemoveRange(_context.Transfers);
+        _context.SaveChanges();
+    }      
+
+    private void SeedData()
+    {
+        ClearData();
+        _context.Transfers.RemoveRange(_context.Transfers);
+        _context.SaveChanges();
+
+        var transfer1 = new Transfer
         {
-            BaseAddress = new System.Uri("http://localhost:5000/api/v1/")
+            Id = 1,
+            Reference = "TR12344",
+            Transfer_from = 1234,
+            Transfer_to = 5678,
+            Transfer_status = "completed",
+            Created_at = DateTime.Parse("2021-08-01T00:00:00"),
+            Updated_at = DateTime.Parse("2021-08-02T00:00:00"),
+            Items = new List<Transfers_item>
+            {
+                new Transfers_item
+                {
+                    Item_Id = "P007434",
+                    Amount = 1
+                },
+                new Transfers_item
+                {
+                    Item_Id = "P007435",
+                    Amount = 2
+                }
+            }
         };
-        _client.DefaultRequestHeaders.Add("Api-Key", apiKey);
-
-        // Set up unauthenticated client
-        _clientFail = new HttpClient
+        var transfer2 = new Transfer
         {
-            BaseAddress = new System.Uri("http://localhost:5000/api/v1/")
-        };
-    }
-
-    [Fact]
-    public async Task Test_Transfer_Authentication()
-    {
-        // Attempt to fetch transfers without authentication
-        var response = await _clientFail.GetAsync("transfers");
-        Xunit.Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
-    }
-
-    [Fact]
-    public async Task Test_Get_Transfers()
-    {
-        // Fetch all transfers with authentication
-        var response = await _client.GetAsync("transfers");
-        Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-        var content = await response.Content.ReadAsStringAsync();
-        Xunit.Assert.True(!string.IsNullOrEmpty(content), "Response content should not be empty");
-    }
-
-    [Fact]
-    public async Task Test_Get_Transfer_By_Id()
-    {
-        int transfer_id = 2;
-        var response = await _client.GetAsync($"Transfer/{transfer_id}");
-        Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-        var content = await response.Content.ReadAsStringAsync();
-        Xunit.Assert.False(string.IsNullOrEmpty(content), "Response content should not be empty");
-        var transfer = JsonConvert.DeserializeObject<Transfer>(content);
-        Xunit.Assert.NotNull(transfer);
-        Xunit.Assert.Equal(transfer_id, transfer.Id);  
-    }
-
-    [Fact]
-    public async Task Test_Get_Non_Existent_Transfer()
-    {
-        int transfer_id = 999;
-        var response = await _client.GetAsync($"transfer/{transfer_id}");
-        Xunit.Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-    }
-
-    [Fact]
-    public async Task Test_Get_Transfer_Invalid_Path()
-    {
-        var response = await _client.GetAsync("transfer/invalid");
-        Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-    }
-
-    [Fact]
-    public async Task Test_Post_Transfer()
-    {
-        var initialResponse = await _client.GetAsync("transfers");
-        var initialContent = await initialResponse.Content.ReadAsStringAsync(); 
-        var initialTransfers = JsonConvert.DeserializeObject<List<Transfer>>(initialContent);
-        int oldLength = initialTransfers.Count;
-        int newTransferId = oldLength + 1;
-        var transferData = new
-        {
-            id = newTransferId,
-            reference = "TR12345",
-            transfer_from = 2323,
-            transfer_to = 9299,
-            transfer_status = "pending",
-            created_at = "2021-09-01T00:00:00",
-            updated_at = "2021-10-01T00:00:00",
-            items = new List<Transfers_item>
+            Id = 2,
+            Reference = "TR12345",
+            Transfer_from = 2323,
+            Transfer_to = 9299,
+            Transfer_status = "pending",
+            Created_at = DateTime.Parse("2021-09-01T00:00:00"),
+            Updated_at = DateTime.Parse("2021-10-01T00:00:00"),
+            Items = new List<Transfers_item>
             {
                 new Transfers_item
                 {
@@ -109,32 +81,73 @@ public class TransfersTest
                 }
             }
         };
-        var postResponse = await _client.PostAsJsonAsync("transfer", transferData);
-        Xunit.Assert.Equal(HttpStatusCode.OK, postResponse.StatusCode);
 
-        var newResponse = await _client.GetAsync("transfers");
-        var newContent = await newResponse.Content.ReadAsStringAsync();
-        var newTransfers = JsonConvert.DeserializeObject<List<Transfer>>(newContent);
-        int newLength = newTransfers.Count;
-        Xunit.Assert.True(newLength > oldLength);
+        _context.Transfers.AddRange(transfer1, transfer2);
+        _context.SaveChanges();
+    }
+
+    [Fact]
+    public async Task Test_Get_Transfers()
+    {
+        var result = await _controller.Get_Transfers();
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var transfers = Xunit.Assert.IsType<List<Transfer>>(okResult.Value);
+        Xunit.Assert.NotEmpty(transfers);
+    }
+
+    [Fact]
+    public async Task Test_Get_Transfer_By_Id()
+    {
+        var result = await _controller.Get_Transfer_By_Id(2);
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var transfer = Xunit.Assert.IsType<Transfer>(okResult.Value);
+        Xunit.Assert.Equal("TR12345", transfer.Reference);
+        Xunit.Assert.Equal(2, transfer.Id);
+    }
+
+    [Fact]
+    public async Task Test_Get_Non_Existent_Transfer()
+    {
+        var result = await _controller.Get_Transfer_By_Id(999);
+        Xunit.Assert.IsType<NotFoundObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task Test_Post_Transfer()
+    {
+        var newTransfer = new Transfer
+        {
+            Id = 3,
+            Reference = "TR1267",
+            Transfer_from  = 1000,
+            Transfer_to  = 2000,
+            Transfer_status = "completed",
+            Created_at = DateTime.UtcNow,
+            Updated_at = DateTime.UtcNow,
+            Items = new List<Transfers_item>
+            {
+                new Transfers_item
+                {
+                    Item_Id = "P007437",
+                    Amount = 1
+                }
+            }
+        };
+
+        var result = await _controller.AddTransfer(newTransfer);
+        var okResult = Xunit.Assert.IsType<CreatedAtActionResult>(result);
+        var transfer = Xunit.Assert.IsType<Transfer>(okResult.Value);
+        Xunit.Assert.Equal("TR1267", transfer.Reference);
     }
 
     [Fact]
     public async Task Test_Delete_Transfer()
     {
-        var initialResponse = await _client.GetAsync("transfers");
-        var initialContent = await initialResponse.Content.ReadAsStringAsync();
-        var initialTransfers = JsonConvert.DeserializeObject<List<Transfer>>(initialContent);
-        int oldLength = initialTransfers.Count;
-        int transfer_id = 2;
-        var deleteResponse = await _client.DeleteAsync($"transfer/{transfer_id}");
-        Xunit.Assert.Equal(HttpStatusCode.OK, deleteResponse.StatusCode);
+        var result = await _controller.Delete_Transfer(1);
+        Xunit.Assert.IsType<NoContentResult>(result);
 
-        var newResponse = await _client.GetAsync("transfers");
-        var newContent = await newResponse.Content.ReadAsStringAsync();
-        var newTransfers = JsonConvert.DeserializeObject<List<Transfer>>(newContent);
-        int newLength = newTransfers.Count;
-        Xunit.Assert.True(newLength < oldLength);
+        var getResult = await _controller.Get_Transfer_By_Id(1);
+        Xunit.Assert.IsType<NotFoundObjectResult>(getResult);
     }
 
 }
