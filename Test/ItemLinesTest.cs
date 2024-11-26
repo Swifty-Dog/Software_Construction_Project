@@ -87,7 +87,7 @@ public class ItemLinesTest // data in de database en wat hier staat en de rest f
     {
         var updatedItemline = new ItemLine
         {
-            Id = 333,
+            Id = 1,
             Name = "Changed Gadgets",
             Description = "stuff has changed",
             CreatedAt = DateTime.UtcNow,
@@ -96,7 +96,7 @@ public class ItemLinesTest // data in de database en wat hier staat en de rest f
         var result = await _controller.UpdateItemLine(1, updatedItemline);
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
         var itemLine = Xunit.Assert.IsType<ItemLine>(okResult.Value);
-        Xunit.Assert.Equal(333, itemLine.Id);
+        Xunit.Assert.Equal(1, itemLine.Id);
         Xunit.Assert.Equal("Changed Gadgets", itemLine.Name);
         Xunit.Assert.Equal("stuff has changed", itemLine.Description);
     }
@@ -104,7 +104,7 @@ public class ItemLinesTest // data in de database en wat hier staat en de rest f
     [Fact]
     public async Task TestDeleteItemLine()
     {
-        var result = await _controller.DeleteItemLine(333);
+        var result = await _controller.DeleteItemLine(1);
         Xunit.Assert.IsType<NoContentResult>(result);
 
         var getResult = await _controller.GetItemLineById(333);
