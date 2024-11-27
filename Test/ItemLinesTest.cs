@@ -107,7 +107,7 @@ public class ItemLinesTest // data in de database en wat hier staat en de rest f
         var result = await _controller.DeleteItemLine(1);
         Xunit.Assert.IsType<NoContentResult>(result);
 
-        var getResult = await _controller.GetItemLineById(333);
+        var getResult = await _controller.GetItemLineById(1);
         Xunit.Assert.IsType<NotFoundObjectResult>(getResult);
     }
 
