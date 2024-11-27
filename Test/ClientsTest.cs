@@ -69,9 +69,9 @@ public class ClientsTest
         Xunit.Assert.IsType<NotFoundObjectResult>(result);
     }
     
-     [Fact]
-     public async Task TestPostClient()
-     {
+    [Fact]
+    public async Task TestPostClient()
+    {
         var newclient = new Client
         {
             Id = 123,
@@ -92,7 +92,7 @@ public class ClientsTest
         var client = Xunit.Assert.IsType<Client>(okResult.Value);
         Xunit.Assert.Equal(123, client.Id);
         Xunit.Assert.Equal("new inc", client.Name);
-     }
+    }
     
     [Fact]
     public async Task TestPutClient()
