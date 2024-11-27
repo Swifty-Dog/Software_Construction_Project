@@ -52,14 +52,14 @@ public class ItemLinesController : ControllerBase{
     }
 
     [HttpDelete("ItemLine/{id}")]
-    public async Task<bool> DeleteItemLine([FromRoute] int id)
+    public async Task<IActionResult> DeleteItemLine([FromRoute] int id)
     {
         if(id <= 0)
-            return false;
+            return NotFound();
         var result = await _itemLine.DeleteItemLine(id);
         if (result == false)
-            return false;
-        return true;
+            return NotFound();
+        return NoContent();
     }
     
 }
