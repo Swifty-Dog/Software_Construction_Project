@@ -63,7 +63,23 @@ public class ItemTypesTest
         Xunit.Assert.IsType<NotFoundObjectResult>(result);
     }
 
+    [Fact]
+    public async Task TestPostItemType()
+    {
+        var newItemType = new Item_type
+        {
+            Id = 123,
+            Name = "New Gadgets",
+            Description = "stuff",
+            Created_at = DateTime.UtcNow,
+            Updated_at = DateTime.UtcNow
+        };
+        var result = await _controller.AddItem_types(newItemType);
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var itemType = Xunit.Assert.IsType<Item_type>(okResult.Value);
+        Xunit.Assert.Equal(123, itemType.Id);
+        Xunit.Assert.Equal("New Gadgets", itemType.Name);
+    }
 
-    
 
 }
