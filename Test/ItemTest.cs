@@ -60,4 +60,15 @@ public class ItemTest
         var items = Xunit.Assert.IsType<List<Item>>(okResult.Value);
         Xunit.Assert.NotEmpty(items);
     }
+
+    [Fact]
+    public async Task TestGetItemById()
+    {
+        var result = await _controller.Get_Item_By_Id("P000002");
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var item = Xunit.Assert.IsType<Item>(okResult.Value);
+        Xunit.Assert.Equal("Face-to-face clear-thinking complexity", item.Description);
+        Xunit.Assert.Equal("P000002", item.Uid);
+    }
+
 }
