@@ -36,5 +36,16 @@ public class ItemTypesTest
         _context.ItemTypes.Add(itemType);
         _context.SaveChanges();
     }
-    
+
+    [Fact]
+    public async Task TestGetItemTypes()
+    {
+        var result = await _controller.GetItem_types();
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var itemType = Xunit.Assert.IsType<List<Item_type>>(okResult.Value);
+        Xunit.Assert.NotEmpty(itemType);
+    }
+
+
+
 }
