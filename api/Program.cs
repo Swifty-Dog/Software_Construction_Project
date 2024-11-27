@@ -27,6 +27,8 @@ builder.Services.AddTransient<ItemLineServices>();
 builder.Services.AddTransient<IOrdersInterface,OrdersServices>();
 builder.Services.AddTransient<Item_TypeServices>();
 builder.Services.AddTransient<ItemServices>();
+builder.Services.AddTransient<IOrdersInterface,OrdersServices>();
+builder.Services.AddTransient<Orders>();
 builder.Services.AddTransient<ItemLine>();
 
 
