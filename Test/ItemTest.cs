@@ -71,4 +71,10 @@ public class ItemTest
         Xunit.Assert.Equal("P000002", item.Uid);
     }
 
+    [Fact]
+    public async Task TestGetNonExistentItem()
+    {
+        var result = await _controller.Get_Item_By_Id("abcdefg");
+        Xunit.Assert.IsType<NotFoundObjectResult>(result);
+    }
 }
