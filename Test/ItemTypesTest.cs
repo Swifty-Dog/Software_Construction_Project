@@ -100,6 +100,15 @@ public class ItemTypesTest
         Xunit.Assert.Equal("stuff has changed", itemType.Description);
     }
 
+    [Fact]
+    public async Task TestDeleteItemType()
+    {
+        var result = await _controller.DeleteItem_types(1);
+        Xunit.Assert.IsType<NoContentResult>(result);
+
+        var getResult = await _controller.GetItem_types_By_Id(1);
+        Xunit.Assert.IsType<NotFoundObjectResult>(getResult);
+    }
 
     
 
