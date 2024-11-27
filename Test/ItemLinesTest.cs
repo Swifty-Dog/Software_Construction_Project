@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
 
-public class ItemLinesTest // data in de database en wat hier staat en de rest file nog vergelijken 
+public class ItemLinesTest 
 {
     private readonly MyContext _context;
     private readonly ItemLinesController _controller;
