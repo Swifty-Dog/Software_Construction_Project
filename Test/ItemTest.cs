@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
+using api.Migrations;
 
 public class ItemTest
 {
@@ -51,5 +52,12 @@ public class ItemTest
         _context.SaveChanges();
     }
 
-
+    [Fact]
+    public async Task TestGetItems()
+    {
+        var result = await _controller.Get_Items();
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var items = Xunit.Assert.IsType<List<Item>>(okResult.Value);
+        Xunit.Assert.NotEmpty(items);
+    }
 }
