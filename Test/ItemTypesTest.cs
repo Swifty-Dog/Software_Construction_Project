@@ -56,7 +56,14 @@ public class ItemTypesTest
         Xunit.Assert.Equal("Tech Gadgets", itemType.Name);
     }
 
+    [Fact]
+    public async Task TestGetNonexistentItemType()
+    {
+        var result = await _controller.GetItem_types_By_Id(9999);
+        Xunit.Assert.IsType<NotFoundObjectResult>(result);
+    }
 
 
+    
 
 }
