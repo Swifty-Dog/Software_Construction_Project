@@ -46,6 +46,17 @@ public class ItemTypesTest
         Xunit.Assert.NotEmpty(itemType);
     }
 
+    [Fact]
+    public async Task TestGetItemTypeById()
+    {
+        var result = await _controller.GetItem_types_By_Id(1);
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var itemType = Xunit.Assert.IsType<Item_type>(okResult.Value);
+        Xunit.Assert.Equal(1, itemType.Id);
+        Xunit.Assert.Equal("Tech Gadgets", itemType.Name);
+    }
+
+
 
 
 }
