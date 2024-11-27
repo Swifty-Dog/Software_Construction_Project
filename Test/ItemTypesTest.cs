@@ -81,5 +81,26 @@ public class ItemTypesTest
         Xunit.Assert.Equal("New Gadgets", itemType.Name);
     }
 
+    [Fact]
+    public async Task TestPutItemType()
+    {
+        var updatedItemType = new Item_type
+        {
+            Id = 1,
+            Name = "Changed Gadgets",
+            Description = "stuff has changed",
+            Created_at = DateTime.UtcNow,
+            Updated_at = DateTime.UtcNow
+        };
+        var result = await _controller.UpdateItem_types(1, updatedItemType);
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var itemType = Xunit.Assert.IsType<Item_type>(okResult.Value);
+        Xunit.Assert.Equal(1, itemType.Id);
+        Xunit.Assert.Equal("Changed Gadgets", itemType.Name);
+        Xunit.Assert.Equal("stuff has changed", itemType.Description);
+    }
+
+
+    
 
 }
