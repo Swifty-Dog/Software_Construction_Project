@@ -57,5 +57,15 @@ public class ItemGroupsTest
         var itemgroups = Xunit.Assert.IsType<List<Item_group>>(okResult.Value);
         Xunit.Assert.NotEmpty(itemgroups);
     }
+
+    [Fact]
+    public async Task Test_Get_Item_Groups_By_Id()
+    {
+        var result = await _controller.Get_Item_group_By_Id(1);
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var itemgroup = Xunit.Assert.IsType<Item_group>(okResult.Value);
+        Xunit.Assert.Equal("Furniture", itemgroup.Name);
+        Xunit.Assert.Equal(1, itemgroup.Id);
+    }
 }
 
