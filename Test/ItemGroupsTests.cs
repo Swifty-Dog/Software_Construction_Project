@@ -74,5 +74,25 @@ public class ItemGroupsTest
         var result = await _controller.Get_Item_group_By_Id(9999);
         Xunit.Assert.IsType<NotFoundObjectResult>(result);
     }
+
+    [Fact]
+    public async Task Test_Post_Item_Group()
+    {
+        var newItemGroup = new Item_group
+        {
+            Id = 3,
+            Name = "Test",
+            Description = "Testtest",
+            Created_at = DateTime.UtcNow,
+            Updated_at = DateTime.UtcNow
+        };
+
+        var result = await _controller.Add_Item_group(newItemGroup);
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var itemGroup = Xunit.Assert.IsType<Item_group>(okResult.Value);
+        Xunit.Assert.Equal("Test", itemGroup.Name);
+        Xunit.Assert.Equal("Testtest", itemGroup.Description);
+        Xunit.Assert.Equal(3, itemGroup.Id);
+    }
 }
 
