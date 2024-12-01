@@ -172,4 +172,89 @@ public class ItemTest
         Xunit.Assert.Equal("test test", item.Description);
         Xunit.Assert.Equal("test", item.Code);
     }
+
+    [Fact]
+    public async Task TestPutItem()
+    {
+        var newItemLine = new ItemLine
+        {
+            Id = 1,
+            Name = "New Gadgets",
+            Description = "stuff",
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
+        };
+        await _controllerLines.AddItemLine(newItemLine);
+
+        var newItemType = new Item_type
+        {
+            Id = 1,
+            Name = "New Gadgets type",
+            Description = "stuff",
+            Created_at = DateTime.UtcNow,
+            Updated_at = DateTime.UtcNow
+        };
+        await _controllerTypes.AddItem_types(newItemType);
+
+        var newItemGroup = new Item_group
+        {
+            Id = 1,
+            Name = "Test group",
+            Description = "Testtest",
+            Created_at = DateTime.UtcNow,
+            Updated_at = DateTime.UtcNow
+        };
+        await _controllerGroups.Add_Item_group(newItemGroup);
+
+        var newSupplier = new Supplier
+        {
+            Id = 1,
+            Code = "SUPP003",
+            Name = "Tech Supplies",
+            Address = "123 Tech Park",
+            Address_extra = "Suite 101",
+            Zip_code = "67890",
+            Province = "California",
+            Country = "USA",
+            Contact_name = "Jane Doe",
+            Phonenumber = "098-765-4321",
+            Email = "janedoe@techsupplies.com",
+            Reference = "REF1234",
+            Created_at = DateTime.UtcNow,
+            Updated_at = DateTime.UtcNow
+        };
+        await _controllerSuppliers.AddSupplier(newSupplier);
+
+
+        var updatedItem = new Item
+        {
+            Uid = "P000002",
+            Code = "test updated",
+            Description = "test update test",
+            Short_Description = "test",
+            Upc_code = "6523540947122",
+            Model_number = "63-OFFTq0T",
+            Commodity_code = "oTo304",
+            Item_line = 1,
+            Item_group = 1,
+            item_type = 1,
+            unit_purchase_quantity = 47,
+            unit_order_quantity = 13,
+            pack_order_quantity = 11,
+            supplier_id = 1,
+            supplier_code = "SUP423",
+            supplier_part_number = "E-86805-uTM",
+            Created_at = DateTime.UtcNow,
+            Updated_at = DateTime.UtcNow
+        };
+
+        var result = await _controller.Update_Item("P000002", updatedItem);
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var item = Xunit.Assert.IsType<Item>(okResult.Value);
+        Xunit.Assert.Equal("test update test", item.Description);
+        Xunit.Assert.Equal("test updated", item.Code);
+    }
+    
+
+    
 }
