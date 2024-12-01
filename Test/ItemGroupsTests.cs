@@ -94,5 +94,27 @@ public class ItemGroupsTest
         Xunit.Assert.Equal("Testtest", itemGroup.Description);
         Xunit.Assert.Equal(3, itemGroup.Id);
     }
+
+    [Fact]
+
+    public async Task Test_Put_Item_Group()
+    {
+        var updated_item_group = new Item_group
+        {
+            Id = 3,
+            Name = "Test_updated_put",
+            Description = "Testtest",
+            Created_at = DateTime.UtcNow,
+            Updated_at = DateTime.UtcNow
+        };
+
+        var result = await _controller.Update_Item_group(3, updated_item_group);
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var item_group = Xunit.Assert.IsType<Item_group>(okResult.Value);
+        Xunit.Assert.Equal("Test_updated_put", item_group.Name);
+        Xunit.Assert.Equal(3,item_group.Id);
+
+        //TIJDELIET NIET WERKBAAR?
+    }
 }
 
