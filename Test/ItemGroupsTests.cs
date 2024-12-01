@@ -121,12 +121,13 @@ public class ItemGroupsTest
 
     public async Task Delete_Item_Group()
     {
-        var result = await _controller.Delete_Item_group(1);
+        var result = await _controller.Delete_Item_group(2);
         Xunit.Assert.IsType<OkObjectResult>(result);
 
-        var getResult = await _controller.Get_Item_group_By_Id(1);
+        var getResult = await _controller.Get_Item_group_By_Id(2);
         Xunit.Assert.IsType<NotFoundObjectResult>(getResult);
 
     }
+    //VOLGENSMIJ OMDAT ITEMGROUPSERVICES BOOLS RETURNT BIJ DELETE, DIT MOETEN WE BIJ VERDERE VALIDATIE CHECK DOEN
 }
 
