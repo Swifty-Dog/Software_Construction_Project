@@ -24,5 +24,46 @@ public class ItemGroupsTest
     {
         _context.ItemGroups.RemoveRange(_context.ItemGroups);
         _context.SaveChanges();
+
+        var itemGroups = new List<Item_group>
+        {
+            new Item_group
+            {
+                Id = 0,
+                Name = "Electronics",
+                Description = "Devices and gadgets.",
+                Created_at = DateTime.UtcNow,
+                Updated_at = DateTime.UtcNow
+            },
+            new Item_group
+            {
+                Id = 1,
+                Name = "Furniture",
+                Description = "Tables, chairs, and more.",
+                Created_at = DateTime.UtcNow,
+                Updated_at = DateTime.UtcNow
+            },
+            new Item_group
+            {
+                Id = 2,
+                Name = "Appliances",
+                Description = "Kitchen and home appliances.",
+                Created_at = DateTime.UtcNow,
+                Updated_at = DateTime.UtcNow
+            }
+        };
+
+        _context.ItemGroups.AddRange(itemGroups);
+        _context.SaveChanges();
+    }
+
+    [Fact]
+    public async Task Test_Get_Item_Groups()
+    {
+        var result = await _controller.Get_Item_groups();
+        var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
+        var itemgroups = Xunit.Assert.IsType<List<Item_group>>(okResult.Value);
+        Xunit.Assert.NotEmpty(itemgroups);
     }
 }
+
