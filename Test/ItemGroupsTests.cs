@@ -29,14 +29,6 @@ public class ItemGroupsTest
         {
             new Item_group
             {
-                Id = 0,
-                Name = "Electronics",
-                Description = "Devices and gadgets.",
-                Created_at = DateTime.UtcNow,
-                Updated_at = DateTime.UtcNow
-            },
-            new Item_group
-            {
                 Id = 1,
                 Name = "Furniture",
                 Description = "Tables, chairs, and more.",
