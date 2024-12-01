@@ -47,12 +47,12 @@ public class ItemTypeController : ControllerBase{
     }
 
     [HttpDelete("ItemType/{id}")]
-    public async Task<bool> DeleteItem_types([FromRoute] int id){
+    public async Task<IActionResult> DeleteItem_types([FromRoute] int id){
         if(id <= 0)
-            return false;
+            return NotFound();
         var result = await _item_types.DeleteItem_types(id);
         if (result == false)
-            return false;
-        return true;
+            return NotFound();
+        return NoContent();
     }
 }
