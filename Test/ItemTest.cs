@@ -254,7 +254,16 @@ public class ItemTest
         Xunit.Assert.Equal("test update test", item.Description);
         Xunit.Assert.Equal("test updated", item.Code);
     }
-    
+
+    [Fact]
+    public async Task TestDeleteItem()
+    {
+        var result = await _controller.Delete_Item("P000002");
+        Xunit.Assert.IsType<NoContentResult>(result);
+
+        var getResult = await _controller.Get_Item_By_Id("P000002");
+        Xunit.Assert.IsType<NotFoundObjectResult>(getResult);
+    }
 
     
 }
