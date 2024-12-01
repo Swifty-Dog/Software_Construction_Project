@@ -67,5 +67,12 @@ public class ItemGroupsTest
         Xunit.Assert.Equal("Furniture", itemgroup.Name);
         Xunit.Assert.Equal(1, itemgroup.Id);
     }
+
+    [Fact]
+    public async Task Test_Get_Non_Existent_Item_group()
+    {
+        var result = await _controller.Get_Item_group_By_Id(9999);
+        Xunit.Assert.IsType<NotFoundObjectResult>(result);
+    }
 }
 
