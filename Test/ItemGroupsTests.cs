@@ -9,6 +9,20 @@ public class ItemGroupsTest
 
     public ItemGroupsTest()
     {
-        
+        var options = new DbContextOptionsBuilder<MyContext>()
+            .UseInMemoryDatabase(databaseName: "ItemGroupsTest")
+            .Options;
+
+        _context = new MyContext(options);
+        SeedData();
+
+        var service = new Item_groupService(_context);
+        _controller = new ItemGroupController(service);
+    }
+
+    private void SeedData()
+    {
+        _context.ItemGroups.RemoveRange(_context.ItemGroups);
+        _context.SaveChanges();
     }
 }
