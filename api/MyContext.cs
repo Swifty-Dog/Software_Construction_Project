@@ -9,7 +9,7 @@ public class MyContext : DbContext
     public DbSet<Locations> Locations {get;set;}
     public DbSet<Item> Items { get; set; }
     public DbSet<Item_group> ItemGroups { get; set; }
-    public DbSet<Item_line> ItemLines { get; set; }
+    public DbSet<ItemLine> ItemLines { get; set; }
     public DbSet<Item_type> ItemTypes { get; set; }
     public DbSet<Supplier> Suppliers { get; set; }
     public DbSet<Transfer> Transfers { get; set; }
@@ -53,7 +53,7 @@ public class MyContext : DbContext
         modelBuilder.Entity<Item_group>()
             .HasKey(g => g.Id);
 
-        modelBuilder.Entity<Item_line>()
+        modelBuilder.Entity<ItemLine>()
             .HasKey(l => l.Id);
 
         modelBuilder.Entity<Item_type>()

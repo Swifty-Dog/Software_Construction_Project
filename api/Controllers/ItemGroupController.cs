@@ -48,12 +48,12 @@ public class ItemGroupController : ControllerBase{
     }
 
     [HttpDelete("ItemGroup/{id}")]
-    public async Task<bool> Delete_Item_group([FromRoute] int id){
+    public async Task<IActionResult> Delete_Item_group([FromRoute] int id){
         if(id <= 0)
-            return false;
+            return BadRequest();
         var result = await _item_group.Delete_Item_group(id);
         if (result == false)
-            return false;
-        return true;
+            return BadRequest();
+        return NoContent();
     }
 }
