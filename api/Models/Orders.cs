@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 public class Orders
 {
     public int Id { get; set; }
