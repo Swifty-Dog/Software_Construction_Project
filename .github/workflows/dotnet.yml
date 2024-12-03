@@ -72,11 +72,11 @@ jobs:
     - name: Generate HTML Coverage Report
       run: |
         dotnet tool install --global dotnet-reportgenerator-globaltool
-        reportgenerator "-reports:$(find api/TestResults -name coverage.cobertura.xml | head -n 1)" "-targetdir:./coverage-html" -reporttypes:Html
+        reportgenerator "-reports:$COVERAGE_FILE" "-targetdir:./coverage-html" -reporttypes:Html
 
     - name: Upload HTML Coverage Report
       uses: actions/upload-artifact@v3
       with:
         name: html-coverage-report
-        path: ./coverage-html/
+        path: ./coverage-html/index.html
 
