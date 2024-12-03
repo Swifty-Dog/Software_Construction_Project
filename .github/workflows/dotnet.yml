@@ -50,15 +50,16 @@ jobs:
 
     - name: Run Tests with Code Coverage
       run: |
-        dotnet test --configuration Release --collect:"XPlat Code Coverage" --verbosity normal --filter FullyQualifiedName~WarehousesTest
-  
+        dotnet test api --configuration Release --collect:"XPlat Code Coverage" --verbosity normal --filter FullyQualifiedName~WarehousesTest
+
     - name: Extract Coverage Percentage
       run: |
-        COVERAGE_FILE=$(find ./Test/TestResults -name coverage.cobertura.xml | head -n 1)
+        COVERAGE_FILE=$(find api/TestResults -name coverage.cobertura.xml | head -n 1)
         if [ -z "$COVERAGE_FILE" ]; then
           echo "Coverage report not found!";
           exit 1;
         fi
+        echo "Coverage file found at $COVERAGE_FILE"
         COVERAGE=$(grep -oP '(?<=<line-rate=")[^"]*' "$COVERAGE_FILE" | awk '{s+=$1; c++} END {if (c > 0) print s/c*100; else print 0}')
         echo "Total coverage is $COVERAGE%"
         REQUIRED_COVERAGE=80
@@ -71,10 +72,11 @@ jobs:
     - name: Generate HTML Coverage Report
       run: |
         dotnet tool install --global dotnet-reportgenerator-globaltool
-        reportgenerator "-reports:$(find . -name coverage.cobertura.xml)" "-targetdir:./coverage-html" -reporttypes:Html
+        reportgenerator "-reports:$(find api/TestResults -name coverage.cobertura.xml | head -n 1)" "-targetdir:./coverage-html" -reporttypes:Html
 
     - name: Upload HTML Coverage Report
       uses: actions/upload-artifact@v3
       with:
         name: html-coverage-report
         path: ./coverage-html/
+
