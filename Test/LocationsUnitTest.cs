@@ -167,3 +167,5 @@ public class LocationServicesTests
 
 
 //t
+//dotnet test --filter "FullyQualifiedName~LocationsUnitTest"
+//dotnet test --filter "FullyQualifiedName~LocationServicesTests"
