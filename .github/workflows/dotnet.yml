@@ -54,7 +54,6 @@ jobs:
 
     - name: Extract Coverage Percentage
       run: |
-        # Locate the coverage file
         COVERAGE_FILE=$(find api/TestResults -name coverage.cobertura.xml | head -n 1)
         if [ -z "$COVERAGE_FILE" ]; then
           echo "Coverage report not found!";
@@ -62,21 +61,17 @@ jobs:
         fi
         echo "Coverage file found at $COVERAGE_FILE"
         
-        # Print the first few lines of the coverage file for debugging
         echo "Coverage file contents:"
         head -n 20 "$COVERAGE_FILE"
 
-        # Extract coverage percentage
         COVERAGE=$(grep -oP '(?<=<line-rate=")[^"]*' "$COVERAGE_FILE" | awk '{s+=$1; c++} END {if (c > 0) print s/c*100; else print 0}')
         echo "Calculated coverage: $COVERAGE%"
         
-        # Verify if coverage is a valid number
         if [ -z "$COVERAGE" ]; then
           echo "Failed to calculate coverage!";
           exit 1;
         fi
         
-        # Threshold check
         REQUIRED_COVERAGE=80
         if (( $(echo "$COVERAGE < $REQUIRED_COVERAGE" | bc -l) )); then
           echo "Code coverage is below the required threshold of $REQUIRED_COVERAGE%. Failing the workflow."
