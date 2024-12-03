@@ -91,6 +91,14 @@ public class WarehouseServicesTest
     }
 
     [Fact]
+    public async Task Get_Warehouse_By_Id_Invalid()
+    {
+        var result = await _service.Get_Warehouse_By_Id(999);
+
+        Xunit.Assert.Null(result);
+    }
+
+    [Fact]
     public async Task Add_Valid_Warehouse()
     {
         var newWarehouse = new Warehouse
@@ -115,6 +123,29 @@ public class WarehouseServicesTest
         Xunit.Assert.Equal(3, _context.Warehouse.Count());
     }
 
+    [Fact]
+    public async Task Add_Duplicate_Warehouse()
+    {
+        var duplicateWarehouse = new Warehouse
+        {
+            Id = 1,
+            Code = "WH001",
+            Name = "Warehouse One Duplicate", 
+            Address = "123 Main Street", 
+            Zip = "12345", 
+            City = "New York", 
+            Province = "New York", 
+            Country = "USA", 
+            Created_at = DateTime.Now, 
+            Updated_at = DateTime.Now, 
+            Contact = _context.Contact.Find(1)
+        };
+
+        var result = await _service.Add_Warehouse(duplicateWarehouse);
+
+        Xunit.Assert.Null(result);
+        Xunit.Assert.Equal(2, _context.Warehouse.Count());
+    }
     [Fact]
     public async Task Update_Existing_Warehouse()
     {
