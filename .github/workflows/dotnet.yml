@@ -48,34 +48,18 @@ jobs:
     - name: Build Test Project
       run: dotnet build --no-restore --configuration Release Test/Test.csproj
 
-    - name: Run WarehousesTest only # For now this is the only test we do. We can add more tests later. 
-      run: |
-        mkdir -p ./coverage
-        dotnet test Test/Test.csproj --no-build --configuration Release \
-          --filter FullyQualifiedName~WarehousesTest \
-          /p:CollectCoverage=true \
-          /p:CoverletOutput=./coverage/ \
-          /p:CoverletOutputFormat=cobertura
-
-    - name: Verify Coverage Report
-      run: |
-        if [ ! -f ./coverage/coverage.cobertura.xml ]; then
-          echo "Coverage report not found!";
-          exit 1;
-        fi
-
-    - name: Generate HTML Coverage Report
-      run: |
-        dotnet tool install --global dotnet-reportgenerator-globaltool
-        reportgenerator "-reports:./coverage/coverage.cobertura.xml" "-targetdir:./coverage-html" -reporttypes:Html
-
     - name: Run Tests with Code Coverage
       run: |
         dotnet test --configuration Release --collect:"XPlat Code Coverage" --verbosity normal --filter FullyQualifiedName~WarehousesTest
-        
-    - name: Check Coverage Percentage
+
+    - name: Extract Coverage Percentage
       run: |
-        COVERAGE=$(grep -oP '(?<=<line-rate=")[^"]*' ./coverage/coverage.cobertura.xml | awk '{s+=$1; c++} END {print s/c*100}')
+        COVERAGE_FILE=$(find . -name coverage.cobertura.xml | head -n 1)
+        if [ -z "$COVERAGE_FILE" ]; then
+          echo "Coverage report not found!";
+          exit 1;
+        fi
+        COVERAGE=$(grep -oP '(?<=<line-rate=")[^"]*' "$COVERAGE_FILE" | awk '{s+=$1; c++} END {if (c > 0) print s/c*100; else print 0}')
         echo "Total coverage is $COVERAGE%"
         REQUIRED_COVERAGE=80
         if (( $(echo "$COVERAGE < $REQUIRED_COVERAGE" | bc -l) )); then
@@ -83,6 +67,11 @@ jobs:
           exit 1;
         fi
       shell: bash
+
+    - name: Generate HTML Coverage Report
+      run: |
+        dotnet tool install --global dotnet-reportgenerator-globaltool
+        reportgenerator "-reports:$(find . -name coverage.cobertura.xml)" "-targetdir:./coverage-html" -reporttypes:Html
 
     - name: Upload HTML Coverage Report
       uses: actions/upload-artifact@v3
