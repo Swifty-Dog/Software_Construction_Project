@@ -167,4 +167,4 @@ public class ItemLinesServicesTests
 
 
 //eerst cd test
-//dotnet test --filter "FullyQualifiedName~LocationServicesTests"     <-- de laatste stuk is je class naam, ik kan het niet werkend krijgen in een aparte unittest folder dus voor nu is het dit
+//dotnet test --filter "FullyQualifiedName~ItemLinesServicesTests"     <-- de laatste stuk is je class naam, ik kan het niet werkend krijgen in een aparte unittest folder dus voor nu is het dit
