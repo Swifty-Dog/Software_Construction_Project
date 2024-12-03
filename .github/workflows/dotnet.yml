@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - main
-      - 6.0_cicd
+      - 6.1_coverage
   pull_request:
     branches:
       - main
-      - 6.0_cicd
+      - 6.1_coverage
 
 jobs:
   build:
@@ -68,6 +68,17 @@ jobs:
       run: |
         dotnet tool install --global dotnet-reportgenerator-globaltool
         reportgenerator "-reports:./coverage/coverage.cobertura.xml" "-targetdir:./coverage-html" -reporttypes:Html
+
+    - name: Check Coverage Percentage
+      run: |
+        COVERAGE=$(grep -oP '(?<=<line-rate=")[^"]*' ./coverage/coverage.cobertura.xml | awk '{s+=$1; c++} END {print s/c*100}')
+        echo "Total coverage is $COVERAGE%"
+        REQUIRED_COVERAGE=80
+        if (( $(echo "$COVERAGE < $REQUIRED_COVERAGE" | bc -l) )); then
+          echo "Code coverage is below the required threshold of $REQUIRED_COVERAGE%. Failing the workflow."
+          exit 1;
+        fi
+      shell: bash
 
     - name: Upload HTML Coverage Report
       uses: actions/upload-artifact@v3
