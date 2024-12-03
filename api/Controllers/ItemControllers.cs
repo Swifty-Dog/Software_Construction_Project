@@ -69,7 +69,7 @@ public class ItemController : Controller{
         bool ItemToDeleted = await _item.Delete_Item(uid);
         if(ItemToDeleted == false)
             return BadRequest("Item could not be deleted.");
-        return Ok("Item deleted successfully.");
+        return NoContent();
     }
 
     // GET /Item/{uid}/Inventory: Returns the inventory of a specific item by its ID.
