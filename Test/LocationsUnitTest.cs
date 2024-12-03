@@ -16,6 +16,10 @@ public class LocationServicesTests
             .Options;
 
         _context = new MyContext(options);
+
+        _context.Database.EnsureDeleted();
+        _context.Database.EnsureCreated();
+
         SeedData();
 
         _service = new LocationServices(_context);
@@ -168,4 +172,4 @@ public class LocationServicesTests
 
 //t
 //dotnet test --filter "FullyQualifiedName~LocationsUnitTest"
-//dotnet test --filter "FullyQualifiedName~LocationServicesTests"
+//dotnet test --filter "FullyQualifiedName~LocationServicesTests"            <-- de laatste stuk is je class naam, ik kan het niet werkend krijgen in een aparte unittest folder dus voor nu is het dit
