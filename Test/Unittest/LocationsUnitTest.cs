@@ -47,7 +47,7 @@ public class LocationServicesTests
     }
 
     [Fact]
-    public async Task GetAll_Returns_All_Locations()
+    public async Task Get_All_Locations()
     {
         var result = await _service.GetAll();
 
@@ -56,7 +56,7 @@ public class LocationServicesTests
     }
 
     [Fact]
-    public async Task Get_Returns_Location_By_Id()
+    public async Task Get_Location_By_Id()
     {
         var result = await _service.Get(1);
 
@@ -66,7 +66,7 @@ public class LocationServicesTests
     }
 
     [Fact]
-    public async Task Get_Returns_Null_For_Invalid_Id()
+    public async Task Get_Invalid_Id()
     {
         var result = await _service.Get(999);
 
@@ -74,7 +74,7 @@ public class LocationServicesTests
     }
 
     [Fact]
-    public async Task Add_Location_Adds_New_Location()
+    public async Task Add_Valid_Location()
     {
         var newLocation = new Locations 
         { 
@@ -110,7 +110,7 @@ public class LocationServicesTests
     // }
 
     [Fact]
-    public async Task Update_Location_Updates_Existing_Location()
+    public async Task Update_Existing_Location()
     {
         var updatedLocation = new Locations 
         { 
@@ -130,7 +130,7 @@ public class LocationServicesTests
     }
 
     [Fact]
-    public async Task Update_Location_Returns_Null_For_Invalid_Id()
+    public async Task Update_Location_Invalid()
     {
         var updatedLocation = new Locations 
         { 
@@ -148,7 +148,7 @@ public class LocationServicesTests
     }
 
     [Fact]
-    public async Task DeleteLocation_Removes_Location()
+    public async Task DeleteLocation_Valid()
     {
         var result = await _service.DeleteLocation(1);
 
@@ -157,7 +157,7 @@ public class LocationServicesTests
     }
 
     [Fact]
-    public async Task DeleteLocation_Returns_False_For_Invalid_Id()
+    public async Task DeleteLocation_Invalid()
     {
         var result = await _service.DeleteLocation(999);
         Xunit.Assert.False(result);
