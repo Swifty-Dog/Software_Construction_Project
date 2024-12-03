@@ -69,6 +69,10 @@ jobs:
         dotnet tool install --global dotnet-reportgenerator-globaltool
         reportgenerator "-reports:./coverage/coverage.cobertura.xml" "-targetdir:./coverage-html" -reporttypes:Html
 
+    - name: Run Tests with Code Coverage
+      run: |
+        dotnet test --configuration Release --collect:"XPlat Code Coverage" --verbosity normal --filter FullyQualifiedName~WarehousesTest
+        
     - name: Check Coverage Percentage
       run: |
         COVERAGE=$(grep -oP '(?<=<line-rate=")[^"]*' ./coverage/coverage.cobertura.xml | awk '{s+=$1; c++} END {print s/c*100}')
