@@ -97,21 +97,23 @@ public class LocationServicesTests
         Xunit.Assert.Equal(3, _context.Locations.Count());
     }
 
-    // [Fact]
-    // public async Task Add_Location_Returns_Null_If_Location_Exists()
-    // {
-    //     var duplicateLocation = new Locations 
-    //     { 
-    //         Id = 1, 
-    //         WarehouseId = 1, 
-    //         Code = ".1.0", 
-    //         Name = "Duplicate Test"
-    //     };
-    //     var result = await _service.Add_Location(duplicateLocation);
+    [Fact]
+    public async Task Add_Invalid_Location()
+    {
+        var duplicateLocation = new Locations 
+        { 
+            Id = 1, 
+            WarehouseId = 1, 
+            Code = ".1.0", 
+            Name = "Duplicate Test",
+            CreatedAt = DateTime.Now,
+            UpdatedAt = DateTime.Now
+        };
+        var result = await _service.Add_Location(duplicateLocation);
 
-    //     Xunit.Assert.Null(result);
-    //     Xunit.Assert.Equal(2, _context.Locations.Count());
-    // }
+        Xunit.Assert.Null(result);
+        Xunit.Assert.Equal(2, _context.Locations.Count());
+    }
 
     [Fact]
     public async Task Update_Existing_Location()
@@ -170,6 +172,5 @@ public class LocationServicesTests
 }
 
 
-//t
-//dotnet test --filter "FullyQualifiedName~LocationsUnitTest"
-//dotnet test --filter "FullyQualifiedName~LocationServicesTests"            <-- de laatste stuk is je class naam, ik kan het niet werkend krijgen in een aparte unittest folder dus voor nu is het dit
+//eerst cd test
+//dotnet test --filter "FullyQualifiedName~LocationServicesTests"     <-- de laatste stuk is je class naam, ik kan het niet werkend krijgen in een aparte unittest folder dus voor nu is het dit
