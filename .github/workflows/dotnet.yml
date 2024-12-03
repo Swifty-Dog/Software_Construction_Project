@@ -61,9 +61,8 @@ jobs:
         fi
         echo "Coverage file found at $COVERAGE_FILE"
         
-        echo "Coverage file contents:"
-        head -n 20 "$COVERAGE_FILE"
-
+        cat "$COVERAGE_FILE" | head -n 20
+        
         COVERAGE=$(grep -oP '(?<=<line-rate=")[^"]*' "$COVERAGE_FILE" | awk '{s+=$1; c++} END {if (c > 0) print s/c*100; else print 0}')
         echo "Calculated coverage: $COVERAGE%"
         
@@ -72,7 +71,7 @@ jobs:
           exit 1;
         fi
         
-        REQUIRED_COVERAGE=10
+        REQUIRED_COVERAGE=10 
         if (( $(echo "$COVERAGE < $REQUIRED_COVERAGE" | bc -l) )); then
           echo "Code coverage is below the required threshold of $REQUIRED_COVERAGE%. Failing the workflow."
           exit 1;
@@ -83,11 +82,11 @@ jobs:
     - name: Generate HTML Coverage Report
       run: |
         dotnet tool install --global dotnet-reportgenerator-globaltool
+        export PATH="$PATH:/home/runner/.dotnet/tools"
         reportgenerator "-reports:$COVERAGE_FILE" "-targetdir:./coverage-html" -reporttypes:Html
 
     - name: Upload HTML Coverage Report
       uses: actions/upload-artifact@v3
       with:
         name: html-coverage-report
-        path: ./coverage-html/index.html
-
+        path: ./coverage-html/
