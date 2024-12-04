@@ -142,9 +142,14 @@ public class ItemLinesServicesTests
             UpdatedAt = new DateTime(2000, 1, 1, 1, 1, 1)
         };
 
-        var result = await _service.UpdateItemLine(updatedItemLine, 999);
+        var exception = await Xunit.Assert.ThrowsAsync<Exception>(() => _service.UpdateItemLine(updatedItemLine, 999));
 
-        Xunit.Assert.Null(result);
+        Xunit.Assert.Equal("Item line not found or has been deleted.", exception.Message);
+
+        // var result = await _service.UpdateItemLine(updatedItemLine, 999);
+
+        // Xunit.Assert.Null(result);
+
         // LET OP!:
         // de item line wordt NULL gemaakt, maar in de itemline services staat het volgende op lijn 40 t/m 43:
         /*
