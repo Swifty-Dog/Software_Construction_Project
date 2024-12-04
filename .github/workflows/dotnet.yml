@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - main
-      - 6.1_coverage
+      - 6.2.workflow
   pull_request:
     branches:
       - main
-      - 6.1_coverage
+      - 6.2.workflow
 
 jobs:
   build:
