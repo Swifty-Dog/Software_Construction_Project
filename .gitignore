@@ -28,6 +28,10 @@ Generated_Code/
 # Ignore entity framework migrations
 Migrations/
 
+# Ignore created testresults
+Test/[Tt]est[Rr]esult*/
+api/[Tt]est[Rr]esult*/
+
 # Ignore package directories
 packages/
 *.nupkg
