@@ -52,28 +52,28 @@ jobs:
       run: |
         dotnet test --configuration Release --collect:"XPlat Code Coverage" /p:Threshold=10 --verbosity normal --filter FullyQualifiedName~WarehousesTest
 
-        name: Extract Coverage Percentage
-        run: |
-          # Find the coverage file
-          COVERAGE_FILE=$(find . -path "./**/TestResults/**/coverage.cobertura.xml" | head -n 1)
-          if [ -z "$COVERAGE_FILE" ]; then
-            echo "Coverage report not found!"
-            exit 1
-          fi
-          echo "Coverage file found at $COVERAGE_FILE"
-        
-          # Extract line-rate and calculate coverage percentage
-          COVERAGE=$(grep -oP '(?<=line-rate=")[^"]*' "$COVERAGE_FILE" | awk '{s+=$1; c++} END {print (c > 0) ? s/c*100 : 0}')
-          echo "Calculated coverage: $COVERAGE%"
-        
-          # Check if coverage meets the required threshold
-          REQUIRED_COVERAGE=10
-          if (( $(echo "$COVERAGE < $REQUIRED_COVERAGE" | bc -l) )); then
-            echo "Code coverage is below the required threshold of $REQUIRED_COVERAGE%. Failing the workflow."
-            exit 1
-          fi
-          echo "Code coverage meets the required threshold."
-        
+    - name: Extract Coverage Percentage
+      run: |
+        # Find the coverage file
+        COVERAGE_FILE=$(find . -path "./**/TestResults/**/coverage.cobertura.xml" | head -n 1)
+        if [ -z "$COVERAGE_FILE" ]; then
+          echo "Coverage report not found!"
+          exit 1
+        fi
+        echo "Coverage file found at $COVERAGE_FILE"
+      
+        # Extract line-rate and calculate coverage percentage
+        COVERAGE=$(grep -oP '(?<=line-rate=")[^"]*' "$COVERAGE_FILE" | awk '{s+=$1; c++} END {print (c > 0) ? s/c*100 : 0}')
+        echo "Calculated coverage: $COVERAGE%"
+      
+        # Check if coverage meets the required threshold
+        REQUIRED_COVERAGE=10
+        if (( $(echo "$COVERAGE < $REQUIRED_COVERAGE" | bc -l) )); then
+          echo "Code coverage is below the required threshold of $REQUIRED_COVERAGE%. Failing the workflow."
+          exit 1
+        fi
+        echo "Code coverage meets the required threshold."
+          
   
 
     - name: Generate HTML Coverage Report
