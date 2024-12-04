@@ -142,9 +142,14 @@ public class ItemTypesServicesTests
             Updated_at = new DateTime(2007, 1, 1, 1, 1, 1)
         };
 
-        var result = await _service.UpdateItem_types(updatedItemType);
+        var exception = await Xunit.Assert.ThrowsAsync<Exception>(() => _service.UpdateItem_types(updatedItemType));
 
-        Xunit.Assert.Null(result);
+        Xunit.Assert.Equal("Item_types not found or has been deleted.", exception.Message);
+
+        // var result = await _service.UpdateItem_types(updatedItemType);
+
+        // Xunit.Assert.Null(result);
+
         // LET OP!:
         // zelfde met ItemLines, omdat dit NULL wordt, gooit de service een exception
         // "Item_types not found or has been deleted."
