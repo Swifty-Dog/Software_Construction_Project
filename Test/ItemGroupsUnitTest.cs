@@ -156,8 +156,9 @@ public class ItemGroupsUnitTest
         var result = await _service.Update_Item_group(updatedItemGroup);
 
         Xunit.Assert.Null(result);
+        //IS NOT WORKING CORRECTLY
     }
-
+    
     [Fact]
     public async Task Delete_Item_Group_Valid()
     {
@@ -175,6 +176,7 @@ public class ItemGroupsUnitTest
         Xunit.Assert.False(result);
         Xunit.Assert.Equal(2, _context.ItemGroups.Count());
     }
+    //IS NOT WORKING CORRECTLY
 }
 
 
