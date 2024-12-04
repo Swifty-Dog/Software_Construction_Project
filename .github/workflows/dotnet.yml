@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - main
-      - 6.0_cicd
+      - 6.1_coverage
   pull_request:
     branches:
       - main
-      - 6.0_cicd
+      - 6.1_coverage
 
 jobs:
   build:
@@ -48,21 +48,29 @@ jobs:
     - name: Build Test Project
       run: dotnet build --no-restore --configuration Release Test/Test.csproj
 
-    - name: Run WarehousesTest only # For now this is the only test we do. We can add more tests later. 
+    - name: Run Tests with Code Coverage
       run: |
-        mkdir -p ./coverage
-        dotnet test Test/Test.csproj --no-build --configuration Release \
-          --filter FullyQualifiedName~WarehousesTest \
-          /p:CollectCoverage=true \
-          /p:CoverletOutput=./coverage/ \
-          /p:CoverletOutputFormat=cobertura
+        dotnet test --configuration Release --collect:"XPlat Code Coverage" /p:Threshold=10 --verbosity normal --filter FullyQualifiedName~WarehousesTest
 
-    - name: Verify Coverage Report
+    - name: Extract Coverage Percentage
       run: |
-        if [ ! -f ./coverage/coverage.cobertura.xml ]; then
-          echo "Coverage report not found!";
-          exit 1;
+        COVERAGE_FILE=$(find . -path "./**/TestResults/**/coverage.cobertura.xml" | head -n 1)
+        if [ -z "$COVERAGE_FILE" ]; then
+          echo "Coverage report not found!"
+          exit 1
         fi
+        echo "Coverage file found at $COVERAGE_FILE"
+      
+        COVERAGE=$(grep -oP '(?<=line-rate=")[^"]*' "$COVERAGE_FILE" | awk '{s+=$1; c++} END {print (c > 0) ? s/c*100 : 0}')
+        echo "Calculated coverage: $COVERAGE%"
+      
+        REQUIRED_COVERAGE=10
+        if (( $(echo "$COVERAGE < $REQUIRED_COVERAGE" | bc -l) )); then
+          echo "Code coverage is below the required threshold of $REQUIRED_COVERAGE%. Failing the workflow."
+          exit 1
+        fi
+        echo "Code coverage meets the required threshold."
+          
 
     - name: Generate HTML Coverage Report
       run: |
@@ -74,3 +82,4 @@ jobs:
       with:
         name: html-coverage-report
         path: ./coverage-html/
+  
