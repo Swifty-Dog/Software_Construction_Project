@@ -50,7 +50,7 @@ jobs:
 
     - name: Run Tests with Code Coverage
       run: |
-        dotnet test --configuration Release --collect:"XPlat Code Coverage" --verbosity normal --filter FullyQualifiedName~WarehousesTest
+        dotnet test --configuration Release --collect:"XPlat Code Coverage" /p:Threshold=10 --verbosity normal --filter FullyQualifiedName~WarehousesTest
 
     - name: Extract Coverage Percentage
       run: |
