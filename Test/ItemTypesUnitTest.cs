@@ -4,15 +4,15 @@ using System.Threading.Tasks;
 using System.Linq;
 using System;
 
-public class ItemLinesServicesTests
+public class ItemTypesServicesTests
 {
     private readonly MyContext _context;
-    private readonly ItemLineServices _service;
+    private readonly Item_TypeServices _service;
 
-    public ItemLinesServicesTests()
+    public ItemTypesServicesTests()
     {
         var options = new DbContextOptionsBuilder<MyContext>()
-            .UseInMemoryDatabase(databaseName: "ItemLinesTestDB")
+            .UseInMemoryDatabase(databaseName: "ItemTypesTestDB")
             .Options;
 
         _context = new MyContext(options);
@@ -22,45 +22,45 @@ public class ItemLinesServicesTests
 
         SeedData();
 
-        _service = new ItemLineServices(_context);
+        _service = new Item_TypeServices(_context);
     }
 
     private void SeedData()
     {
-        _context.ItemLines.AddRange(
-            new ItemLine 
+        _context.ItemTypes.AddRange(
+            new Item_type 
             { 
                 Id = 1, 
                 Name = "test1",
                 Description = "this is test1", 
-                CreatedAt = new DateTime(2022, 9, 9, 1, 1, 1),
-                UpdatedAt = new DateTime(2023, 9, 9, 1, 1, 1)
+                Created_at = new DateTime(2001, 9, 9, 1, 1, 1),
+                Updated_at = new DateTime(2008, 9, 9, 1, 1, 1)
             },
-            new ItemLine 
+            new Item_type 
             { 
                 Id = 2, 
                 Name = "test2",
                 Description = "this is test2", 
-                CreatedAt = new DateTime(2022, 9, 9, 2, 2, 2),
-                UpdatedAt = new DateTime(2023, 9, 9, 2, 2, 2)
+                Created_at = new DateTime(2001, 9, 9, 2, 2, 2),
+                Updated_at = new DateTime(2008, 9, 9, 2, 2, 2)
             }
         );
         _context.SaveChanges();
     }
 
     [Fact]
-    public async Task Get_All_ItemLines()
+    public async Task Get_All_ItemTypes()
     {
-        var result = await _service.GetItemLine();
+        var result = await _service.GetItem_types();
 
         Xunit.Assert.NotNull(result);
         Xunit.Assert.Equal(2, result.Count());
     }
 
     [Fact]
-    public async Task Get_ItemLine_By_Id()
+    public async Task Get_ItemType_By_Id()
     {
-        var result = await _service.GetItemLineById(1);
+        var result = await _service.GetItem_types_By_Id(1);
 
         Xunit.Assert.NotNull(result);
         Xunit.Assert.Equal("test1", result.Name);
@@ -68,62 +68,62 @@ public class ItemLinesServicesTests
     }
 
     [Fact]
-    public async Task Get_ItemLine_Invalid_Id()
+    public async Task Get_ItemType_Invalid_Id()
     {
-        var result = await _service.GetItemLineById(999);
+        var result = await _service.GetItem_types_By_Id(999);
 
         Xunit.Assert.Null(result);
     }
 
     [Fact]
-    public async Task Add_Valid_ItemLine()
+    public async Task Add_Valid_ItemType()
     {
-        var newItemLine = new ItemLine 
+        var newItemType = new Item_type 
         { 
             Id = 3, 
                 Name = "test3",
                 Description = "this is test3", 
-                CreatedAt = new DateTime(2022, 9, 9, 3, 3, 3),
-                UpdatedAt = new DateTime(2023, 9, 9, 3, 3, 3)
+                Created_at = new DateTime(2001, 9, 9, 3, 3, 3),
+                Updated_at = new DateTime(2008, 9, 9, 3, 3, 3)
         };
 
-        var result = await _service.AddItemLine(newItemLine);
+        var result = await _service.AddItem_types(newItemType);
 
         Xunit.Assert.NotNull(result);
         Xunit.Assert.Equal("test3", result.Name);
-        Xunit.Assert.Equal(3, _context.ItemLines.Count());
+        Xunit.Assert.Equal(3, _context.ItemTypes.Count());
     }
 
     [Fact]
-    public async Task Add_Invalid_ItemLine()
+    public async Task Add_Invalid_ItemType()
     {
-        var duplicateItemLine = new ItemLine
+        var duplicateItemType = new Item_type
         { 
             Id = 1, 
             Name = "test1",
             Description = "Duplicate Test1", 
-            CreatedAt = DateTime.Now,
-            UpdatedAt = DateTime.Now
+            Created_at = DateTime.Now,
+            Updated_at = DateTime.Now
         };
-        var result = await _service.AddItemLine(duplicateItemLine);
+        var result = await _service.AddItem_types(duplicateItemType);
 
         Xunit.Assert.Null(result);
-        Xunit.Assert.Equal(2, _context.ItemLines.Count());
+        Xunit.Assert.Equal(2, _context.ItemTypes.Count());
     }
 
     [Fact]
-    public async Task Update_Existing_ItemLine()
+    public async Task Update_Existing_ItemType()
     {
-        var updatedItemLine = new ItemLine 
+        var updatedItemType = new Item_type 
         { 
             Id = 1, 
             Name = "test1 again",
             Description = "Test1 but yet again", 
-            CreatedAt = new DateTime(2022, 9, 1, 3, 3, 3),
-            UpdatedAt = new DateTime(2023, 9, 1, 3, 3, 3)
+            Created_at = new DateTime(2001, 9, 1, 3, 3, 3),
+            Updated_at = new DateTime(2008, 9, 1, 3, 3, 3)
         };
 
-        var result = await _service.UpdateItemLine(updatedItemLine, 1);
+        var result = await _service.UpdateItem_types(updatedItemType);
 
         Xunit.Assert.NotNull(result);
         Xunit.Assert.Equal("test1 again", result.Name);
@@ -131,40 +131,43 @@ public class ItemLinesServicesTests
     }
 
     [Fact]
-    public async Task Update_ItemLine_Invalid()
+    public async Task Update_ItemType_Invalid()
     {
-        var updatedItemLine = new ItemLine 
+        var updatedItemType = new Item_type 
         { 
             Id = 999, 
             Name = "Invalid Update",
             Description = "Invalid Update", 
-            CreatedAt = new DateTime(1999, 1, 1, 1, 1, 1),
-            UpdatedAt = new DateTime(2000, 1, 1, 1, 1, 1)
+            Created_at = new DateTime(2002, 1, 1, 1, 1, 1),
+            Updated_at = new DateTime(2007, 1, 1, 1, 1, 1)
         };
 
-        var result = await _service.UpdateItemLine(updatedItemLine, 999);
+        var result = await _service.UpdateItem_types(updatedItemType);
 
         Xunit.Assert.Null(result);
+        // LET OP!:
+        // zelfde met ItemLines, omdat dit NULL wordt, gooit de service een exception
+        // "Item_types not found or has been deleted."
     }
 
     [Fact]
-    public async Task DeleteItemLine_Valid()
+    public async Task DeleteItemType_Valid()
     {
-        var result = await _service.DeleteItemLine(1);
+        var result = await _service.DeleteItem_types(1);
 
         Xunit.Assert.True(result);
-        Xunit.Assert.Equal(1, _context.ItemLines.Count());
+        Xunit.Assert.Equal(1, _context.ItemTypes.Count());
     }
 
     [Fact]
-    public async Task DeleteItemLine_Invalid()
+    public async Task DeleteItemType_Invalid()
     {
-        var result = await _service.DeleteItemLine(999);
+        var result = await _service.DeleteItem_types(999);
         Xunit.Assert.False(result);
-        Xunit.Assert.Equal(2, _context.ItemLines.Count());
+        Xunit.Assert.Equal(2, _context.ItemTypes.Count());
     }
 }
 
 
 //eerst cd test
-//dotnet test --filter "FullyQualifiedName~ItemLinesServicesTests"     <-- de laatste stuk is je class naam, ik kan het niet werkend krijgen in een aparte unittest folder dus voor nu is het dit
+//dotnet test --filter "FullyQualifiedName~ItemTypesServicesTests"     <-- de laatste stuk is je class naam, ik kan het niet werkend krijgen in een aparte unittest folder dus voor nu is het dit
