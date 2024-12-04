@@ -74,16 +74,14 @@ jobs:
         fi
         echo "Code coverage meets the required threshold."
           
-  
 
     - name: Generate HTML Coverage Report
       run: |
         dotnet tool install --global dotnet-reportgenerator-globaltool
-        export PATH="$PATH:/home/runner/.dotnet/tools"
-        reportgenerator "-reports:$COVERAGE_FILE" "-targetdir:./coverage-html" -reporttypes:Html
-
+        reportgenerator "-reports:./coverage/coverage.cobertura.xml" "-targetdir:./coverage-html" -reporttypes:Html
     - name: Upload HTML Coverage Report
       uses: actions/upload-artifact@v3
       with:
         name: html-coverage-report
         path: ./coverage-html/
+  
