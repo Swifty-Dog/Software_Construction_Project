@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - main
-      - 6.1_coverage
+      - 6.2.workflow
   pull_request:
     branches:
       - main
-      - 6.1_coverage
+      - 6.2.workflow
 
 jobs:
   build:
@@ -50,7 +50,7 @@ jobs:
 
     - name: Run Tests with Code Coverage
       run: |
-        dotnet test --configuration Release --collect:"XPlat Code Coverage" /p:Threshold=10 --verbosity normal --filter FullyQualifiedName~WarehousesTest
+        dotnet test --collect:"XPlat Code Coverage" 
 
     - name: Extract Coverage Percentage
       run: |
@@ -64,7 +64,7 @@ jobs:
         COVERAGE=$(grep -oP '(?<=line-rate=")[^"]*' "$COVERAGE_FILE" | awk '{s+=$1; c++} END {print (c > 0) ? s/c*100 : 0}')
         echo "Calculated coverage: $COVERAGE%"
       
-        REQUIRED_COVERAGE=10
+        REQUIRED_COVERAGE=20
         if (( $(echo "$COVERAGE < $REQUIRED_COVERAGE" | bc -l) )); then
           echo "Code coverage is below the required threshold of $REQUIRED_COVERAGE%. Failing the workflow."
           exit 1
@@ -75,11 +75,12 @@ jobs:
     - name: Generate HTML Coverage Report
       run: |
         dotnet tool install --global dotnet-reportgenerator-globaltool
-        reportgenerator "-reports:./coverage/coverage.cobertura.xml" "-targetdir:./coverage-html" -reporttypes:Html
+        reportgenerator -reports:"./**/TestResults/**/coverage.cobertura.xml" -targetdir:"./coverage-html" -reporttypes:Html
 
     - name: Upload HTML Coverage Report
       uses: actions/upload-artifact@v3
       with:
         name: html-coverage-report
         path: ./coverage-html/
+
   
