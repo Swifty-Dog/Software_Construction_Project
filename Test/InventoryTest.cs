@@ -23,28 +23,27 @@ public class InventoryTest
     private void SeedData()
     {
         _context.Inventories.RemoveRange(_context.Inventories);
-        _context.Inventories_Locations.RemoveRange(_context.Inventories_Locations);
+        _context.InventoriesLocations.RemoveRange(_context.InventoriesLocations);
         _context.SaveChanges();
 
         var inventory = new Inventory
         {
-            id = 100,
-            itemId = "P000001",
-            description = "Face-to-face clear-thinking complexity",
-            itemReference = "sjQ23408K",
-            locations = new List<InventoriesLocations>
+           Id = 101,
+            ItemId = "P000002",
+            Description = "Focused transitional alliance",
+            ItemReference = "nyg48736S",
+            Locations = new List<InventoriesLocations>
             {
-                new InventoriesLocations { locationId = 3211 },
-                new InventoriesLocations { locationId = 24700 },
-                new InventoriesLocations { locationId = 14123 }
+                new InventoriesLocations { LocationId = 19800 },
+                new InventoriesLocations { LocationId = 23653 }
             },
-            totalOnHand = 262,
-            totalExpected = 0,
-            totalOrdered = 80,
-            totalAllocated = 41,
-            totalAvailable = 141,
-            createdAt = DateTime.Parse("2015-02-19 16:08:24"),
-            updatedAt = DateTime.Parse("2015-09-26 06:37:56")
+            TotalOnHand = 194,
+            TotalExpected = 0,
+            TotalOrdered = 139,
+            TotalAllocated = 0,
+            TotalAvailable = 55,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
 
         _context.Inventories.Add(inventory);
@@ -66,8 +65,8 @@ public class InventoryTest
         var result = await _controller.GetInventoryById(100);
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
         var inventory = Xunit.Assert.IsType<Inventory>(okResult.Value);
-        Xunit.Assert.Equal("P000001", inventory.itemId);
-        Xunit.Assert.Equal(100, inventory.id);
+        Xunit.Assert.Equal("P000001", inventory.ItemId);
+        Xunit.Assert.Equal(100, inventory.Id);
     }
 
     [Fact]
@@ -91,24 +90,23 @@ public class InventoryTest
     {
         var newInventory = new Inventory
         {
-            id = 101,
-            itemId = "P000002",
-            description = "Focused transitional alliance",
-            itemReference = "nyg48736S",
-            locations = new List<InventoriesLocations>
+            Id = 101,
+            ItemId = "P000002",
+            Description = "Focused transitional alliance",
+            ItemReference = "nyg48736S",
+            Locations = new List<InventoriesLocations>
             {
-                new InventoriesLocations { locationId = 19800 },
-                new InventoriesLocations { locationId = 23653 }
+                new InventoriesLocations { LocationId = 19800 },
+                new InventoriesLocations { LocationId = 23653 }
             },
-            totalOnHand = 194,
-            totalExpected = 0,
-            totalOrdered = 139,
-            totalAllocated = 0,
-            totalAvailable = 55,
-            createdAt = DateTime.UtcNow,
-            updatedAt = DateTime.UtcNow
+            TotalOnHand = 194,
+            TotalExpected = 0,
+            TotalOrdered = 139,
+            TotalAllocated = 0,
+            TotalAvailable = 55,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
-
         var result = await _controller.AddInventory(newInventory);
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
         Xunit.Assert.Equal("Inventory and locations added successfully", okResult.Value);
@@ -119,21 +117,21 @@ public class InventoryTest
     {
         var existingInventory = new Inventory
         {
-            id = 100,
-            itemId = "P000001",
-            description = "Duplicate Inventory",
-            itemReference = "duplicateRef",
-            locations = new List<InventoriesLocations>
+            Id = 100,
+            ItemId = "P000001",
+            Description = "Duplicate Inventory",
+            ItemReference = "duplicateRef",
+            Locations = new List<InventoriesLocations>
             {
-                new InventoriesLocations { locationId = 12345 }
+                new InventoriesLocations { LocationId = 12345 }
             },
-            totalOnHand = 100,
-            totalExpected = 0,
-            totalOrdered = 50,
-            totalAllocated = 25,
-            totalAvailable = 25,
-            createdAt = DateTime.UtcNow,
-            updatedAt = DateTime.UtcNow
+            TotalOnHand = 100,
+            TotalExpected = 0,
+            TotalOrdered = 50,
+            TotalAllocated = 25,
+            TotalAvailable = 25,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
 
         var result = await _controller.AddInventory(existingInventory);

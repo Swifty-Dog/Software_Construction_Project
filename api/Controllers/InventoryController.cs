@@ -57,7 +57,7 @@ public class InventoryController : ControllerBase{
     [HttpPut("Inventory/{id}")]
     public async Task<IActionResult> UpdateInventory(int id, [FromBody] Inventory inventory){
         var result = await _inventories.UpdateInventory(id, inventory);
-        if(id <= 0 || id != inventory.id){
+        if(id <= 0 || id != inventory.Id){
             return BadRequest("Inventory ID is invalid or does not match the inventory ID in the request body.");
         }
         if(result == null){

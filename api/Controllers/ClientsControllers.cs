@@ -2,11 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("/api/v1/")]
-public class ClientsController : Controller
+public class ClientController : Controller
 {
     private readonly ClientServices _clientServices;
 
-    public ClientsController(ClientServices clientServices)
+    public ClientController(ClientServices clientServices)
     {
         _clientServices = clientServices;
     }

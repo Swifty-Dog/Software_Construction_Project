@@ -32,11 +32,11 @@ public class ClientsTest
             Zip = "28301",
             Province = "Colorado",
             Country = "United States",
-            Contact_name = "Bryan Clark",
-            Contact_phone = "242.732.3483x2573",
-            Contact_email = "test@",
-            Created_at = DateTime.UtcNow,
-            Updated_at = DateTime.UtcNow
+            ContactName = "Bryan Clark",
+            ContactPhone = "242.732.3483x2573",
+            ContactEmail = "test@",
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
 
         _context.Client.Add(client);
@@ -46,7 +46,7 @@ public class ClientsTest
     [Fact]
     public async Task TestGetClients()
     {
-        var result = await _controller.Get_Clients();
+        var result = await _controller.GetClients();
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
         var clients = Xunit.Assert.IsType<List<Client>>(okResult.Value);
         Xunit.Assert.NotEmpty(clients);
@@ -55,7 +55,7 @@ public class ClientsTest
     [Fact]
     public async Task TestGetClientById()
     {
-        var result = await _controller.Get_Client_By_Id(1);
+        var result = await _controller.GetClientById(1);
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
         var client = Xunit.Assert.IsType<Client>(okResult.Value);
         Xunit.Assert.Equal("Raymond Inc", client.Name);
@@ -65,7 +65,7 @@ public class ClientsTest
     [Fact]
     public async Task TestGetNonexistentClient()
     {
-        var result = await _controller.Get_Client_By_Id(9999);
+        var result = await _controller.GetClientById(9999);
         Xunit.Assert.IsType<NotFoundObjectResult>(result);
     }
     
@@ -81,13 +81,13 @@ public class ClientsTest
             Zip = "111",
             Province = "new province",
             Country = "new country",
-            Contact_name = "new name",
-            Contact_phone = "06 12345678",
-            Contact_email = "test@",
-            Created_at = DateTime.UtcNow,
-            Updated_at = DateTime.UtcNow
+            ContactName = "new name",
+            ContactPhone = "06 12345678",
+            ContactEmail = "test@",
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
-        var result = await _controller.Add_Client(newclient);
+        var result = await _controller.AddClient(newclient);
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
         var client = Xunit.Assert.IsType<Client>(okResult.Value);
         Xunit.Assert.Equal(123, client.Id);
@@ -106,14 +106,14 @@ public class ClientsTest
             Zip = "999",
             Province = "changed province",
             Country = "changed country",
-            Contact_name = "new name",
-            Contact_phone = "06 12345678",
-            Contact_email = "test@",
-            Created_at = DateTime.UtcNow,
-            Updated_at = DateTime.UtcNow
+            ContactName = "new name",
+            ContactPhone = "06 12345678",
+            ContactEmail = "test@",
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
 
-        var result = await _controller.Update_Client(1, updatedClient);
+        var result = await _controller.UpdateClient(1, updatedClient);
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
         var client = Xunit.Assert.IsType<Client>(okResult.Value);
         Xunit.Assert.Equal("changed inc", client.Name);
