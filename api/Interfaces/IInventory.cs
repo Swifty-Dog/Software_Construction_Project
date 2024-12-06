@@ -1,4 +1,4 @@
-public interface IInventories{
+public interface IInventory{
     public Task<IEnumerable<Inventory>> GetInventories();
     public Task<Inventory> GetInventoryById(int id);
     public Task<List<InventoriesLocations>> GetInventoryLocations(int id);
