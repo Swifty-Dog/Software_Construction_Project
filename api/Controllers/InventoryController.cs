@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 [ApiController]
 [Route("/api/v1/")]
 
-public class InventoriesController : ControllerBase{
-    private readonly InventoriesServices _inventories;
+public class InventoryController : ControllerBase{
+    private readonly InventoryServices _inventories;
 
-    public InventoriesController(InventoriesServices inventories){
+    public InventoryController(InventoryServices inventories){
         _inventories = inventories;
     }
 
