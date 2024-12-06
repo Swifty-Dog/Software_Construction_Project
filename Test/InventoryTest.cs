@@ -2,22 +2,22 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
 
-public class InventoriesTest
+public class InventoryTest
 {
     private readonly MyContext _context;
-    private readonly InventoriesController _controller;
+    private readonly InventoryController _controller;
 
-    public InventoriesTest()
+    public InventoryTest()
     {
         var options = new DbContextOptionsBuilder<MyContext>()
-            .UseInMemoryDatabase(databaseName: "InventoriesTest")
+            .UseInMemoryDatabase(databaseName: "InventoryTest")
             .Options;
 
         _context = new MyContext(options);
         SeedData();
 
-        var service = new InventoriesServices(_context);
-        _controller = new InventoriesController(service);
+        var service = new InventoryServices(_context);
+        _controller = new InventoryController(service);
     }
 
     private void SeedData()
