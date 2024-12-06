@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 
-public class InventoriesServices : IInventories{
+public class InventoryServices : IInventory{
 
     private readonly MyContext _context;
     
-    public InventoriesServices(MyContext context){
+    public InventoryServices(MyContext context){
         _context = context;
     }
     
