@@ -19,7 +19,7 @@ builder.Services.AddTransient<SuppliersServices>();
 builder.Services.AddTransient<ISuppliersInterface, SuppliersServices>();
 builder.Services.AddTransient<Inventory>();
 builder.Services.AddTransient<InventoriesLocations>();
-builder.Services.AddTransient<InventoriesServices>();
+builder.Services.AddTransient<InventoryServices>();
 builder.Services.AddTransient<Shipment>();
 builder.Services.AddTransient<Shipments_item>();
 builder.Services.AddTransient<ShipmentsServices>();
