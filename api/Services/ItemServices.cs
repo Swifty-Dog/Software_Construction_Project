@@ -98,8 +98,8 @@ public class ItemServices : I_Items
     public async Task<Inventory> Get_Iventory_Through_Items(string uid)
     {
         return await _context.Inventories
-                    .Include(t => t.locations)
-                    .FirstOrDefaultAsync(t => t.itemId == uid);
+                    .Include(t => t.Locations)
+                    .FirstOrDefaultAsync(t => t.ItemId == uid);
     }
 
     public async Task<object> Get_Item_Totals_From_Inventory(string uid)
@@ -108,13 +108,13 @@ public class ItemServices : I_Items
             return null;
 
         return await _context.Inventories
-                    .Where(i => i.itemId == uid)
+                    .Where(i => i.ItemId == uid)
                     .Select(i => new 
                     {
-                        i.totalExpected,
-                        i.totalOrdered,
-                        i.totalAllocated,
-                        i.totalAvailable
+                        i.TotalExpected,
+                        i.TotalOrdered,
+                        i.TotalAllocated,
+                        i.TotalAvailable
                     })
                     .FirstOrDefaultAsync();
     }

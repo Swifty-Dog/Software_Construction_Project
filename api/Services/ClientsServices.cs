@@ -1,30 +1,34 @@
-// using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
-public class ClientServices: IClients{
+public class ClientServices : IClients
+{
     private readonly MyContext _context;
-    public ClientServices(MyContext context){
+
+    public ClientServices(MyContext context)
+    {
         _context = context;
     }
 
-    public async Task<IEnumerable<Client>> Get_Clients()
+    public async Task<IEnumerable<Client>> GetClients()
     {
         return await _context.Client
             .ToListAsync();
     }
 
-    public async Task<Client> Get_Client_By_Id(int id){
-        if(id <=0)
+    public async Task<Client> GetClientById(int id)
+    {
+        if (id <= 0)
             return null;
-        return await _context.Client  
-                    .FirstOrDefaultAsync(c => c.Id == id);
-}
 
+        return await _context.Client
+            .FirstOrDefaultAsync(c => c.Id == id);
+    }
 
-    public async Task<Client> Add_Client(Client client){
-        Client existingclient = await Get_Client_By_Id(client.Id);
-        if (existingclient == null)
+    public async Task<Client> AddClient(Client client)
+    {
+        Client existingClient = await GetClientById(client.Id);
+        if (existingClient == null)
         {
             _context.Client.Add(client);
             await _context.SaveChangesAsync();
@@ -33,40 +37,41 @@ public class ClientServices: IClients{
         return null;
     }
 
-    public async Task<Client> Update_Client(int id, Client client)
+    public async Task<Client> UpdateClient(int id, Client client)
     {
-        if (id <= 0 || client == null) 
+        if (id <= 0 || client == null)
             return null;
 
-        Client clientToUpdate = await _context.Client.FindAsync(id);
-        if (clientToUpdate == null){
-            throw new Exception("client not found or has been deleted.");
-        }
-        clientToUpdate.Name = client.Name;
-        clientToUpdate.Address = client.Address;
-        clientToUpdate.Zip = client.Zip;
-        clientToUpdate.City = client.City;
-        clientToUpdate.Country = client.Country;
-        clientToUpdate.Contact_name = client.Contact_name;
-        clientToUpdate.Contact_phone = client.Contact_phone;
-        clientToUpdate.Contact_email = client.Contact_email;
-        clientToUpdate.Created_at = client.Created_at;
-        clientToUpdate.Updated_at = client.Updated_at;
+        var existingClient = await GetClientById(id);
+        if (existingClient != null)
+        {
+            existingClient.Name = client.Name;
+            existingClient.Address = client.Address;
+            existingClient.City = client.City;
+            existingClient.Zip = client.Zip;
+            existingClient.Province = client.Province;
+            existingClient.Country = client.Country;
+            existingClient.ContactName = client.ContactName;
+            existingClient.ContactPhone = client.ContactPhone;
+            existingClient.ContactEmail = client.ContactEmail;
+            existingClient.CreatedAt = client.CreatedAt;
+            existingClient.UpdatedAt = client.UpdatedAt;
 
-        await _context.SaveChangesAsync();
-        return clientToUpdate;
+            await _context.SaveChangesAsync();
+            return existingClient;
+        }
+        return null;
     }
 
-
-    public async Task<bool> Delete_Client(int id){
-        var clientToDelete = await _context.Client.FindAsync(id);
-        if(clientToDelete != null){
-            _context.Client.Remove(clientToDelete);
+    public async Task<bool> DeleteClient(int id)
+    {
+        var client = await GetClientById(id);
+        if (client != null)
+        {
+            _context.Client.Remove(client);
             await _context.SaveChangesAsync();
             return true;
         }
         return false;
     }
-
-
 }

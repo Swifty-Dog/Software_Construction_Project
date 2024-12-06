@@ -2,74 +2,75 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("/api/v1/")]
-public class ClientController : Controller{
-    private readonly ClientServices _client;
-    public ClientController(ClientServices client)
+public class ClientController : Controller
+{
+    private readonly ClientServices _clientServices;
+
+    public ClientController(ClientServices clientServices)
     {
-        _client = client;
+        _clientServices = clientServices;
     }
 
-    // GET /Client: Returns all Client. 
-    [HttpGet("Clients")]
-    public async Task<IActionResult> Get_Clients()
+    // GET /Clients: Returns all Clients.
+    [HttpGet("clients")]
+    public async Task<IActionResult> GetClients()
     {
-        var clients = await _client.Get_Clients(); 
-        return Ok(clients); 
+        var clients = await _clientServices.GetClients();
+        return Ok(clients);
     }
 
-    // GET /Client/{id}: Returns the details of a specific client by its ID. 
-    [HttpGet("Client/{id}")]
-    public async Task<IActionResult> Get_Client_By_Id(int id){    
-        var client = await _client.Get_Client_By_Id(id);
-        if(client == null){
-            return NotFound("No Client found with that ID");
+    // GET /Clients/{id}: Returns the details of a specific client by its ID.
+    [HttpGet("clients/{id}")]
+    public async Task<IActionResult> GetClientById(int id)
+    {
+        var client = await _clientServices.GetClientById(id);
+        if (client == null)
+        {
+            return NotFound("No client found with that ID");
         }
         return Ok(client);
     }
-   
 
-    [HttpPost("Client")]
-    public async Task<IActionResult> Add_Client([FromBody] Client client)
+    // POST /Clients: Adds a new client.
+    [HttpPost("clients")]
+    public async Task<IActionResult> AddClient([FromBody] Client client)
     {
-        try{
-            var result = await _client.Add_Client(client);
-            if (result == null){
+        try
+        {
+            var result = await _clientServices.AddClient(client);
+            if (result == null)
+            {
                 return BadRequest("Client could not be added or already exists.");
             }
             return Ok(result);
         }
-        catch (Exception ex){
-            return BadRequest(ex.Message);  // Return the error message in a bad request response
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }
 
-    // PUT /Client/{id}: Updates client information. 
-    [HttpPut("Client/{id}")]
-    public async Task<IActionResult> Update_Client([FromRoute]int id, [FromBody] Client client){
-        try{
-            if(id <= 0 || id != client.Id){
-                return BadRequest("Client ID is invalid or does not match the client ID in the request body.");
-            }
-            var result = await _client.Update_Client(id, client);
-            if (result == null) {
-                return BadRequest("Client could not be updated.");
-            }
-            // if(id >=0)
-            //     return BadRequest("ID can not be a negative number");
-            return Ok(result);
+    // PUT /Clients/{id}: Updates an existing client.
+    [HttpPut("clients/{id}")]
+    public async Task<IActionResult> UpdateClient(int id, [FromBody] Client client)
+    {
+        var result = await _clientServices.UpdateClient(id, client);
+        if (result == null)
+        {
+            return NotFound("No client found with that ID");
         }
-        catch (Exception ex){
-            return BadRequest(ex.Message);  // Return the error message in a bad request response
-        }
+        return Ok(result);
     }
 
-
-    // DELETE /Client/ {id}: Deletes a client. 
-    [HttpDelete("Client/{id}")]
-    public async Task<IActionResult> Delete_Client(int id){
-        bool ClientToDeleted = await _client.Delete_Client(id);
-        if(ClientToDeleted == false)
-            return BadRequest("Client could not be deleted.");
-        return Ok("Client deleted successfully.");
+    // DELETE /Clients/{id}: Deletes a client by its ID.
+    [HttpDelete("clients/{id}")]
+    public async Task<IActionResult> DeleteClient(int id)
+    {
+        var result = await _clientServices.DeleteClient(id);
+        if (!result)
+        {
+            return NotFound("No client found with that ID");
+        }
+        return Ok("Client deleted successfully");
     }
 }
