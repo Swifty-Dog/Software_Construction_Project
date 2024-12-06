@@ -28,14 +28,15 @@ public class InventoryTest
 
         var inventory = new Inventory
         {
-           Id = 101,
-            ItemId = "P000002",
+           Id = 100,
+            ItemId = "P000001",
             Description = "Focused transitional alliance",
             ItemReference = "nyg48736S",
             Locations = new List<InventoriesLocations>
             {
                 new InventoriesLocations { LocationId = 19800 },
-                new InventoriesLocations { LocationId = 23653 }
+                new InventoriesLocations { LocationId = 23653 },
+                new InventoriesLocations { LocationId = 43523 }
             },
             TotalOnHand = 194,
             TotalExpected = 0,
