@@ -1,14 +1,15 @@
-public class Inventory {
-    public required int id { get; set; }
-    public required string itemId { get; set; }
-    public required string description { get; set; }
-    public required string itemReference { get; set; }
-    public required List<InventoriesLocations> locations { get; set; }
-    public required int totalOnHand { get; set; }
-    public required int totalExpected { get; set; }
-    public required int totalOrdered { get; set; }
-    public required int totalAllocated { get; set; }
-    public required int totalAvailable { get; set; }
-    public required DateTime createdAt { get; set; }
-    public required DateTime updatedAt { get; set; }
+public class Inventory
+{
+    public int Id { get; set; }
+    public string ItemId { get; set; }
+    public string Description { get; set; }
+    public string ItemReference { get; set; }
+    public List<InventoriesLocations> Locations { get; set; }
+    public int TotalOnHand { get; set; }
+    public int TotalExpected { get; set; }
+    public int TotalOrdered { get; set; }
+    public int TotalAllocated { get; set; }
+    public int TotalAvailable { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 }
