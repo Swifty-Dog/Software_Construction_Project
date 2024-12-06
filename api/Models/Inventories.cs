@@ -3,7 +3,7 @@ public class Inventory {
     public required string itemId { get; set; }
     public required string description { get; set; }
     public required string itemReference { get; set; }
-    public required List<Inventories_locations> locations { get; set; }
+    public required List<InventoriesLocations> locations { get; set; }
     public required int totalOnHand { get; set; }
     public required int totalExpected { get; set; }
     public required int totalOrdered { get; set; }
