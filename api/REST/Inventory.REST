@@ -17,34 +17,34 @@ Api-Key: a1b2c3d4e5
 
 {
         "id": 1,
-        "item_id": "P000001",
+        "itemId": "P000001",
         "description": "Face-to-face clear-thinking complexity",
-        "item_reference": "sjQ23408K",
+        "itemReference": "sjQ23408K",
         "locations": [
             {
-                "InventoryId": 1,
-                "LocationId": 500
+                "inventoryId": 1,
+                "locationId": 500
             },
             {
-                "InventoryId": 1,
-                "LocationId": 24700
+                "inventoryId": 1,
+                "locationId": 24700
             },
             {
-                "InventoryId": 1,
-                "LocationId": 14123
+                "inventoryId": 1,
+                "locationId": 14123
             },
             {
-                "InventoryId": 1,
-                "LocationId": 19538
+                "inventoryId": 1,
+                "locationId": 19538
             }
         ],
-        "total_on_hand": 262,
-        "total_expected": 0,
-        "total_ordered": 80,
-        "total_allocated": 41,
-        "total_available": 141,
-        "created_at": "2015-02-19T16:08:24Z",
-        "updated_at": "2015-09-26T06:37:56Z"
+        "totalOnHand": 262,
+        "totalExpected": 0,
+        "totalOrdered": 80,
+        "totalAllocated": 41,
+        "totalAvailable": 141,
+        "createdAt": "2015-02-19T16:08:24Z",
+        "updatedAt": "2015-09-26T06:37:56Z"
     }
 
 
@@ -55,9 +55,9 @@ Api-Key: a1b2c3d4e5
 
 {
         "id": 1,
-        "item_id": "P000001",
+        "itemId": "P000001",
         "description": "Face-to-face clear-thinking complexity",
-        "item_reference": "sjQ23408K",
+        "itemReference": "sjQ23408K",
         //"locations": [
         //    500,
         //    24700,
@@ -70,29 +70,29 @@ Api-Key: a1b2c3d4e5
         //],
         "locations": [
              {
-                "InventoryId": 1,
-                "LocationId": 700
+                "inventoryId": 1,
+                "locationId": 700
             },
             {
-                "InventoryId": 1,
-                "LocationId": 24700
+                "inventoryId": 1,
+                "locationId": 24700
             },
             {
-                "InventoryId": 1,
-                "LocationId": 14123
+                "inventoryId": 1,
+                "locationId": 14123
             },
             {
-                "InventoryId": 1,
-                "LocationId": 19538
+                "inventoryId": 1,
+                "locationId": 19538
             }
         ],
-        "total_on_hand": 262,
-        "total_expected": 0,
-        "total_ordered": 80,
-        "total_allocated": 41,
-        "total_available": 141,
-        "created_at": "2015-02-19T16:08:24Z",
-        "updated_at": "2015-09-26T06:37:56Z"
+        "totalOnHand": 262,
+        "totalExpected": 0,
+        "totalOrdered": 80,
+        "totalAllocated": 41,
+        "totalAvailable": 141,
+        "createdAt": "2015-02-19T16:08:24Z",
+        "updatedAt": "2015-09-26T06:37:56Z"
     }
 
 ### Del Delete inventory by id

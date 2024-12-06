@@ -3,22 +3,22 @@ using Microsoft.AspNetCore.Mvc;
 [ApiController]
 [Route("/api/v1/")]
 
-public class InventoriesController : ControllerBase{
-    private readonly InventoriesServices _inventories;
+public class InventoryController : ControllerBase{
+    private readonly InventoryServices _inventories;
 
-    public InventoriesController(InventoriesServices inventories){
+    public InventoryController(InventoryServices inventories){
         _inventories = inventories;
     }
 
     [HttpGet("Inventories")]
-    public async Task<IActionResult> Get_Inventories(){
-        var inventories = await _inventories.Get_Inventories();
+    public async Task<IActionResult> GetInventories(){
+        var inventories = await _inventories.GetInventories();
         return Ok(inventories);
     }
 
     [HttpGet("Inventory/{id}")]
-    public async Task<IActionResult> Get_Inventory_By_Id(int id){
-        var inventory = await _inventories.Get_Inventory_By_Id(id);
+    public async Task<IActionResult> GetInventoryById(int id){
+        var inventory = await _inventories.GetInventoryById(id);
         if(inventory == null){
             return NotFound("No Inventory found with that ID");
         }
@@ -26,8 +26,8 @@ public class InventoriesController : ControllerBase{
     }
 
     [HttpGet("Inventory/{id}/locations")]
-    public async Task<IActionResult> Get_Inventory_Locations(int id){
-        var locations = await _inventories.Get_Inventory_Locations(id);
+    public async Task<IActionResult> GetInventoryLocations(int id){
+        var locations = await _inventories.GetInventoryLocations(id);
         if(locations == null){
             return NotFound("No locations found for that Inventory ID");
         }
@@ -42,7 +42,7 @@ public class InventoriesController : ControllerBase{
             return BadRequest("Inventory is null");
         }
         // Call the service to add the inventory
-        var addedInventory = await _inventories.Add_Inventory(inventory);
+        var addedInventory = await _inventories.AddInventory(inventory);
 
         if (addedInventory != null)
         {
@@ -55,9 +55,9 @@ public class InventoriesController : ControllerBase{
     }
     
     [HttpPut("Inventory/{id}")]
-    public async Task<IActionResult> Update_Inventory(int id, [FromBody] Inventory inventory){
-        var result = await _inventories.Update_Inventory(id, inventory);
-        if(id <= 0 || id != inventory.Id){
+    public async Task<IActionResult> UpdateInventory(int id, [FromBody] Inventory inventory){
+        var result = await _inventories.UpdateInventory(id, inventory);
+        if(id <= 0 || id != inventory.id){
             return BadRequest("Inventory ID is invalid or does not match the inventory ID in the request body.");
         }
         if(result == null){
@@ -67,8 +67,8 @@ public class InventoriesController : ControllerBase{
     }
 
     [HttpDelete("Inventory/{id}")]
-    public async Task<IActionResult> Delete_Inventory(int id){
-        var result = await _inventories.Delete_Inventory(id);
+    public async Task<IActionResult> DeleteInventory(int id){
+        var result = await _inventories.DeleteInventory(id);
         if(result == false){
             return BadRequest("Inventory could not be deleted or does not exist.");
         }
