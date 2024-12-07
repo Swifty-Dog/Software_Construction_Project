@@ -24,7 +24,7 @@ public class TransfersTest
     }
     private void ClearData()
     {
-        _context.Set<Transfers_item>().RemoveRange(_context.Set<Transfers_item>());
+        _context.Set<TransfersItem>().RemoveRange(_context.Set<TransfersItem>());
         _context.Transfers.RemoveRange(_context.Transfers);
         _context.SaveChanges();
     }      
@@ -39,21 +39,21 @@ public class TransfersTest
         {
             Id = 1,
             Reference = "TR12344",
-            Transfer_from = 1234,
-            Transfer_to = 5678,
-            Transfer_status = "completed",
-            Created_at = DateTime.Parse("2021-08-01T00:00:00"),
-            Updated_at = DateTime.Parse("2021-08-02T00:00:00"),
-            Items = new List<Transfers_item>
+            TransferFrom = 1234,
+            TransferTo = 5678,
+            TransferStatus = "completed",
+            CreatedAt = DateTime.Parse("2021-08-01T00:00:00"),
+            UpdatedAt = DateTime.Parse("2021-08-02T00:00:00"),
+            Items = new List<TransfersItem>
             {
-                new Transfers_item
+                new TransfersItem
                 {
-                    Item_Id = "P007434",
+                    ItemId = "P007434",
                     Amount = 1
                 },
-                new Transfers_item
+                new TransfersItem
                 {
-                    Item_Id = "P007435",
+                    ItemId = "P007435",
                     Amount = 2
                 }
             }
@@ -62,21 +62,21 @@ public class TransfersTest
         {
             Id = 2,
             Reference = "TR12345",
-            Transfer_from = 2323,
-            Transfer_to = 9299,
-            Transfer_status = "pending",
-            Created_at = DateTime.Parse("2021-09-01T00:00:00"),
-            Updated_at = DateTime.Parse("2021-10-01T00:00:00"),
-            Items = new List<Transfers_item>
+            TransferFrom = 2323,
+            TransferTo = 9299,
+            TransferStatus = "pending",
+            CreatedAt = DateTime.Parse("2021-09-01T00:00:00"),
+            UpdatedAt = DateTime.Parse("2021-10-01T00:00:00"),
+            Items = new List<TransfersItem>
             {
-                new Transfers_item
+                new TransfersItem
                 {
-                    Item_Id = "P007435",
+                    ItemId = "P007435",
                     Amount = 2
                 },
-                new Transfers_item
+                new TransfersItem
                 {
-                    Item_Id = "P007436",
+                    ItemId = "P007436",
                     Amount = 3
                 }
             }
@@ -87,7 +87,7 @@ public class TransfersTest
     }
 
     [Fact]
-    public async Task Test_Get_Transfers()
+    public async Task TestGetTransfers()
     {
         var result = await _controller.GetTransfers();
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
@@ -106,7 +106,7 @@ public class TransfersTest
     }
 
     [Fact]
-    public async Task Test_Get_Non_Existent_Transfer()
+    public async Task TestGetNonExistentTransfer()
     {
         var result = await _controller.GetTransferById(999);
         Xunit.Assert.IsType<NotFoundObjectResult>(result);
@@ -119,16 +119,16 @@ public class TransfersTest
         {
             Id = 3,
             Reference = "TR1267",
-            Transfer_from  = 1000,
-            Transfer_to  = 2000,
-            Transfer_status = "completed",
-            Created_at = DateTime.UtcNow,
-            Updated_at = DateTime.UtcNow,
-            Items = new List<Transfers_item>
+            TransferFrom  = 1000,
+            TransferTo  = 2000,
+            TransferStatus = "completed",
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow,
+            Items = new List<TransfersItem>
             {
-                new Transfers_item
+                new TransfersItem
                 {
-                    Item_Id = "P007437",
+                    ItemId = "P007437",
                     Amount = 1
                 }
             }
@@ -149,5 +149,4 @@ public class TransfersTest
         var getResult = await _controller.GetTransferById(1);
         Xunit.Assert.IsType<NotFoundObjectResult>(getResult);
     }
-
 }

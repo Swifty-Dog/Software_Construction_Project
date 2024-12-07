@@ -2,21 +2,25 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
-public class WarehouseServices: IWarehouse{
+public class WarehouseServices: IWarehouse
+{
     private readonly MyContext _context;
-    public WarehouseServices(MyContext context){
+    public WarehouseServices(MyContext context)
+    {
         _context = context;
     }
 
-    public async Task<IEnumerable<Warehouse>> GetWarehouses(){
+    public async Task<IEnumerable<Warehouse>> GetWarehouses()
+    {
         return await _context.Warehouse
             .Include(w => w.Contact)
             .Include(l => l.Locations)  // Eagerly load the related Contact entities
             .ToListAsync();
     }
 
-    public async Task<Warehouse> GetWarehouseById(int id){
-        if(id <=0)
+    public async Task<Warehouse> GetWarehouseById(int id)
+    {
+        if (id <=0)
             return null;
         return await _context.Warehouse
                     .Include(w => w.Contact)  
@@ -25,12 +29,14 @@ public class WarehouseServices: IWarehouse{
                     
     }
 
-    public async Task<Warehouse> AddWarehouse(Warehouse warehouse){
+    public async Task<Warehouse> AddWarehouse(Warehouse warehouse)
+    {
         var existingContact = await _context.Contact
         .FirstOrDefaultAsync(c => c.Email == warehouse.Contact.Email
         & c.Phone == warehouse.Contact.Phone
         & c.Name == warehouse.Contact.Name);
-        if (existingContact != null){
+        if (existingContact != null)
+        {
             warehouse.Contact = existingContact; 
         }   
         Warehouse existingWarehouse = await GetWarehouseById(warehouse.Id);
@@ -43,12 +49,14 @@ public class WarehouseServices: IWarehouse{
         return null;
     }
 
-    public async Task<Warehouse> UpdateWarehouse(int id, Warehouse warehouse){
+    public async Task<Warehouse> UpdateWarehouse(int id, Warehouse warehouse)
+    {
         if (id <= 0 || warehouse == null) 
             return null;
 
         Warehouse warehouseToUpdate = await _context.Warehouse.FindAsync(id);
-        if (warehouseToUpdate == null){
+        if (warehouseToUpdate == null)
+        {
             throw new Exception("Warehouse not found or has been deleted.");
         }
         warehouseToUpdate.Code = warehouse.Code;
@@ -59,17 +67,18 @@ public class WarehouseServices: IWarehouse{
         warehouseToUpdate.Province = warehouse.Province;
         warehouseToUpdate.Country = warehouse.Country;
         warehouseToUpdate.Contact = warehouse.Contact;
-        warehouseToUpdate.Created_at = warehouse.Created_at;
-        warehouseToUpdate.Updated_at = warehouse.Updated_at;
+        warehouseToUpdate.CreatedAt = warehouse.CreatedAt;
+        warehouseToUpdate.UpdatedAt = warehouse.UpdatedAt;
 
         await _context.SaveChangesAsync();
         return warehouseToUpdate;
     }
 
-
-    public async Task<bool> DeleteWarehouse(int id){
+    public async Task<bool> DeleteWarehouse(int id)
+    {
         var warehouseToDelete = await _context.Warehouse.FindAsync(id);
-        if(warehouseToDelete != null){
+        if (warehouseToDelete != null)
+        {
             _context.Warehouse.Remove(warehouseToDelete);
             await _context.SaveChangesAsync();
             return true;

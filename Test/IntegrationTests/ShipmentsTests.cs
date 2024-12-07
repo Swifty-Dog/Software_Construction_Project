@@ -23,32 +23,32 @@ public class ShipmentsTest
     private void SeedData()
     {
         _context.Shipments.RemoveRange(_context.Shipments);
-        _context.Shipments_items.RemoveRange(_context.Shipments_items);
+        _context.ShipmentsItems.RemoveRange(_context.ShipmentsItems);
         _context.SaveChanges();
 
         var shipment = new Shipment
         {
             Id = 1,
-            Order_id = 3,
-            Source_id = 52,
-            Order_date = new DateOnly(1973, 1, 28),
-            Request_date = new DateOnly(1973, 1, 30),
-            Shipment_date = new DateOnly(1973, 2, 1),
-            Shipment_type = "I",
-            Shipment_status = "Pending",
+            OrderId = 3,
+            SourceId = 52,
+            OrderDate = new DateOnly(1973, 1, 28),
+            RequestDate = new DateOnly(1973, 1, 30),
+            ShipmentDate = new DateOnly(1973, 2, 1),
+            ShipmentType = "I",
+            ShipmentStatus = "Pending",
             Notes = "Hoog genot springen afspraak mond bus.",
-            Carrier_code = "DHL",
-            Carrier_description = "DHL Express",
-            Service_code = "NextDay",
-            Payment_type = "Automatic",
-            Transfer_mode = "Ground",
-            Total_package_count = 29,
-            Total_package_weight = 463,
-            Created_at = DateTime.Parse("1973-01-28T20:09:11Z"),
-            Updated_at = DateTime.Parse("1973-01-29T22:09:11Z"),
-            Items = new List<Shipments_item>
+            CarrierCode = "DHL",
+            CarrierDescription = "DHL Express",
+            ServiceCode = "NextDay",
+            PaymentType = "Automatic",
+            TransferMode = "Ground",
+            TotalPackageCount = 29,
+            TotalPackageWeight = 463,
+            CreatedAt = DateTime.Parse("1973-01-28T20:09:11Z"),
+            UpdatedAt = DateTime.Parse("1973-01-29T22:09:11Z"),
+            Items = new List<ShipmentsItem>
             {
-                new Shipments_item { ItemId = "P010669", Amount = 16 }
+                new ShipmentsItem { ItemId = "P010669", Amount = 16 }
             }
         };
 
@@ -57,37 +57,37 @@ public class ShipmentsTest
     }
 
     [Fact]
-    public async Task Test_Get_Shipments()
+    public async Task TestGetShipments()
     {
-        var result = await _controller.Get_Shipments();
+        var result = await _controller.GetShipments();
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
         var shipments = Xunit.Assert.IsType<List<Shipment>>(okResult.Value);
         Xunit.Assert.NotEmpty(shipments);
     }
 
     [Fact]
-    public async Task Test_Get_Shipment_By_Id()
+    public async Task TestGetShipmentById()
     {
-        var result = await _controller.Get_Shipment_By_Id(1);
+        var result = await _controller.GetShipmentById(1);
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
         var shipment = Xunit.Assert.IsType<Shipment>(okResult.Value);
         Xunit.Assert.Equal(1, shipment.Id);
-        Xunit.Assert.Equal(3, shipment.Order_id);
+        Xunit.Assert.Equal(3, shipment.OrderId);
     }
 
     [Fact]
-    public async Task Test_Get_Non_Existent_Shipment()
+    public async Task TestGetNonExistentShipment()
     {
-        var result = await _controller.Get_Shipment_By_Id(9999);
+        var result = await _controller.GetShipmentById(9999);
         Xunit.Assert.IsType<NotFoundObjectResult>(result);
     }
 
     [Fact]
-    public async Task Test_Get_Shipment_Items()
+    public async Task TestGetShipmentItems()
     {
-        var result = await _controller.Get_Shipment_Items(1);
+        var result = await _controller.GetShipmentItems(1);
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
-        var items = Xunit.Assert.IsType<List<Shipments_item>>(okResult.Value);
+        var items = Xunit.Assert.IsType<List<ShipmentsItem>>(okResult.Value);
         //Xunit.Assert.Equal(1, items.Count);
         Xunit.Assert.Single(items);
         var firstItem = items.First();
@@ -101,27 +101,27 @@ public class ShipmentsTest
         var newShipment = new Shipment
         {
             Id = 2,
-            Order_id = 4,
-            Source_id = 61,
-            Order_date = new DateOnly(2022, 5, 10),
-            Request_date = new DateOnly(2022, 5, 12),
-            Shipment_date = new DateOnly(2022, 5, 14),
-            Shipment_type = "E",
-            Shipment_status = "Delivered",
+            OrderId = 4,
+            SourceId = 61,
+            OrderDate = new DateOnly(2022, 5, 10),
+            RequestDate = new DateOnly(2022, 5, 12),
+            ShipmentDate = new DateOnly(2022, 5, 14),
+            ShipmentType = "E",
+            ShipmentStatus = "Delivered",
             Notes = "Shipment created for testing.",
-            Carrier_code = "FedEx",
-            Carrier_description = "FedEx Ground",
-            Service_code = "Standard",
-            Payment_type = "Prepaid",
-            Transfer_mode = "Air",
-            Total_package_count = 10,
-            Total_package_weight = 50,
-            Created_at = DateTime.UtcNow,
-            Updated_at = DateTime.UtcNow,
-            Items = new List<Shipments_item>
+            CarrierCode = "FedEx",
+            CarrierDescription = "FedEx Ground",
+            ServiceCode = "Standard",
+            PaymentType = "Prepaid",
+            TransferMode = "Air",
+            TotalPackageCount = 10,
+            TotalPackageWeight = 50,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow,
+            Items = new List<ShipmentsItem>
             {
-                new Shipments_item { ItemId = "P020202", Amount = 5 },
-                new Shipments_item { ItemId = "P030303", Amount = 5 }
+                new ShipmentsItem { ItemId = "P020202", Amount = 5 },
+                new ShipmentsItem { ItemId = "P030303", Amount = 5 }
             }
         };
 
@@ -136,26 +136,26 @@ public class ShipmentsTest
         var existingShipment = new Shipment
         {
             Id = 1,
-            Order_id = 3,
-            Source_id = 52,
-            Order_date = new DateOnly(1973, 1, 28),
-            Request_date = new DateOnly(1973, 1, 30),
-            Shipment_date = new DateOnly(1973, 2, 1),
-            Shipment_type = "I",
-            Shipment_status = "Pending",
+            OrderId = 3,
+            SourceId = 52,
+            OrderDate = new DateOnly(1973, 1, 28),
+            RequestDate = new DateOnly(1973, 1, 30),
+            ShipmentDate = new DateOnly(1973, 2, 1),
+            ShipmentType = "I",
+            ShipmentStatus = "Pending",
             Notes = "Duplicate Shipment",
-            Carrier_code = "DHL",
-            Carrier_description = "DHL Express",
-            Service_code = "NextDay",
-            Payment_type = "Automatic",
-            Transfer_mode = "Ground",
-            Total_package_count = 29,
-            Total_package_weight = 463,
-            Created_at = DateTime.UtcNow,
-            Updated_at = DateTime.UtcNow,
-            Items = new List<Shipments_item>
+            CarrierCode = "DHL",
+            CarrierDescription = "DHL Express",
+            ServiceCode = "NextDay",
+            PaymentType = "Automatic",
+            TransferMode = "Ground",
+            TotalPackageCount = 29,
+            TotalPackageWeight = 463,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow,
+            Items = new List<ShipmentsItem>
             {
-                new Shipments_item { ItemId = "P010669", Amount = 16 }
+                new ShipmentsItem { ItemId = "P010669", Amount = 16 }
             }
         };
 
@@ -167,17 +167,17 @@ public class ShipmentsTest
     [Fact]
     public async Task TestDeleteShipment()
     {
-        var result = await _controller.Delete_Shipment(1);
+        var result = await _controller.DeleteShipment(1);
         Xunit.Assert.IsType<OkObjectResult>(result);
 
-        var getResult = await _controller.Get_Shipment_By_Id(1);
+        var getResult = await _controller.GetShipmentById(1);
         Xunit.Assert.IsType<NotFoundObjectResult>(getResult);
     }
 
     [Fact]
     public async Task TestDeleteNonExistentShipment()
     {
-        var result = await _controller.Delete_Shipment(9999);
+        var result = await _controller.DeleteShipment(9999);
         var badRequestResult = Xunit.Assert.IsType<BadRequestObjectResult>(result);
         Xunit.Assert.Equal("Shipment could not be deleted or does not exist.", badRequestResult.Value);
     }
