@@ -1,4 +1,5 @@
-public class Supplier {
+public class Supplier
+{
     public required int Id { get; set; }
     public required string Code { get; set; }
     public required string Name { get; set; }
@@ -13,5 +14,4 @@ public class Supplier {
     public required string Reference {get; set; }
     public required DateTime Created_at { get; set; }
     public required DateTime Updated_at { get; set; }
-
 }
