@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-public class SuppliersServices : ISuppliersInterface
+public class SuppliersServices : ISuppliers
 {
     private readonly MyContext _context;
 

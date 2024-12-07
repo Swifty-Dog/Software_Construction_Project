@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 [Route("/api/v1/suppliers")]
 public class SuppliersController : ControllerBase
 {
-    private readonly ISuppliersInterface _suppliersServices;
+    private readonly ISuppliers _suppliersServices;
 
-    public SuppliersController(ISuppliersInterface suppliersServices)
+    public SuppliersController(ISuppliers suppliersServices)
     {
         _suppliersServices = suppliersServices;
     }

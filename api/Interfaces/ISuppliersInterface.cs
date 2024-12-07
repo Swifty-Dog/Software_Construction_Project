@@ -1,4 +1,4 @@
-public interface ISuppliersInterface
+public interface ISuppliers
 {
     Task<Supplier> Get(int id);
     Task<IEnumerable<Supplier>> GetAll();
