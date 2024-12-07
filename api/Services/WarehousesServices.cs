@@ -8,14 +8,14 @@ public class WarehouseServices: IWarehouse{
         _context = context;
     }
 
-    public async Task<IEnumerable<Warehouse>> Get_Warehouses(){
+    public async Task<IEnumerable<Warehouse>> GetWarehouses(){
         return await _context.Warehouse
             .Include(w => w.Contact)
             .Include(l => l.Locations)  // Eagerly load the related Contact entities
             .ToListAsync();
     }
 
-    public async Task<Warehouse> Get_Warehouse_By_Id(int id){
+    public async Task<Warehouse> GetWarehouseById(int id){
         if(id <=0)
             return null;
         return await _context.Warehouse
@@ -25,8 +25,7 @@ public class WarehouseServices: IWarehouse{
                     
     }
 
-
-    public async Task<Warehouse> Add_Warehouse(Warehouse warehouse){
+    public async Task<Warehouse> AddWarehouse(Warehouse warehouse){
         var existingContact = await _context.Contact
         .FirstOrDefaultAsync(c => c.Email == warehouse.Contact.Email
         & c.Phone == warehouse.Contact.Phone
@@ -34,7 +33,7 @@ public class WarehouseServices: IWarehouse{
         if (existingContact != null){
             warehouse.Contact = existingContact; 
         }   
-        Warehouse existingWarehouse = await Get_Warehouse_By_Id(warehouse.Id);
+        Warehouse existingWarehouse = await GetWarehouseById(warehouse.Id);
         if (existingWarehouse == null)
         {
             _context.Warehouse.Add(warehouse);
@@ -44,7 +43,7 @@ public class WarehouseServices: IWarehouse{
         return null;
     }
 
-    public async Task<Warehouse> Update_Warehouse(int id, Warehouse warehouse){
+    public async Task<Warehouse> UpdateWarehouse(int id, Warehouse warehouse){
         if (id <= 0 || warehouse == null) 
             return null;
 
@@ -68,7 +67,7 @@ public class WarehouseServices: IWarehouse{
     }
 
 
-    public async Task<bool> Delete_Warehouse(int id){
+    public async Task<bool> DeleteWarehouse(int id){
         var warehouseToDelete = await _context.Warehouse.FindAsync(id);
         if(warehouseToDelete != null){
             _context.Warehouse.Remove(warehouseToDelete);
@@ -78,7 +77,7 @@ public class WarehouseServices: IWarehouse{
         return false;
     }
 
-    public async Task<List<Locations>> Get_Warehouse_LocationsAsync(int id)
+    public async Task<List<Locations>> GetWarehouseLocations(int id)
     {
         if (id <= 0)
             return null;

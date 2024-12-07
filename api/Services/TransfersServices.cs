@@ -8,20 +8,20 @@ public class TransfersServices : ITransfers{
         _context = context;
     }
     
-    public async Task<IEnumerable<Transfer>> Get_Transfers(){
+    public async Task<IEnumerable<Transfer>> GetTransfers(){
         return await _context.Transfers
             .Include(w => w.Items)  
             .ToListAsync();
     }
 
-    public async Task<Transfer> Get_Transfer_By_Id(int id){
+    public async Task<Transfer> GetTransferById(int id){
         if(id <=0)
             return null;
         return await _context.Transfers
                     .Include(t => t.Items)  
                     .FirstOrDefaultAsync(t => t.Id == id);
     }
-    public async Task<List<Transfers_item>> Get_Transfer_Items(int id){
+    public async Task<List<Transfers_item>> GetTransferItems(int id){
         if (id <= 0) return null;
 
         var transfer = await _context.Transfers
@@ -33,7 +33,7 @@ public class TransfersServices : ITransfers{
         return transfer.Items;
     }
 
-    public async Task<Transfer> Add_Transfer(Transfer transfer){
+    public async Task<Transfer> AddTransfer(Transfer transfer){
         if (transfer == null || transfer.Items == null || !transfer.Items.Any()){
             throw new ArgumentNullException("Transfer or its Items list cannot be null.");
         }
@@ -65,9 +65,9 @@ public class TransfersServices : ITransfers{
         return null; 
     }
 
-    public async Task<Transfer> Update_Transfer(int id, Transfer transfer){
+    public async Task<Transfer> UpdateTransfer(int id, Transfer transfer){
         if(id <= 0) return null;
-        var existingTransfer = await Get_Transfer_By_Id(id);
+        var existingTransfer = await GetTransferById(id);
         if (existingTransfer == null) return null;
         existingTransfer.Reference = transfer.Reference;
         existingTransfer.Transfer_from = transfer.Transfer_from;
@@ -79,9 +79,9 @@ public class TransfersServices : ITransfers{
         return existingTransfer;
     }
 
-    public async Task<bool> Delete_Transfer(int id){
+    public async Task<bool> DeleteTransfer(int id){
         if (id <= 0) return false;
-        var existingTransfer = await Get_Transfer_By_Id(id);
+        var existingTransfer = await GetTransferById(id);
         if (existingTransfer == null) return false;
         _context.Transfers.Remove(existingTransfer);
         await _context.SaveChangesAsync();

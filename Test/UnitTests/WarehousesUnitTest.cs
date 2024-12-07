@@ -81,7 +81,7 @@ public class WarehouseServicesTest
     [Fact]
     public async Task Get_Warehouse_By_Id()
     {
-        var result = await _service.Get_Warehouse_By_Id(1);
+        var result = await _service.GetWarehouseById(1);
 
         Xunit.Assert.NotNull(result);
         Xunit.Assert.Equal("WH001", result.Code);
@@ -93,7 +93,7 @@ public class WarehouseServicesTest
     [Fact]
     public async Task Get_Warehouse_By_Id_Invalid()
     {
-        var result = await _service.Get_Warehouse_By_Id(999);
+        var result = await _service.GetWarehouseById(999);
 
         Xunit.Assert.Null(result);
     }
@@ -116,7 +116,7 @@ public class WarehouseServicesTest
             Contact = _context.Contact.Find(1)
         };
 
-        var result = await _service.Add_Warehouse(newWarehouse);
+        var result = await _service.AddWarehouse(newWarehouse);
 
         Xunit.Assert.NotNull(result);
         Xunit.Assert.Equal("WH003", result.Code);
@@ -141,13 +141,13 @@ public class WarehouseServicesTest
             Contact = _context.Contact.Find(1)
         };
 
-        var result = await _service.Add_Warehouse(duplicateWarehouse);
+        var result = await _service.AddWarehouse(duplicateWarehouse);
 
         Xunit.Assert.Null(result);
         Xunit.Assert.Equal(2, _context.Warehouse.Count());
     }
     [Fact]
-    public async Task Update_Existing_Warehouse()
+    public async Task UpdateExistingWarehouse()
     {
         var updatedWarehouse = new Warehouse
         {
@@ -164,7 +164,7 @@ public class WarehouseServicesTest
             Contact = _context.Contact.Find(2)
         };
 
-        var result = await _service.Update_Warehouse(1, updatedWarehouse);
+        var result = await _service.UpdateWarehouse(1, updatedWarehouse);
 
         Xunit.Assert.NotNull(result);
         Xunit.Assert.Equal("WH001-UPDATED", result.Code);
@@ -175,7 +175,7 @@ public class WarehouseServicesTest
     [Fact]
     public async Task Delete_Warehouse_Valid()
     {
-        var result = await _service.Delete_Warehouse(1);
+        var result = await _service.DeleteWarehouse(1);
 
         Xunit.Assert.True(result);
         Xunit.Assert.Equal(1, _context.Warehouse.Count());
@@ -184,7 +184,7 @@ public class WarehouseServicesTest
     [Fact]
     public async Task Delete_Warehouse_Invalid()
     {
-        var result = await _service.Delete_Warehouse(999);
+        var result = await _service.DeleteWarehouse(999);
 
         Xunit.Assert.False(result);
         Xunit.Assert.Equal(2, _context.Warehouse.Count());

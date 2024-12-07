@@ -13,11 +13,11 @@ public class WarehouseController : ControllerBase
 
     // GET /Warehouses: Returns all Warehouses.
     [HttpGet("Warehouses")]
-    public async Task<IActionResult> Get_Warehouses()
+    public async Task<IActionResult> GetWarehouses()
     {
         try
         {
-            var warehouses = await _warehouse.Get_Warehouses();
+            var warehouses = await _warehouse.GetWarehouses();
             if (warehouses == null || !warehouses.Any())
             {
                 return NotFound("No Warehouses found.");
@@ -32,11 +32,11 @@ public class WarehouseController : ControllerBase
 
     // GET /Warehouse/{id}: Returns the details of a specific warehouse by its ID.
     [HttpGet("Warehouse/{id}")]
-    public async Task<IActionResult> Get_Warehouse_By_Id(int id)
+    public async Task<IActionResult> GetWarehouseById(int id)
     {
         try
         {
-            var warehouse = await _warehouse.Get_Warehouse_By_Id(id);
+            var warehouse = await _warehouse.GetWarehouseById(id);
             if (warehouse == null)
             {
                 return NotFound($"No Warehouse found with ID {id}.");
@@ -51,7 +51,7 @@ public class WarehouseController : ControllerBase
 
     // GET /Warehouse/{id}/locations: Returns all locations within a specific warehouse.
     [HttpGet("Warehouse/{id}/locations")]
-    public async Task<IActionResult> Get_Warehouse_Locations(int id)
+    public async Task<IActionResult> GetWarehouseLocations(int id)
     {
         if (id <= 0)
         {
@@ -59,7 +59,7 @@ public class WarehouseController : ControllerBase
         }
         try
         {
-            var locations = await _warehouse.Get_Warehouse_LocationsAsync(id);
+            var locations = await _warehouse.GetWarehouseLocations(id);
             if (locations == null || !locations.Any())
             {
                 return NotFound($"No locations found for Warehouse ID {id}.");
@@ -74,11 +74,11 @@ public class WarehouseController : ControllerBase
 
     // POST /Warehouse: Adds a new warehouse.
     [HttpPost("Warehouse")]
-    public async Task<IActionResult> Add_Warehouse([FromBody] Warehouse warehouse)
+    public async Task<IActionResult> AddWarehouse([FromBody] Warehouse warehouse)
     {
         try
         {
-            var result = await _warehouse.Add_Warehouse(warehouse);
+            var result = await _warehouse.AddWarehouse(warehouse);
             if (result == null)
             {
                 return BadRequest("Warehouse could not be added or already exists.");
@@ -94,7 +94,7 @@ public class WarehouseController : ControllerBase
 
     // PUT /Warehouse/{id}: Updates warehouse information.
     [HttpPut("Warehouse/{id}")]
-    public async Task<IActionResult> Update_Warehouse(int id, [FromBody] Warehouse warehouse)
+    public async Task<IActionResult> UpdateWarehouse(int id, [FromBody] Warehouse warehouse)
     {
         if (id <= 0 || id != warehouse.Id)
         {
@@ -102,7 +102,7 @@ public class WarehouseController : ControllerBase
         }
         try
         {
-            var result = await _warehouse.Update_Warehouse(id, warehouse);
+            var result = await _warehouse.UpdateWarehouse(id, warehouse);
             if (result == null)
             {
                 return NotFound($"No Warehouse found with ID {id}.");
@@ -117,7 +117,7 @@ public class WarehouseController : ControllerBase
 
     // DELETE /Warehouse/{id}: Deletes a warehouse.
     [HttpDelete("Warehouse/{id}")]
-    public async Task<IActionResult> Delete_Warehouse(int id)
+    public async Task<IActionResult> DeleteWarehouse(int id)
     {
         if (id <= 0)
         {
@@ -125,7 +125,7 @@ public class WarehouseController : ControllerBase
         }
         try
         {
-            var deleted = await _warehouse.Delete_Warehouse(id);
+            var deleted = await _warehouse.DeleteWarehouse(id);
             if (!deleted)
             {
                 return NotFound($"No Warehouse found with ID {id}.");

@@ -89,16 +89,16 @@ public class TransfersTest
     [Fact]
     public async Task Test_Get_Transfers()
     {
-        var result = await _controller.Get_Transfers();
+        var result = await _controller.GetTransfers();
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
         var transfers = Xunit.Assert.IsType<List<Transfer>>(okResult.Value);
         Xunit.Assert.NotEmpty(transfers);
     }
 
     [Fact]
-    public async Task Test_Get_Transfer_By_Id()
+    public async Task TestGetTransferById()
     {
-        var result = await _controller.Get_Transfer_By_Id(2);
+        var result = await _controller.GetTransferById(2);
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
         var transfer = Xunit.Assert.IsType<Transfer>(okResult.Value);
         Xunit.Assert.Equal("TR12345", transfer.Reference);
@@ -108,12 +108,12 @@ public class TransfersTest
     [Fact]
     public async Task Test_Get_Non_Existent_Transfer()
     {
-        var result = await _controller.Get_Transfer_By_Id(999);
+        var result = await _controller.GetTransferById(999);
         Xunit.Assert.IsType<NotFoundObjectResult>(result);
     }
 
     [Fact]
-    public async Task Test_Post_Transfer()
+    public async Task TestPostTransfer()
     {
         var newTransfer = new Transfer
         {
@@ -141,12 +141,12 @@ public class TransfersTest
     }
 
     [Fact]
-    public async Task Test_Delete_Transfer()
+    public async Task TestDeleteTransfer()
     {
-        var result = await _controller.Delete_Transfer(1);
+        var result = await _controller.DeleteTransfer(1);
         Xunit.Assert.IsType<NoContentResult>(result);
 
-        var getResult = await _controller.Get_Transfer_By_Id(1);
+        var getResult = await _controller.GetTransferById(1);
         Xunit.Assert.IsType<NotFoundObjectResult>(getResult);
     }
 

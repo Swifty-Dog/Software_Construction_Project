@@ -76,18 +76,18 @@ public class WarehousesTest
     }
 
     [Fact]
-    public async Task Test_Get_Warehouses()
+    public async Task TestGetWarehouses()
     {
-        var result = await _controller.Get_Warehouses();
+        var result = await _controller.GetWarehouses();
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
         var warehouses = Xunit.Assert.IsType<List<Warehouse>>(okResult.Value);
         Xunit.Assert.NotEmpty(warehouses);
     }
 
     [Fact]
-    public async Task Test_Get_Warehouse_By_Id()
+    public async Task TestGetWarehouseById()
     {
-        var result = await _controller.Get_Warehouse_By_Id(50000003);
+        var result = await _controller.GetWarehouseById(50000003);
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
         var warehouse = Xunit.Assert.IsType<Warehouse>(okResult.Value);
         Xunit.Assert.Equal("Heemskerk cargo hub", warehouse.Name);
@@ -97,14 +97,14 @@ public class WarehousesTest
     [Fact]
     public async Task Test_Get_Non_Existent_Warehouse()
     {
-        var result = await _controller.Get_Warehouse_By_Id(9999);
+        var result = await _controller.GetWarehouseById(9999);
         Xunit.Assert.IsType<NotFoundObjectResult>(result);
     }
 
     [Fact]
-    public async Task Test_Get_Locations_in_Warehouse()
+    public async Task TestGetLocationsinWarehouse()
     {
-        var result = await _controller.Get_Warehouse_Locations(50000003);
+        var result = await _controller.GetWarehouseLocations(50000003);
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
         var locations = Xunit.Assert.IsType<List<Locations>>(okResult.Value);
         Xunit.Assert.Equal(2, locations.Count);
@@ -134,7 +134,7 @@ public class WarehousesTest
             Updated_at = DateTime.UtcNow
         };
 
-        var result = await _controller.Add_Warehouse(newWarehouse);
+        var result = await _controller.AddWarehouse(newWarehouse);
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
         var warehouse = Xunit.Assert.IsType<Warehouse>(okResult.Value);
         Xunit.Assert.Equal("New Warehouse", warehouse.Name);
@@ -144,11 +144,11 @@ public class WarehousesTest
     [Fact]
     public async Task TestDeleteWarehouse()
     {
-        var result = await _controller.Delete_Warehouse(50000003);
+        var result = await _controller.DeleteWarehouse(50000003);
         Xunit.Assert.IsType<NoContentResult>(result);
 
         // check that the warehouse is no longer accessible
-        var getResult = await _controller.Get_Warehouse_By_Id(50000003);
+        var getResult = await _controller.GetWarehouseById(50000003);
         Xunit.Assert.IsType<NotFoundObjectResult>(getResult);
     }
 }
