@@ -18,7 +18,7 @@ public class MyContext : DbContext
     public DbSet<Inventory> Inventories { get; set; }
     public DbSet<InventoriesLocations> InventoriesLocations { get; set; }
     public DbSet<Shipment> Shipments { get; set; }
-    public DbSet<Shipments_item> Shipments_items { get; set; }
+    public DbSet<ShipmentsItem> ShipmentsItems { get; set; }
     public DbSet<Orders> Orders { get; set; }
     public DbSet<User> Users { get; set; }
 
@@ -105,7 +105,7 @@ public class MyContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);  // remove items if shipment is deleted
 
         // Transfers_item configuration
-        modelBuilder.Entity<Shipments_item>()
+        modelBuilder.Entity<ShipmentsItem>()
             .HasKey(si => new { si.ShippingId, si.ItemId });  // Composite key using ShippingId and ItemId
 
         modelBuilder.Entity<User>()
