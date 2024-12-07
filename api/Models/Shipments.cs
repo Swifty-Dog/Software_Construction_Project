@@ -20,4 +20,3 @@ public class Shipment
     public required DateTime UpdatedAt { get; set; }
     public required List<ShipmentsItem> Items { get; set; } = new();
 }
-

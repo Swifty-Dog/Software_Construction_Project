@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 
 public class ShipmentsServices : IShipments
 {
-
     private readonly MyContext _context;
     
     public ShipmentsServices(MyContext context)

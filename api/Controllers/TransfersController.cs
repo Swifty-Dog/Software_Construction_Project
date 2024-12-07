@@ -76,7 +76,7 @@ public class TransfersController : ControllerBase
 
     // PUT /Transfer/{id}: Updates transfer information.
     [HttpPut("Transfer/{id}")]
-    public async Task<IActionResult> Update_Transfer(int id, [FromBody] Transfer transfer)
+    public async Task<IActionResult> UpdateTransfer(int id, [FromBody] Transfer transfer)
     {
         if (id <= 0 || id != transfer.Id)
         {
