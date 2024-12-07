@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-public class LocationServices
+public class LocationServices : ILocations
 {
     private readonly MyContext _context;
     public LocationServices(MyContext context)
@@ -8,17 +8,17 @@ public class LocationServices
         _context = context;
     }
 
-    public async Task<Locations> Get(int id)
+    public async Task<Locations> GetLocationById(int id)
     {
         return await _context.Locations.FirstOrDefaultAsync(_ => _.Id == id);
     }
     
-    public async Task<IEnumerable<Locations>> GetAll()
+    public async Task<IEnumerable<Locations>> GetLocations()
     {
         return await _context.Locations.ToListAsync();
     }
 
-    public async Task<Locations> Add_Location(Locations location)
+    public async Task<Locations> AddLocation(Locations location)
     {
         var existingLocation = await _context.Locations.FirstOrDefaultAsync(_ => _.Code == location.Code || _.Id == location.Id);
 
@@ -32,7 +32,7 @@ public class LocationServices
         return location;
     }
 
-    public async Task<Locations> Update_Location(int id, Locations location)
+    public async Task<Locations> UpdateLocation(int id, Locations location)
     {
         if (id <= 0 || location == null)
         {
@@ -53,8 +53,7 @@ public class LocationServices
         return existingLocation;
     }
 
-
-        public async Task<bool> DeleteLocation(int id)
+    public async Task<bool> DeleteLocation(int id)
     {
         if (id <= 0)
         {

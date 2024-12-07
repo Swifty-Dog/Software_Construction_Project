@@ -15,14 +15,14 @@ public class LocationController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllLocations()
     {
-        var locations = await _locationServices.GetAll();
+        var locations = await _locationServices.GetLocations();
         return Ok(locations);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetLocation(int id)
     {
-        var location = await _locationServices.Get(id);
+        var location = await _locationServices.GetLocationById(id);
         if (location == null)
         {
             return NotFound("Location not found.");
@@ -35,7 +35,7 @@ public class LocationController : ControllerBase
     {
         try
         {
-            var result = await _locationServices.Add_Location(location);
+            var result = await _locationServices.AddLocation(location);
             if (result == null)
             {
                 return BadRequest("Location could not be added or already exists.");
@@ -57,7 +57,7 @@ public class LocationController : ControllerBase
             {
                 return BadRequest("Invalid location ID or location ID does not match the location object.");
             }
-            var result = await _locationServices.Update_Location(id, location);
+            var result = await _locationServices.UpdateLocation(id, location);
             if (result == null)
             {
                 return NotFound("Location not found or could not be updated.");
@@ -75,8 +75,8 @@ public class LocationController : ControllerBase
     {
         try
         {
-            var delete_location = await _locationServices.DeleteLocation(id);
-            if (!delete_location)
+            var deleteLocation = await _locationServices.DeleteLocation(id);
+            if (!deleteLocation)
             {
                 return NotFound("Location not found or could not be deleted.");
             }
@@ -88,6 +88,4 @@ public class LocationController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-
-
 }

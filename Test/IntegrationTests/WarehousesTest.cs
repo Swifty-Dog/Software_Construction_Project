@@ -46,8 +46,8 @@ public class WarehousesTest
             Province = "Friesland",
             Country = "NL",
             Contact = contact,
-            Created_at = DateTime.Parse("1992-05-15T03:21:32"),
-            Updated_at = DateTime.Parse("1992-05-15T03:21:32"),
+            CreatedAt = DateTime.Parse("1992-05-15T03:21:32"),
+            UpdatedAt = DateTime.Parse("1992-05-15T03:21:32"),
             Locations = new List<Locations>
             {
                 new Locations
@@ -95,7 +95,7 @@ public class WarehousesTest
     }
 
     [Fact]
-    public async Task Test_Get_Non_Existent_Warehouse()
+    public async Task TestGetNonExistentWarehouse()
     {
         var result = await _controller.GetWarehouseById(9999);
         Xunit.Assert.IsType<NotFoundObjectResult>(result);
@@ -130,8 +130,8 @@ public class WarehousesTest
                 Phone = "123-456-7890",
                 Email = "test@test.com"
             },
-            Created_at = DateTime.UtcNow,
-            Updated_at = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
 
         var result = await _controller.AddWarehouse(newWarehouse);

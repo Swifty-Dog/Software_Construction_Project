@@ -40,7 +40,7 @@ public class LocationsTest
     }
 
     [Fact]
-    public async Task Test_Get_Locations()
+    public async Task TestGetLocations()
     {
         var result = await _controller.GetAllLocations();
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
@@ -49,7 +49,7 @@ public class LocationsTest
     }
 
     [Fact]
-    public async Task Test_Get_Location_By_Id()
+    public async Task TestGetLocationById()
     {
         var result = await _controller.GetLocation(1);
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
@@ -59,7 +59,7 @@ public class LocationsTest
     }
 
     [Fact]
-    public async Task Test_Get_Non_Existent_Location()
+    public async Task TestGetNonExistentLocation()
     {
         var result = await _controller.GetLocation(9999);
         Xunit.Assert.IsType<NotFoundObjectResult>(result);

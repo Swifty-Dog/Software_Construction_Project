@@ -51,18 +51,18 @@ public class LocationServicesTests
     }
 
     [Fact]
-    public async Task Get_All_Locations()
+    public async Task GetAllLocations()
     {
-        var result = await _service.GetAll();
+        var result = await _service.GetLocations();
 
         Xunit.Assert.NotNull(result);
         Xunit.Assert.Equal(2, result.Count());
     }
 
     [Fact]
-    public async Task Get_Location_By_Id()
+    public async Task GetLocationById()
     {
-        var result = await _service.Get(1);
+        var result = await _service.GetLocationById(1);
 
         Xunit.Assert.NotNull(result);
         Xunit.Assert.Equal(".1.0", result.Code);
@@ -70,15 +70,15 @@ public class LocationServicesTests
     }
 
     [Fact]
-    public async Task Get_Invalid_Id()
+    public async Task GetInvalidId()
     {
-        var result = await _service.Get(999);
+        var result = await _service.GetLocationById(999);
 
         Xunit.Assert.Null(result);
     }
 
     [Fact]
-    public async Task Add_Valid_Location()
+    public async Task AddValidLocation()
     {
         var newLocation = new Locations 
         { 
@@ -90,7 +90,7 @@ public class LocationServicesTests
             UpdatedAt = new DateTime(1992, 7, 15, 3, 21, 32)
         };
 
-        var result = await _service.Add_Location(newLocation);
+        var result = await _service.AddLocation(newLocation);
 
         Xunit.Assert.NotNull(result);
         Xunit.Assert.Equal(".3.0", result.Code);
@@ -98,7 +98,7 @@ public class LocationServicesTests
     }
 
     [Fact]
-    public async Task Add_Invalid_Location()
+    public async Task AddInvalidLocation()
     {
         var duplicateLocation = new Locations 
         { 
@@ -109,14 +109,14 @@ public class LocationServicesTests
             CreatedAt = DateTime.Now,
             UpdatedAt = DateTime.Now
         };
-        var result = await _service.Add_Location(duplicateLocation);
+        var result = await _service.AddLocation(duplicateLocation);
 
         Xunit.Assert.Null(result);
         Xunit.Assert.Equal(2, _context.Locations.Count());
     }
 
     [Fact]
-    public async Task Update_Existing_Location()
+    public async Task UpdateExistingLocation()
     {
         var updatedLocation = new Locations 
         { 
@@ -128,7 +128,7 @@ public class LocationServicesTests
             UpdatedAt = new DateTime(2024, 10, 19, 10, 0, 0)
         };
 
-        var result = await _service.Update_Location(1, updatedLocation);
+        var result = await _service.UpdateLocation(1, updatedLocation);
 
         Xunit.Assert.NotNull(result);
         Xunit.Assert.Equal("SAMI TEST", result.Code);
@@ -136,7 +136,7 @@ public class LocationServicesTests
     }
 
     [Fact]
-    public async Task Update_Location_Invalid()
+    public async Task UpdateLocationInvalid()
     {
         var updatedLocation = new Locations 
         { 
@@ -148,13 +148,13 @@ public class LocationServicesTests
             UpdatedAt = new DateTime(2024, 10, 19, 10, 0, 0)
         };
 
-        var result = await _service.Update_Location(999, updatedLocation);
+        var result = await _service.UpdateLocation(999, updatedLocation);
 
         Xunit.Assert.Null(result);
     }
 
     [Fact]
-    public async Task DeleteLocation_Valid()
+    public async Task DeleteLocationValid()
     {
         var result = await _service.DeleteLocation(1);
 
@@ -163,7 +163,7 @@ public class LocationServicesTests
     }
 
     [Fact]
-    public async Task DeleteLocation_Invalid()
+    public async Task DeleteLocationInvalid()
     {
         var result = await _service.DeleteLocation(999);
         Xunit.Assert.False(result);

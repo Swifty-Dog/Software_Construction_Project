@@ -1,7 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-public class Contact{
+public class Contact
+{
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
     public required int Id { get; set; }

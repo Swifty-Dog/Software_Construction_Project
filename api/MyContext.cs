@@ -13,12 +13,12 @@ public class MyContext : DbContext
     public DbSet<Item_type> ItemTypes { get; set; }
     public DbSet<Supplier> Suppliers { get; set; }
     public DbSet<Transfer> Transfers { get; set; }
-    public DbSet<Transfers_item> Transfer_Items { get; set; }
+    public DbSet<TransfersItem> TransferItems { get; set; }
     public DbSet<Client> Client { get; set; }
     public DbSet<Inventory> Inventories { get; set; }
     public DbSet<InventoriesLocations> InventoriesLocations { get; set; }
     public DbSet<Shipment> Shipments { get; set; }
-    public DbSet<Shipments_item> Shipments_items { get; set; }
+    public DbSet<ShipmentsItem> ShipmentsItems { get; set; }
     public DbSet<Orders> Orders { get; set; }
     public DbSet<User> Users { get; set; }
 
@@ -70,8 +70,8 @@ public class MyContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);  // remove items if transfer is deleted
 
         // Transfers_item configuration
-        modelBuilder.Entity<Transfers_item>()
-            .HasKey(ti => new { ti.TransferId, ti.Item_Id });  // Composite key using TransferId and Item_Id
+        modelBuilder.Entity<TransfersItem>()
+            .HasKey(ti => new { ti.TransferId, ti.ItemId });  // Composite key using TransferId and Item_Id
 
         modelBuilder.Entity<Orders_Item>()
             .HasKey(o => new { o.OrderId});
@@ -105,7 +105,7 @@ public class MyContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);  // remove items if shipment is deleted
 
         // Transfers_item configuration
-        modelBuilder.Entity<Shipments_item>()
+        modelBuilder.Entity<ShipmentsItem>()
             .HasKey(si => new { si.ShippingId, si.ItemId });  // Composite key using ShippingId and ItemId
 
         modelBuilder.Entity<User>()
@@ -149,6 +149,5 @@ public class MyContext : DbContext
         );
 
         base.OnModelCreating(modelBuilder);
-
     }
 }
