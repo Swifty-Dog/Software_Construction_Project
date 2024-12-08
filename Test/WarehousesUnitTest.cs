@@ -7,6 +7,7 @@ using System;
 public class WarehouseServicesTest
 {
     private readonly MyContext _context;
+    //mock de data en zorg ervoor dat het niet buiten de service data ophaalt, blijf binnen memory 
     private readonly WarehouseServices _service;
 
     public WarehouseServicesTest()

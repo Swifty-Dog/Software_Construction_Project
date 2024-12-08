@@ -173,7 +173,7 @@ public class ItemGroupsUnitTest
     {
         var result = await _service.Delete_Item_group(999);
 
-        Xunit.Assert.False(result);
+        Xunit.Assert.Null(result);
         Xunit.Assert.Equal(2, _context.ItemGroups.Count());
     }
     //IS NOT WORKING CORRECTLY
