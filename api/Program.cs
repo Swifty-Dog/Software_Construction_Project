@@ -21,7 +21,7 @@ builder.Services.AddTransient<Inventory>();
 builder.Services.AddTransient<InventoriesLocations>();
 builder.Services.AddTransient<InventoryServices>();
 builder.Services.AddTransient<Shipment>();
-builder.Services.AddTransient<Shipments_item>();
+builder.Services.AddTransient<ShipmentsItem>();
 builder.Services.AddTransient<ShipmentsServices>();
 builder.Services.AddTransient<ItemLineServices>();
 builder.Services.AddTransient<IOrdersInterface,OrdersServices>();
