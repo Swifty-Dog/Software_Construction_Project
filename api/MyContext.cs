@@ -171,7 +171,31 @@ public class MyContext : DbContext
             new EndpointAccess { Id = 35, Endpoint = "shipments",  CanGet = true, CanPost = false, CanPut = false, CanDelete = false, UserId = 4 },
             new EndpointAccess { Id = 36, Endpoint = "inventories",  CanGet = true, CanPost = true, CanPut = true, CanDelete = true, UserId = 4 }
         );
-        
+        modelBuilder.Entity<User>().HasData(
+            new User
+            {
+                Id = 5, 
+                ApiKey = "FloorManager",
+                AppName = "Floor Manager",
+                HasFullAccess = false 
+            }
+        );
+
+        modelBuilder.Entity<EndpointAccess>().HasData(
+            new EndpointAccess { Id = 37, Endpoint = "warehouses", CanGet = true, CanPost = false, CanPut = false, CanDelete = false, UserId = 5 },
+            new EndpointAccess { Id = 38, Endpoint = "locations", CanGet = true, CanPost = true, CanPut = true, CanDelete = false, UserId = 5 },
+            new EndpointAccess { Id = 39, Endpoint = "transfers",  CanGet = true, CanPost = true, CanPut = true, CanDelete = false, UserId = 5 },
+            new EndpointAccess { Id = 40, Endpoint = "items",  CanGet = true, CanPost = false, CanPut = false, CanDelete = false, UserId = 5 },
+            new EndpointAccess { Id = 41, Endpoint = "item_lines", CanGet = false, CanPost = false, CanPut = false, CanDelete = false, UserId = 5 },
+            new EndpointAccess { Id = 42, Endpoint = "item_groups", CanGet = false, CanPost = false, CanPut = false, CanDelete = false, UserId = 5 },
+            new EndpointAccess { Id = 43, Endpoint = "item_types", CanGet = false, CanPost = false, CanPut = false, CanDelete = false, UserId = 5 },
+            new EndpointAccess { Id = 44, Endpoint = "suppliers",  CanGet = true, CanPost = false, CanPut = false, CanDelete = false, UserId = 5 },
+            new EndpointAccess { Id = 45, Endpoint = "orders", CanGet = true, CanPost = false, CanPut = false, CanDelete = false, UserId = 5 },
+            new EndpointAccess { Id = 46, Endpoint = "clients", CanGet = true, CanPost = false, CanPut = false, CanDelete = false, UserId = 5 },
+            new EndpointAccess { Id = 47, Endpoint = "shipments",  CanGet = true, CanPost = false, CanPut = false, CanDelete = false, UserId = 5 },
+            new EndpointAccess { Id = 48, Endpoint = "inventories",  CanGet = true, CanPost = false, CanPut = false, CanDelete = false, UserId = 5 }
+        );
+
         base.OnModelCreating(modelBuilder);
     }
 }
