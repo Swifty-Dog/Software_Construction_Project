@@ -55,8 +55,8 @@ public class WarehouseServicesTest
                 City = "New York",
                 Province = "New York",
                 Country = "USA",
-                Created_at = new DateTime(2023, 1, 15),
-                Updated_at = new DateTime(2023, 1, 15),
+                CreatedAt = new DateTime(2023, 1, 15),
+                UpdatedAt = new DateTime(2023, 1, 15),
                 Contact = _context.Contact.Find(1)
             },
             new Warehouse
@@ -69,8 +69,8 @@ public class WarehouseServicesTest
                 City = "Los Angeles",
                 Province = "California",
                 Country = "USA",
-                Created_at = new DateTime(2023, 2, 15),
-                Updated_at = new DateTime(2023, 2, 15),
+                CreatedAt = new DateTime(2023, 2, 15),
+                UpdatedAt = new DateTime(2023, 2, 15),
                 Contact = _context.Contact.Find(2)
             }
         );
@@ -79,7 +79,7 @@ public class WarehouseServicesTest
     }
 
     [Fact]
-    public async Task Get_Warehouse_By_Id()
+    public async Task GetWarehouseById()
     {
         var result = await _service.GetWarehouseById(1);
 
@@ -91,7 +91,7 @@ public class WarehouseServicesTest
     }
 
     [Fact]
-    public async Task Get_Warehouse_By_Id_Invalid()
+    public async Task GetWarehouseByIdInvalid()
     {
         var result = await _service.GetWarehouseById(999);
 
@@ -99,7 +99,7 @@ public class WarehouseServicesTest
     }
 
     [Fact]
-    public async Task Add_Valid_Warehouse()
+    public async Task AddValidWarehouse()
     {
         var newWarehouse = new Warehouse
         {
@@ -111,8 +111,8 @@ public class WarehouseServicesTest
             City = "Texas",
             Province = "Texas",
             Country = "USA",
-            Created_at = DateTime.Now,
-            Updated_at = DateTime.Now,
+            CreatedAt = DateTime.Now,
+            UpdatedAt = DateTime.Now,
             Contact = _context.Contact.Find(1)
         };
 
@@ -124,7 +124,7 @@ public class WarehouseServicesTest
     }
 
     [Fact]
-    public async Task Add_Duplicate_Warehouse()
+    public async Task AddDuplicateWarehouse()
     {
         var duplicateWarehouse = new Warehouse
         {
@@ -136,8 +136,8 @@ public class WarehouseServicesTest
             City = "New York", 
             Province = "New York", 
             Country = "USA", 
-            Created_at = DateTime.Now, 
-            Updated_at = DateTime.Now, 
+            CreatedAt = DateTime.Now, 
+            UpdatedAt = DateTime.Now, 
             Contact = _context.Contact.Find(1)
         };
 
@@ -146,6 +146,7 @@ public class WarehouseServicesTest
         Xunit.Assert.Null(result);
         Xunit.Assert.Equal(2, _context.Warehouse.Count());
     }
+
     [Fact]
     public async Task UpdateExistingWarehouse()
     {
@@ -159,8 +160,8 @@ public class WarehouseServicesTest
             City = "Updated City",
             Province = "Updated Province",
             Country = "Updated Country",
-            Created_at = new DateTime(2023, 1, 15),
-            Updated_at = DateTime.Now,
+            CreatedAt = new DateTime(2023, 1, 15),
+            UpdatedAt = DateTime.Now,
             Contact = _context.Contact.Find(2)
         };
 
@@ -173,7 +174,7 @@ public class WarehouseServicesTest
     }
 
     [Fact]
-    public async Task Delete_Warehouse_Valid()
+    public async Task DeleteWarehouseValid()
     {
         var result = await _service.DeleteWarehouse(1);
 
@@ -182,7 +183,7 @@ public class WarehouseServicesTest
     }
 
     [Fact]
-    public async Task Delete_Warehouse_Invalid()
+    public async Task DeleteWarehouseInvalid()
     {
         var result = await _service.DeleteWarehouse(999);
 
