@@ -69,7 +69,7 @@ public class OrdersTest
     }
 
     [Fact]
-    public async Task Test_Get_Orders()
+    public async Task TestGetOrders()
     {
         var result = await _controller.GetOrders();
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
@@ -78,7 +78,7 @@ public class OrdersTest
     }
 
     [Fact]
-    public async Task Test_Get_Order_By_Id()
+    public async Task TestGetOrderById()
     {
         var result = await _controller.GetOrderById(2);
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
@@ -88,14 +88,14 @@ public class OrdersTest
     }
 
     [Fact]
-    public async Task Test_Get_Non_Existent_Order()
+    public async Task TestGetNonExistentOrder()
     {
         var result = await _controller.GetOrderById(9999);
         Xunit.Assert.IsType<NotFoundObjectResult>(result);
     }
 
     [Fact]
-    public async Task Test_Post_Order()
+    public async Task TestPostOrder()
     {
         var newOrder = new Orders
         {
@@ -144,7 +144,7 @@ public class OrdersTest
     }
 
     [Fact]
-    public async Task Test_Put_Order()
+    public async Task TestPutOrder()
     {
         var updatedOrder = new Orders
         {
@@ -193,7 +193,7 @@ public class OrdersTest
     }
 
     [Fact]
-    public async Task Test_Delete_Order()
+    public async Task TestDeleteOrder()
     {
         var result = await _controller.DeleteOrder(2);
         Xunit.Assert.IsType<NoContentResult>(result);
