@@ -43,21 +43,21 @@ public class ItemTest
             Uid = "P000002",
             Code = "sjQ23408K",
             Description = "Face-to-face clear-thinking complexity",
-            Short_Description = "must",
-            Upc_code = "6523540947122",
-            Model_number = "63-OFFTq0T",
-            Commodity_code = "oTo304",
-            Item_line = 11,
-            Item_group = 73,
-            item_type = 14,
-            unit_purchase_quantity = 47,
-            unit_order_quantity = 13,
-            pack_order_quantity = 11,
-            supplier_id = 34,
-            supplier_code = "SUP423",
-            supplier_part_number = "E-86805-uTM",
-            Created_at = DateTime.UtcNow,
-            Updated_at = DateTime.UtcNow
+            ShortDescription = "must",
+            UpcCode = "6523540947122",
+            ModelNumber = "63-OFFTq0T",
+            CommodityCode = "oTo304",
+            ItemLine = 11,
+            ItemGroup = 73,
+            ItemType = 14,
+            UnitPurchaseQuantity = 47,
+            UnitOrderQuantity = 13,
+            PackOrderQuantity = 11,
+            SupplierId = 34,
+            SupplierCode = "SUP423",
+            SupplierPartNumber = "E-86805-uTM",
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
 
         _context.Items.Add(item);
@@ -67,7 +67,7 @@ public class ItemTest
     [Fact]
     public async Task TestGetItems()
     {
-        var result = await _controller.Get_Items();
+        var result = await _controller.GetItems();
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
         var items = Xunit.Assert.IsType<List<Item>>(okResult.Value);
         Xunit.Assert.NotEmpty(items);
@@ -76,7 +76,7 @@ public class ItemTest
     [Fact]
     public async Task TestGetItemById()
     {
-        var result = await _controller.Get_Item_By_Id("P000002");
+        var result = await _controller.GetItemById("P000002");
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
         var item = Xunit.Assert.IsType<Item>(okResult.Value);
         Xunit.Assert.Equal("Face-to-face clear-thinking complexity", item.Description);
@@ -86,7 +86,7 @@ public class ItemTest
     [Fact]
     public async Task TestGetNonExistentItem()
     {
-        var result = await _controller.Get_Item_By_Id("abcdefg");
+        var result = await _controller.GetItemById("abcdefg");
         Xunit.Assert.IsType<NotFoundObjectResult>(result);
     }
 
@@ -148,24 +148,24 @@ public class ItemTest
             Uid = "test",
             Code = "test",
             Description = "test test",
-            Short_Description = "test",
-            Upc_code = "6523540947122",
-            Model_number = "63-OFFTq0T",
-            Commodity_code = "oTo304",
-            Item_line = 1,
-            Item_group = 1,
-            item_type = 1,
-            unit_purchase_quantity = 47,
-            unit_order_quantity = 13,
-            pack_order_quantity = 11,
-            supplier_id = 1,
-            supplier_code = "SUP423",
-            supplier_part_number = "E-86805-uTM",
-            Created_at = DateTime.UtcNow,
-            Updated_at = DateTime.UtcNow
+            ShortDescription = "test",
+            UpcCode = "6523540947122",
+            ModelNumber = "63-OFFTq0T",
+            CommodityCode = "oTo304",
+            ItemLine = 1,
+            ItemGroup = 1,
+            ItemType = 1,
+            UnitPurchaseQuantity = 47,
+            UnitOrderQuantity = 13,
+            PackOrderQuantity = 11,
+            SupplierId = 1,
+            SupplierCode = "SUP423",
+            SupplierPartNumber = "E-86805-uTM",
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
 
-        var result = await _controller.Add_Item(newItem);
+        var result = await _controller.AddItem(newItem);
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
         var item = Xunit.Assert.IsType<Item>(okResult.Value);
         Xunit.Assert.Equal("test test", item.Description);
@@ -230,24 +230,24 @@ public class ItemTest
             Uid = "P000002",
             Code = "test updated",
             Description = "test update test",
-            Short_Description = "test",
-            Upc_code = "6523540947122",
-            Model_number = "63-OFFTq0T",
-            Commodity_code = "oTo304",
-            Item_line = 1,
-            Item_group = 1,
-            item_type = 1,
-            unit_purchase_quantity = 47,
-            unit_order_quantity = 13,
-            pack_order_quantity = 11,
-            supplier_id = 1,
-            supplier_code = "SUP423",
-            supplier_part_number = "E-86805-uTM",
-            Created_at = DateTime.UtcNow,
-            Updated_at = DateTime.UtcNow
+            ShortDescription = "test",
+            UpcCode = "6523540947122",
+            ModelNumber = "63-OFFTq0T",
+            CommodityCode = "oTo304",
+            ItemLine = 1,
+            ItemGroup = 1,
+            ItemType = 1,
+            UnitPurchaseQuantity = 47,
+            UnitOrderQuantity = 13,
+            PackOrderQuantity = 11,
+            SupplierId = 1,
+            SupplierCode = "SUP423",
+            SupplierPartNumber = "E-86805-uTM",
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
 
-        var result = await _controller.Update_Item("P000002", updatedItem);
+        var result = await _controller.UpdateItem("P000002", updatedItem);
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
         var item = Xunit.Assert.IsType<Item>(okResult.Value);
         Xunit.Assert.Equal("test update test", item.Description);
@@ -257,10 +257,10 @@ public class ItemTest
     [Fact]
     public async Task TestDeleteItem()
     {
-        var result = await _controller.Delete_Item("P000002");
+        var result = await _controller.DeleteItem("P000002");
         Xunit.Assert.IsType<NoContentResult>(result);
 
-        var getResult = await _controller.Get_Item_By_Id("P000002");
+        var getResult = await _controller.GetItemById("P000002");
         Xunit.Assert.IsType<NotFoundObjectResult>(getResult);
     }
 
