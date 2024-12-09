@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-public class Shipments_item
+public class ShipmentsItem
 {
     [JsonIgnore]
     public int ShippingId { get; set; }
