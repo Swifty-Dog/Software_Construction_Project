@@ -11,16 +11,16 @@ public class ItemController : Controller{
 
     // GET /Items: Returns all Items. 
     [HttpGet("Items")]
-    public async Task<IActionResult> Get_Items()
+    public async Task<IActionResult> GetItems()
     {
-        var items = await _item.Get_Items(); 
+        var items = await _item.GetItems(); 
         return Ok(items); 
     }
 
     // GET /Item/{uid}: Returns the details of a specific item by its ID. 
     [HttpGet("Item/{uid}")]
-    public async Task<IActionResult> Get_Item_By_Id(string uid){    
-        var item = await _item.Get_Item_By_Id(uid);
+    public async Task<IActionResult> GetItemById(string uid){    
+        var item = await _item.GetItemById(uid);
         if(item == null){
             return NotFound("No Item found with that ID");
         }
@@ -28,10 +28,10 @@ public class ItemController : Controller{
     }
     
     [HttpPost("Item")]
-    public async Task<IActionResult> Add_Item([FromBody] Item item)
+    public async Task<IActionResult> AddItem([FromBody] Item item)
     {
         try{
-            var result = await _item.Add_Item(item);
+            var result = await _item.AddItem(item);
             if (result == null){
                 return BadRequest("Item could not be added or already exists.");
             }
@@ -44,7 +44,7 @@ public class ItemController : Controller{
 
     // PUT /Item/{uid}: Updates item information. 
     [HttpPut("Item/{uid}")]
-    public async Task<IActionResult> Update_Item([FromRoute]string uid, [FromBody] Item item){
+    public async Task<IActionResult> UpdateItem([FromRoute]string uid, [FromBody] Item item){
         try{
             //if(id <= 0 || uid != item.Uid){
               //  return BadRequest("Item ID is invalid or does not match the item ID in the request body.");
@@ -52,7 +52,7 @@ public class ItemController : Controller{
                 return BadRequest("Item ID is invalid or does not match the item ID in the request body.");
             }
             
-            var result = await _item.Update_Item(uid, item);
+            var result = await _item.UpdateItem(uid, item);
             if (result == null) {
                 return BadRequest("Item could not be updated.");
             }
@@ -65,17 +65,17 @@ public class ItemController : Controller{
 
     // DELETE /Item/ {uid}: Deletes a client. 
     [HttpDelete("Item/{uid}")]
-    public async Task<IActionResult> Delete_Item(string uid){
-        bool ItemToDeleted = await _item.Delete_Item(uid);
-        if(ItemToDeleted == false)
+    public async Task<IActionResult> DeleteItem(string uid){
+        bool itemToDeleted = await _item.DeleteItem(uid);
+        if(itemToDeleted == false)
             return BadRequest("Item could not be deleted.");
         return NoContent();
     }
 
     // GET /Item/{uid}/Inventory: Returns the inventory of a specific item by its ID.
     [HttpGet("Item/{uid}/Inventory")]
-    public async Task<IActionResult> Get_Iventory_Through_Items(string uid){
-        var item = await _item.Get_Iventory_Through_Items(uid);
+    public async Task<IActionResult> GetIventoryThroughItems(string uid){
+        var item = await _item.GetIventoryThroughItems(uid);
         if(item == null){
             return NotFound("No Item found with that ID");
         }
@@ -84,8 +84,8 @@ public class ItemController : Controller{
 
     // GET /Item/{uid}/Totals: Returns the total of a specific item by its ID.  // from inventory only the total expected tot available
     [HttpGet("Item/{uid}/Inventory/Totals")]
-    public async Task<IActionResult> Get_Item_Totals_From_Inventory(string uid){
-        var item = await _item.Get_Item_Totals_From_Inventory(uid);
+    public async Task<IActionResult> GetItemTotalsFromInventory(string uid){
+        var item = await _item.GetItemTotalsFromInventory(uid);
         if(item == null){
             return NotFound("No Item found with that ID");
         }
