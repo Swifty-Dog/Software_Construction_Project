@@ -24,7 +24,7 @@ public class ItemTest
         _controller = new ItemController(service);
         var lineService = new ItemLineServices(_context);
         _controllerLines = new ItemLinesController(lineService);
-        var typeService = new Item_TypeServices(_context);
+        var typeService = new ItemTypeServices(_context);
         _controllerTypes = new ItemTypeController(typeService);
         var groupService = new ItemGroupService(_context);
         _controllerGroups = new ItemGroupController(groupService);
@@ -103,15 +103,15 @@ public class ItemTest
         };
         await _controllerLines.AddItemLine(newItemLine);
 
-        var newItemType = new Item_type
+        var newItemType = new ItemType
         {
             Id = 1,
             Name = "New Gadgets type",
             Description = "stuff",
-            Created_at = DateTime.UtcNow,
-            Updated_at = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
-        await _controllerTypes.AddItem_types(newItemType);
+        await _controllerTypes.AddItemType(newItemType);
 
         var newItemGroup = new ItemGroup
         {
@@ -185,15 +185,15 @@ public class ItemTest
         };
         await _controllerLines.AddItemLine(newItemLine);
 
-        var newItemType = new Item_type
+        var newItemType = new ItemType
         {
             Id = 1,
             Name = "New Gadgets type",
             Description = "stuff",
-            Created_at = DateTime.UtcNow,
-            Updated_at = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
-        await _controllerTypes.AddItem_types(newItemType);
+        await _controllerTypes.AddItemType(newItemType);
 
         var newItemGroup = new ItemGroup
         {
