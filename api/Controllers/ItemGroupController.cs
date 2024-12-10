@@ -29,7 +29,7 @@ public class ItemGroupController : ControllerBase
     }
     
     [HttpPost("ItemGroup")]
-    public async Task<IActionResult> Add_Item_group([FromBody] ItemGroup itemGroup)
+    public async Task<IActionResult> AddItemGroup([FromBody] ItemGroup itemGroup)
     {
         if (itemGroup == null)
             return BadRequest("Item Group is null.");
