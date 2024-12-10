@@ -40,8 +40,8 @@ public class ItemGroupService: IItemGroup
         }
         itemGroupToUpdate.Name = itemGroup.Name;
         itemGroupToUpdate.Description = itemGroup.Description;
-        itemGroupToUpdate.Created_at = itemGroup.Created_at;
-        itemGroupToUpdate.Updated_at = itemGroup.Updated_at;
+        itemGroupToUpdate.CreatedAt = itemGroup.CreatedAt;
+        itemGroupToUpdate.UpdatedAt = itemGroup.UpdatedAt;
 
         await _context.SaveChangesAsync();
         return itemGroupToUpdate;
