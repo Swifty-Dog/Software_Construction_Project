@@ -9,12 +9,12 @@ public class SuppliersServices : ISuppliers
         _context = context;
     }
 
-    public async Task<Supplier> Get(int id)
+    public async Task<Supplier> GetSupplierById(int id)
     {
         return await _context.Suppliers.FirstOrDefaultAsync(_ => _.Id == id);
     }
 
-    public async Task<IEnumerable<Supplier>> GetAll()
+    public async Task<IEnumerable<Supplier>> GetSuppliers()
     {
         return await _context.Suppliers.ToListAsync();
     }
@@ -49,15 +49,15 @@ public class SuppliersServices : ISuppliers
         existingSupplier.Code = supplier.Code;
         existingSupplier.Name = supplier.Name;
         existingSupplier.Address = supplier.Address;
-        existingSupplier.Address_extra = supplier.Address_extra;
-        existingSupplier.Zip_code = supplier.Zip_code;
+        existingSupplier.AddressExtra = supplier.AddressExtra;
+        existingSupplier.ZipCode = supplier.ZipCode;
         existingSupplier.Province = supplier.Province;
         existingSupplier.Country = supplier.Country;
-        existingSupplier.Contact_name = supplier.Contact_name;
+        existingSupplier.ContactName = supplier.ContactName;
         existingSupplier.Phonenumber = supplier.Phonenumber;
-        existingSupplier.Email = supplier.Email;
+        existingSupplier.City = supplier.City;
         existingSupplier.Reference = supplier.Reference;
-        existingSupplier.Updated_at = DateTime.Now;
+        existingSupplier.UpdatedAt = DateTime.Now;
 
         await _context.SaveChangesAsync();
         return existingSupplier;

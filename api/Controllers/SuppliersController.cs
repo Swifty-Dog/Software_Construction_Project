@@ -14,16 +14,16 @@ public class SuppliersController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllSuppliers()
+    public async Task<IActionResult> GetSuppliers()
     {
-        var suppliers = await _suppliersServices.GetAll();
+        var suppliers = await _suppliersServices.GetSuppliers();
         return Ok(suppliers);
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetSupplier(int id)
+    public async Task<IActionResult> GetSupplierById(int id)
     {
-        var supplier = await _suppliersServices.Get(id);
+        var supplier = await _suppliersServices.GetSupplierById(id);
         if (supplier == null)
         {
             return NotFound("Supplier not found.");
@@ -41,7 +41,7 @@ public class SuppliersController : ControllerBase
             {
                 return BadRequest("Supplier could not be added or already exists.");
             }
-            return CreatedAtAction(nameof(GetSupplier), new { id = result.Id }, result);
+            return CreatedAtAction(nameof(GetSupplierById), new { id = result.Id }, result);
         }
         catch (Exception ex)
         {
