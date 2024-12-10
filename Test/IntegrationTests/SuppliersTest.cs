@@ -35,37 +35,37 @@ public class SuppliersTest
                 Code = "SUPP001",
                 Name = "Tech Supplies",
                 Address = "123 Tech Park",
-                Address_extra = "Suite 101",
-                Zip_code = "67890",
+                AddressExtra = "Suite 101",
+                City = "Los Angeles",
+                ZipCode = "67890",
                 Province = "California",
                 Country = "USA",
-                Contact_name = "John Doe",
+                ContactName = "John Doe",
                 Phonenumber = "123-456-7890",
-                Email = "johndoe@techsupplies.com",
                 Reference = "REF1234",
-                Created_at = DateTime.UtcNow,
-                Updated_at = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
             }
         };
-        //adress_extra is a must?
+        //AddressExtra is a must?
 
         _context.Suppliers.AddRange(suppliers);
         _context.SaveChanges();
     }
 
     [Fact]
-    public async Task Test_GetAllSuppliers()
+    public async Task TestGetAllSuppliers()
     {
-        var result = await _controller.GetAllSuppliers();
+        var result = await _controller.GetSuppliers();
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
         var suppliers = Xunit.Assert.IsType<List<Supplier>>(okResult.Value);
         Xunit.Assert.Equal(1, suppliers.Count);
     }
 
     [Fact]
-    public async Task Test_GetSupplier()
+    public async Task TestGetSupplier()
     {
-        var result = await _controller.GetSupplier(1);
+        var result = await _controller.GetSupplierById(1);
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
         var supplier = Xunit.Assert.IsType<Supplier>(okResult.Value);
 
@@ -74,16 +74,16 @@ public class SuppliersTest
     }
 
     [Fact]
-    public async Task Test_Get_NonExistentSupplier()
+    public async Task TestGetNonExistentSupplier()
     {
-        var result = await _controller.GetSupplier(999);
+        var result = await _controller.GetSupplierById(999);
         var notFoundResult = Xunit.Assert.IsType<NotFoundObjectResult>(result);
 
         Xunit.Assert.Equal("Supplier not found.", notFoundResult.Value);
     }
 
     [Fact]
-    public async Task Test_AddSupplier()
+    public async Task TestAddSupplier()
     {
         var newSupplier = new Supplier
         {
@@ -91,16 +91,16 @@ public class SuppliersTest
             Code = "SUPP003",
             Name = "Tech Supplies",
             Address = "123 Tech Park",
-            Address_extra = "Suite 101",
-            Zip_code = "67890",
+            AddressExtra = "Suite 101",
+            City = "Los Angeles",
+            ZipCode = "67890",
             Province = "California",
             Country = "USA",
-            Contact_name = "Jane Doe",
+            ContactName = "Jane Doe",
             Phonenumber = "098-765-4321",
-            Email = "janedoe@techsupplies.com",
             Reference = "REF1234",
-            Created_at = DateTime.UtcNow,
-            Updated_at = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
 
         var result = await _controller.AddSupplier(newSupplier);
@@ -112,7 +112,7 @@ public class SuppliersTest
     }
 
     [Fact]
-    public async Task Test_UpdateSupplier()
+    public async Task TestUpdateSupplier()
     {
         var updatedSupplier = new Supplier
         {
@@ -120,16 +120,16 @@ public class SuppliersTest
             Code = "SUPP001_UPDATED",
             Name = "Tech Supplies Updated",
             Address = "123 Tech Park",
-            Address_extra = "Suite 101",
-            Zip_code = "67890",
+            AddressExtra = "Suite 101",
+            City = "Los Angeles",
+            ZipCode = "67890",
             Province = "California",
             Country = "USA",
-            Contact_name = "Jane Doe",
+            ContactName = "Jane Doe",
             Phonenumber = "098-765-4321",
-            Email = "janedoe.updated@techsupplies.com",
             Reference = "REF1234_UPDATED",
-            Created_at = DateTime.UtcNow,
-            Updated_at = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
 
         var result = await _controller.UpdateSupplier(1, updatedSupplier);
@@ -141,12 +141,12 @@ public class SuppliersTest
     }
 
     [Fact]
-    public async Task Test_DeleteSupplier()
+    public async Task TestDeleteSupplier()
     {
         var result = await _controller.DeleteSupplier(1);
         Xunit.Assert.IsType<NoContentResult>(result);
 
-        var getResult = await _controller.GetSupplier(1);
+        var getResult = await _controller.GetSupplierById(1);
         Xunit.Assert.IsType<NotFoundObjectResult>(getResult);
     }
 }

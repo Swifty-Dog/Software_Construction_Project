@@ -34,16 +34,16 @@ public class SuppliersServicesTest
                 Code = "SUPP001",
                 Name = "Supplier One",
                 Address = "123 Main Street",
-                Address_extra = "Suite 101",
-                Zip_code = "12345",
+                AddressExtra = "Suite 101",
+                City = "Los Angeles",
+                ZipCode = "12345",
                 Province = "New York",
                 Country = "USA",
-                Contact_name = "John Doe",
+                ContactName = "John Doe",
                 Phonenumber = "123-456-7890",
-                Email = "john.doe@supplierone.com",
                 Reference = "REF001",
-                Created_at = new DateTime(2023, 1, 15),
-                Updated_at = new DateTime(2023, 1, 15)
+                CreatedAt = new DateTime(2023, 1, 15),
+                UpdatedAt = new DateTime(2023, 1, 15)
             },
             new Supplier
             {
@@ -51,35 +51,34 @@ public class SuppliersServicesTest
                 Code = "SUPP002",
                 Name = "Supplier Two",
                 Address = "456 Another Street",
-                Address_extra = "Suite 202",
-                Zip_code = "67890",
+                AddressExtra = "Suite 202",
+                City = "Los Angeles",
+                ZipCode = "67890",
                 Province = "California",
                 Country = "USA",
-                Contact_name = "Jane Smith",
+                ContactName = "Jane Smith",
                 Phonenumber = "987-654-3210",
-                Email = "jane.smith@supplierstwo.com",
                 Reference = "REF002",
-                Created_at = new DateTime(2023, 2, 15),
-                Updated_at = new DateTime(2023, 2, 15)
+                CreatedAt = new DateTime(2023, 2, 15),
+                UpdatedAt = new DateTime(2023, 2, 15)
             }
         );
         _context.SaveChanges();
- 
- 
     }
-     [Fact]
-    public async Task Get_All_Suppliers()
+
+    [Fact]
+    public async Task GetAllSuppliers()
     {
-        var result = await _service.GetAll();
+        var result = await _service.GetSuppliers();
 
         Xunit.Assert.NotNull(result);
         Xunit.Assert.Equal(2, result.Count());
     }
 
     [Fact]
-    public async Task Get_Supplier_By_Id()
+    public async Task GetSupplierById()
     {
-        var result = await _service.Get(1);
+        var result = await _service.GetSupplierById(1);
 
         Xunit.Assert.NotNull(result);
         Xunit.Assert.Equal("SUPP001", result.Code);
@@ -87,15 +86,15 @@ public class SuppliersServicesTest
     }
 
     [Fact]
-    public async Task Get_Supplier_By_Invalid_Id()
+    public async Task GetSupplierByInvalidId()
     {
-        var result = await _service.Get(999);
+        var result = await _service.GetSupplierById(999);
 
         Xunit.Assert.Null(result);
     }
 
     [Fact]
-    public async Task Add_Valid_Supplier()
+    public async Task AddValidSupplier()
     {
         var newSupplier = new Supplier
         {
@@ -103,16 +102,16 @@ public class SuppliersServicesTest
             Code = "SUPP003",
             Name = "Supplier Three",
             Address = "789 Tech Park",
-            Address_extra = "Suite 303",
-            Zip_code = "54321",
+            AddressExtra = "Suite 303",
+            City = "Los Angeles",
+            ZipCode = "54321",
             Province = "Texas",
             Country = "USA",
-            Contact_name = "Tom Johnson",
+            ContactName = "Tom Johnson",
             Phonenumber = "555-555-5555",
-            Email = "tom.johnson@supplierthree.com",
             Reference = "REF003",
-            Created_at = DateTime.Now,
-            Updated_at = DateTime.Now
+            CreatedAt = DateTime.Now,
+            UpdatedAt = DateTime.Now
         };
 
         var result = await _service.AddSupplier(newSupplier);
@@ -123,7 +122,7 @@ public class SuppliersServicesTest
     }
 
     [Fact]
-    public async Task Add_Invalid_Supplier_Duplicate()
+    public async Task AddInvalidSupplierDuplicate()
     {
         var duplicateSupplier = new Supplier
         {
@@ -131,16 +130,16 @@ public class SuppliersServicesTest
             Code = "SUPP001",
             Name = "Duplicate Supplier",
             Address = "123 Main Street",
-            Address_extra = "Suite 101",
-            Zip_code = "12345",
+            AddressExtra = "Suite 101",
+            City = "Los Angeles",
+            ZipCode = "12345",
             Province = "New York",
             Country = "USA",
-            Contact_name = "John Doe",
+            ContactName = "John Doe",
             Phonenumber = "123-456-7890",
-            Email = "duplicate@supplier.com",
             Reference = "REF001",
-            Created_at = DateTime.Now,
-            Updated_at = DateTime.Now
+            CreatedAt = DateTime.Now,
+            UpdatedAt = DateTime.Now
         };
 
         var result = await _service.AddSupplier(duplicateSupplier);
@@ -150,7 +149,7 @@ public class SuppliersServicesTest
     }
 
     [Fact]
-    public async Task Update_Existing_Supplier()
+    public async Task UpdateExistingSupplier()
     {
         var updatedSupplier = new Supplier
         {
@@ -158,16 +157,16 @@ public class SuppliersServicesTest
             Code = "SUPP001-UPDATED",
             Name = "Updated Supplier One",
             Address = "Updated Address",
-            Address_extra = "Updated Suite",
-            Zip_code = "54321",
+            AddressExtra = "Updated Suite",
+            City = "Los Angeles",
+            ZipCode = "54321",
             Province = "Updated Province",
             Country = "Updated Country",
-            Contact_name = "Updated Contact",
+            ContactName = "Updated Contact",
             Phonenumber = "999-999-9999",
-            Email = "updated@supplierone.com",
             Reference = "REF001-UPDATED",
-            Created_at = new DateTime(2023, 1, 15),
-            Updated_at = DateTime.Now
+            CreatedAt = new DateTime(2023, 1, 15),
+            UpdatedAt = DateTime.Now
         };
 
         var result = await _service.UpdateSupplier(1, updatedSupplier);
@@ -178,7 +177,7 @@ public class SuppliersServicesTest
     }
 
     [Fact]
-    public async Task Update_Supplier_Invalid()
+    public async Task UpdateSupplierInvalid()
     {
         var updatedSupplier = new Supplier
         {
@@ -186,16 +185,16 @@ public class SuppliersServicesTest
             Code = "INVALID",
             Name = "Invalid Supplier",
             Address = "Invalid Address",
-            Address_extra = "Invalid Suite",
-            Zip_code = "54321",
+            AddressExtra = "Invalid Suite",
+            City = "Los Angeles",
+            ZipCode = "54321",
             Province = "Invalid Province",
             Country = "Invalid Country",
-            Contact_name = "Invalid Contact",
+            ContactName = "Invalid Contact",
             Phonenumber = "000-000-0000",
-            Email = "invalid@supplier.com",
             Reference = "REF999",
-            Created_at = DateTime.Now,
-            Updated_at = DateTime.Now
+            CreatedAt = DateTime.Now,
+            UpdatedAt = DateTime.Now
         };
 
         var result = await _service.UpdateSupplier(999, updatedSupplier);
@@ -204,7 +203,7 @@ public class SuppliersServicesTest
     }
 
     [Fact]
-    public async Task Delete_Supplier_Valid()
+    public async Task DeleteSupplierValid()
     {
         var result = await _service.DeleteSupplier(1);
 
@@ -213,7 +212,7 @@ public class SuppliersServicesTest
     }
 
     [Fact]
-    public async Task Delete_Supplier_Invalid()
+    public async Task DeleteSupplierInvalid()
     {
         var result = await _service.DeleteSupplier(999);
 

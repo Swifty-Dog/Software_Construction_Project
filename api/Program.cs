@@ -16,7 +16,7 @@ builder.Services.AddTransient<TransfersServices>();
 builder.Services.AddTransient<Item_groupService>();
 builder.Services.AddTransient<ClientServices>();
 builder.Services.AddTransient<SuppliersServices>();
-builder.Services.AddTransient<ISuppliersInterface, SuppliersServices>();
+builder.Services.AddTransient<ISuppliers, SuppliersServices>();
 builder.Services.AddTransient<Inventory>();
 builder.Services.AddTransient<InventoriesLocations>();
 builder.Services.AddTransient<InventoryServices>();
