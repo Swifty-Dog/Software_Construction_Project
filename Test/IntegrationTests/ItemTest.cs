@@ -129,16 +129,16 @@ public class ItemTest
             Code = "SUPP003",
             Name = "Tech Supplies",
             Address = "123 Tech Park",
-            Address_extra = "Suite 101",
-            Zip_code = "67890",
+            AddressExtra = "Suite 101",
+            City = "Los Angeles",
+            ZipCode = "67890",
             Province = "California",
             Country = "USA",
-            Contact_name = "Jane Doe",
+            ContactName = "Jane Doe",
             Phonenumber = "098-765-4321",
-            Email = "janedoe@techsupplies.com",
             Reference = "REF1234",
-            Created_at = DateTime.UtcNow,
-            Updated_at = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
         await _controllerSuppliers.AddSupplier(newSupplier);
 
@@ -211,16 +211,16 @@ public class ItemTest
             Code = "SUPP003",
             Name = "Tech Supplies",
             Address = "123 Tech Park",
-            Address_extra = "Suite 101",
-            Zip_code = "67890",
+            AddressExtra = "Suite 101",
+            City = "Los Angeles",
+            ZipCode = "67890",
             Province = "California",
             Country = "USA",
-            Contact_name = "Jane Doe",
+            ContactName = "Jane Doe",
             Phonenumber = "098-765-4321",
-            Email = "janedoe@techsupplies.com",
             Reference = "REF1234",
-            Created_at = DateTime.UtcNow,
-            Updated_at = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
         await _controllerSuppliers.AddSupplier(newSupplier);
 
