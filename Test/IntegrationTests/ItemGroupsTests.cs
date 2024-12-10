@@ -16,7 +16,7 @@ public class ItemGroupsTest
         _context = new MyContext(options);
         SeedData();
 
-        var service = new Item_groupService(_context);
+        var service = new ItemGroupService(_context);
         _controller = new ItemGroupController(service);
     }
 
@@ -25,23 +25,23 @@ public class ItemGroupsTest
         _context.ItemGroups.RemoveRange(_context.ItemGroups);
         _context.SaveChanges();
 
-        var itemGroups = new List<Item_group>
+        var itemGroups = new List<ItemGroup>
         {
-            new Item_group
+            new ItemGroup
             {
                 Id = 1,
                 Name = "Furniture",
                 Description = "Tables, chairs, and more.",
-                Created_at = DateTime.UtcNow,
-                Updated_at = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
             },
-            new Item_group
+            new ItemGroup
             {
                 Id = 2,
                 Name = "Appliances",
                 Description = "Kitchen and home appliances.",
-                Created_at = DateTime.UtcNow,
-                Updated_at = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
             }
         };
 
@@ -50,46 +50,46 @@ public class ItemGroupsTest
     }
 
     [Fact]
-    public async Task Test_Get_Item_Groups()
+    public async Task TestGetItemGroups()
     {
-        var result = await _controller.Get_Item_groups();
+        var result = await _controller.GetItemGroups();
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
-        var itemgroups = Xunit.Assert.IsType<List<Item_group>>(okResult.Value);
-        Xunit.Assert.NotEmpty(itemgroups);
+        var itemGroups = Xunit.Assert.IsType<List<ItemGroup>>(okResult.Value);
+        Xunit.Assert.NotEmpty(itemGroups);
     }
 
     [Fact]
-    public async Task Test_Get_Item_Groups_By_Id()
+    public async Task TestGetItemGroupsById()
     {
-        var result = await _controller.Get_Item_group_By_Id(1);
+        var result = await _controller.GetItemGroupById(1);
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
-        var itemgroup = Xunit.Assert.IsType<Item_group>(okResult.Value);
-        Xunit.Assert.Equal("Furniture", itemgroup.Name);
-        Xunit.Assert.Equal(1, itemgroup.Id);
+        var itemGroup = Xunit.Assert.IsType<ItemGroup>(okResult.Value);
+        Xunit.Assert.Equal("Furniture", itemGroup.Name);
+        Xunit.Assert.Equal(1, itemGroup.Id);
     }
 
     [Fact]
-    public async Task Test_Get_Non_Existent_Item_group()
+    public async Task TestGetNonExistentItemGroup()
     {
-        var result = await _controller.Get_Item_group_By_Id(9999);
+        var result = await _controller.GetItemGroupById(9999);
         Xunit.Assert.IsType<NotFoundObjectResult>(result);
     }
 
     [Fact]
-    public async Task Test_Post_Item_Group()
+    public async Task TestPostItemGroup()
     {
-        var newItemGroup = new Item_group
+        var newItemGroup = new ItemGroup
         {
             Id = 3,
             Name = "Test",
             Description = "Testtest",
-            Created_at = DateTime.UtcNow,
-            Updated_at = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
 
-        var result = await _controller.Add_Item_group(newItemGroup);
+        var result = await _controller.AddItemGroup(newItemGroup);
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
-        var itemGroup = Xunit.Assert.IsType<Item_group>(okResult.Value);
+        var itemGroup = Xunit.Assert.IsType<ItemGroup>(okResult.Value);
         Xunit.Assert.Equal("Test", itemGroup.Name);
         Xunit.Assert.Equal("Testtest", itemGroup.Description);
         Xunit.Assert.Equal(3, itemGroup.Id);
@@ -97,34 +97,34 @@ public class ItemGroupsTest
 
     [Fact]
 
-    public async Task Test_Put_Item_Group()
+    public async Task TestPutItemGroup()
     {
-        var updated_item_group = new Item_group
+        var updatedItemGroup = new ItemGroup
         {
             Id = 1,
             Name = "Test_updated_put",
             Description = "Testtest",
-            Created_at = DateTime.UtcNow,
-            Updated_at = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
 
-        var result = await _controller.Update_Item_group(1, updated_item_group);
+        var result = await _controller.UpdateItemGroup(1, updatedItemGroup);
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
-        var item_group = Xunit.Assert.IsType<Item_group>(okResult.Value);
-        Xunit.Assert.Equal("Test_updated_put", item_group.Name);
-        Xunit.Assert.Equal(1,item_group.Id);
+        var itemGroup = Xunit.Assert.IsType<ItemGroup>(okResult.Value);
+        Xunit.Assert.Equal("Test_updated_put", itemGroup.Name);
+        Xunit.Assert.Equal(1,itemGroup.Id);
 
         //TIJDELIET NIET WERKBAAR?
     }
 
     [Fact]
 
-    public async Task Delete_Item_Group()
+    public async Task DeleteItemGroup()
     {
-        var result = await _controller.Delete_Item_group(2);
+        var result = await _controller.DeleteItemGroup(2);
         Xunit.Assert.IsType<NoContentResult>(result);
 
-        var getResult = await _controller.Get_Item_group_By_Id(2);
+        var getResult = await _controller.GetItemGroupById(2);
         Xunit.Assert.IsType<NotFoundObjectResult>(getResult);
 
     }
