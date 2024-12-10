@@ -13,7 +13,7 @@ builder.Services.AddTransient<Supplier>();
 builder.Services.AddTransient<WarehouseServices>(); 
 builder.Services.AddTransient<LocationServices>();
 builder.Services.AddTransient<TransfersServices>();
-builder.Services.AddTransient<Item_groupService>();
+builder.Services.AddTransient<ItemGroupService>();
 builder.Services.AddTransient<ClientServices>();
 builder.Services.AddTransient<SuppliersServices>();
 builder.Services.AddTransient<ISuppliers, SuppliersServices>();

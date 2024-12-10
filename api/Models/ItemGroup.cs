@@ -1,7 +1,8 @@
-public class Item_group {
+public class ItemGroup
+{
     public required int Id { get; set; }
     public required string Name { get; set; }
     public required string Description { get; set; }
-    public required DateTime Created_at { get; set; }
-    public required DateTime Updated_at { get; set; }
+    public required DateTime CreatedAt { get; set; }
+    public required DateTime UpdatedAt { get; set; }
 }

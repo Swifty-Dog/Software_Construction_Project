@@ -26,7 +26,7 @@ public class ItemTest
         _controllerLines = new ItemLinesController(lineService);
         var typeService = new Item_TypeServices(_context);
         _controllerTypes = new ItemTypeController(typeService);
-        var groupService = new Item_groupService(_context);
+        var groupService = new ItemGroupService(_context);
         _controllerGroups = new ItemGroupController(groupService);
         var supplierService = new SuppliersServices(_context);
         _controllerSuppliers = new SuppliersController(supplierService);
@@ -113,15 +113,15 @@ public class ItemTest
         };
         await _controllerTypes.AddItem_types(newItemType);
 
-        var newItemGroup = new Item_group
+        var newItemGroup = new ItemGroup
         {
             Id = 1,
             Name = "Test group",
             Description = "Testtest",
-            Created_at = DateTime.UtcNow,
-            Updated_at = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
-        await _controllerGroups.Add_Item_group(newItemGroup);
+        await _controllerGroups.AddItemGroup(newItemGroup);
 
         var newSupplier = new Supplier
         {
@@ -195,15 +195,15 @@ public class ItemTest
         };
         await _controllerTypes.AddItem_types(newItemType);
 
-        var newItemGroup = new Item_group
+        var newItemGroup = new ItemGroup
         {
             Id = 1,
             Name = "Test group",
             Description = "Testtest",
-            Created_at = DateTime.UtcNow,
-            Updated_at = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
-        await _controllerGroups.Add_Item_group(newItemGroup);
+        await _controllerGroups.AddItemGroup(newItemGroup);
 
         var newSupplier = new Supplier
         {
