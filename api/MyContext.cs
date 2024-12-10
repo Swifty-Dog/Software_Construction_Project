@@ -8,7 +8,7 @@ public class MyContext : DbContext
     public DbSet<Contact> Contact { get; set; }
     public DbSet<Locations> Locations {get;set;}
     public DbSet<Item> Items { get; set; }
-    public DbSet<Item_group> ItemGroups { get; set; }
+    public DbSet<ItemGroup> ItemGroups { get; set; }
     public DbSet<ItemLine> ItemLines { get; set; }
     public DbSet<Item_type> ItemTypes { get; set; }
     public DbSet<Supplier> Suppliers { get; set; }
@@ -50,7 +50,7 @@ public class MyContext : DbContext
         modelBuilder.Entity<Supplier>()
             .HasKey(s => s.Id);
 
-        modelBuilder.Entity<Item_group>()
+        modelBuilder.Entity<ItemGroup>()
             .HasKey(g => g.Id);
 
         modelBuilder.Entity<ItemLine>()
