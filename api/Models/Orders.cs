@@ -20,7 +20,7 @@ public class Orders
     public required decimal TotalSurcharge { get; set; }
     public required DateTime CreatedAt { get; set; }
     public required DateTime UpdatedAt { get; set; }
-    public required List<Orders_Item> Items { get; set; }
+    public required List<OrdersItem> Items { get; set; }
 
 }
 
