@@ -31,15 +31,15 @@ Api-Key: a1b2c3d4e5
     "totalSurcharge": 10.00,
     "items": [
         {
-            "uid": "P000001",
+            "Uid": "P000001",
             "code": "sjQ23408K",
             "description": "Face-to-face clear-thinking complexity",
-            "short_description": "Brief description here",
-            "upc_code": "6523540947122",
-            "model_number": "63-OFFTq0T",
-            "commodity_code": "oTo304",
-            "item_line": 11,
-            "item_group": 73
+            "shortdescription": "Brief description here",
+            "upccode": "6523540947122",
+            "modelnumber": "63-OFFTq0T",
+            "commoditycode": "oTo304",
+            "itemline": 11,
+            "itemgroup": 73
         }
     ],
     "createdAt": "2024-10-22T10:00:00",
@@ -81,17 +81,22 @@ Api-Key: a1b2c3d4e5
     "totalSurcharge": 12.00,
     "items": [
         {
-            "uid": "P000001",
+            "Uid": "P000001",
             "code": "sjQ23408K",
             "description": "Updated description for the item",
-            "short_description": "Updated brief description",
-            "upc_code": "6523540947122",
-            "model_number": "63-OFFTq0T",
-            "commodity_code": "oTo304",
-            "item_line": 11,
-            "item_group": 73
+            "shortdescription": "Updated brief description",
+            "upccode": "6523540947122",
+            "modelnumber": "63-OFFTq0T",
+            "commoditycode": "oTo304",
+            "itemline": 11,
+            "itemgroup": 73
         }
     ],
     "createdAt": "2024-10-22T10:00:00",
     "updatedAt": "2024-10-22T12:00:00"
 }
+
+###
+DELETE http://localhost:5000/api/v1/orders/2
+Api-Key: a1b2c3d4e5
+###
