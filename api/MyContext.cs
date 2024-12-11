@@ -10,7 +10,7 @@ public class MyContext : DbContext
     public DbSet<Item> Items { get; set; }
     public DbSet<ItemGroup> ItemGroups { get; set; }
     public DbSet<ItemLine> ItemLines { get; set; }
-    public DbSet<Item_type> ItemTypes { get; set; }
+    public DbSet<ItemType> ItemTypes { get; set; }
     public DbSet<Supplier> Suppliers { get; set; }
     public DbSet<Transfer> Transfers { get; set; }
     public DbSet<TransfersItem> TransferItems { get; set; }
@@ -56,7 +56,7 @@ public class MyContext : DbContext
         modelBuilder.Entity<ItemLine>()
             .HasKey(l => l.Id);
 
-        modelBuilder.Entity<Item_type>()
+        modelBuilder.Entity<ItemType>()
             .HasKey(t => t.Id);
 
         // Transfer configuration

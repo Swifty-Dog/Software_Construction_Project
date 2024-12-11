@@ -4,53 +4,60 @@ using Microsoft.AspNetCore.Mvc;
 [Route("/api/v1/")]
 
 public class ItemTypeController : ControllerBase{
-    private readonly Item_TypeServices _item_types;
-    public ItemTypeController(Item_TypeServices item_types){
-        _item_types = item_types;
+    private readonly ItemTypeServices _itemTypesService;
+    public ItemTypeController(ItemTypeServices itemTypes)
+    {
+        _itemTypesService = itemTypes;
     }
 
     [HttpGet("ItemTypes")]
-    public async Task<IActionResult> GetItem_types(){
-        var item_types = await _item_types.GetItem_types();
-        return Ok(item_types);
+    public async Task<IActionResult> GetItemTypes()
+    {
+        var itemTypes = await _itemTypesService.GetItemTypes();
+        return Ok(itemTypes);
     }
 
     [HttpGet("ItemTypes/{id}")]
-    public async Task<IActionResult> GetItem_types_By_Id(int id){
-        var item_types = await _item_types.GetItem_types_By_Id(id);
-        if (item_types == null){
+    public async Task<IActionResult> GetItemTypesById(int id)
+    {
+        var itemTypes = await _itemTypesService.GetItemTypesById(id);
+        if (itemTypes == null)
+        {
             return NotFound("No Item Type found with that ID");
         }
-        return Ok(item_types);
+        return Ok(itemTypes);
     }
     
     [HttpPost("ItemType")]
-    public async Task<IActionResult> AddItem_types([FromBody] Item_type item_types){
-        if (item_types == null)
+    public async Task<IActionResult> AddItemType([FromBody] ItemType itemTypes)
+    {
+        if (itemTypes == null)
             return BadRequest("Item Type is null.");
-        var result = await _item_types.AddItem_types(item_types);
+        var result = await _itemTypesService.AddItemType(itemTypes);
         if (result == null)
             return BadRequest("Item Type already exists.");
         return Ok(result);
     }
 
     [HttpPut("ItemType/{id}")]
-    public async Task<IActionResult> UpdateItem_types([FromRoute] int id, [FromBody] Item_type item_types){
-        if(id <= 0 || id != item_types.Id)
+    public async Task<IActionResult> UpdateItemTypes([FromRoute] int id, [FromBody] ItemType itemTypes)
+    {
+        if(id <= 0 || id != itemTypes.Id)
             return BadRequest("Item Type ID in the body does not match the ID in the URL.");
-        if (item_types == null)
+        if (itemTypes == null)
             return BadRequest("Item Type is null.");
-        var result = await _item_types.UpdateItem_types(item_types);
+        var result = await _itemTypesService.UpdateItemTypes(itemTypes);
         if (result == null)
             return NotFound("Item Type not found or has been deleted.");        
         return Ok(result);
     }
 
     [HttpDelete("ItemType/{id}")]
-    public async Task<IActionResult> DeleteItem_types([FromRoute] int id){
+    public async Task<IActionResult> DeleteItemTypes([FromRoute] int id)
+    {
         if(id <= 0)
             return NotFound();
-        var result = await _item_types.DeleteItem_types(id);
+        var result = await _itemTypesService.DeleteItemTypes(id);
         if (result == false)
             return NotFound();
         return NoContent();
