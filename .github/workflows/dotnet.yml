@@ -54,7 +54,7 @@ jobs:
 
     - name: Extract Coverage Percentage
       run: |
-        COVERAGE_FILE=$(find . -path "./**/TestResults/**/coverage.cobertura.xml" | head -n 1)
+        COVERAGE_FILE=$(find . -path "./Test/TestResults/**/coverage.cobertura.xml" | head -n 1)
         if [ -z "$COVERAGE_FILE" ]; then
           echo "Coverage report not found!"
           exit 1
