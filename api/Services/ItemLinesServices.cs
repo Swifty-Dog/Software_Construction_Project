@@ -50,9 +50,9 @@ public class ItemLineServices : IItemLine
         return itemLineToUpdate;
     }
 /* stappen voor restricten en valideren
-    1 kijken of item bij een item in gebruik is.
+    1 kijken of item bij een item in gebruik is via een method.
     2a zo ja allesveranderen naar null
-    2b zo nee verwijderen.
+    2b zo nee null returnen en zoals normaal ververwijderen.
 */
     public async Task<Item> GetItemByItemLineId(int id)
     {
