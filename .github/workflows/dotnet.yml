@@ -5,15 +5,16 @@ on:
     branches:
       - main
       - 6.2.workflow
+      - 158-bugfix
   pull_request:
     branches:
       - main
       - 6.2.workflow
+      - 158-bugfix
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-
+    runs-on: self-hosted
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
