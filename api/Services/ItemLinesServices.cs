@@ -56,8 +56,10 @@ public class ItemLineServices : IItemLine
 */
     public async Task<Item> GetItemByItemLineId(int id)
     {
-        var searchedItem = await _context.Items.FindAsync(id);
-        if (searchedItem == null)
+    // probleem waar ik nu mee zit is dat item een uid is maar ik moet zoeken met een int.
+    //ik kan ook alles pakken als een list en daarin loopen om te checken of itemline id klopt maar dat kan lang duren.
+        var searchedItem = await _context.Items.;
+        if (searchedItem.ItemLine == null)
         {
             return null;
         }
