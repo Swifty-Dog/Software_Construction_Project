@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 [Route("/api/v1/orders")]
 public class OrdersController : ControllerBase
 {
-    private readonly IOrdersInterface _ordersServices;
+    private readonly OrdersServices _ordersServices;
 
-    public OrdersController(IOrdersInterface ordersServices)
+    public OrdersController(OrdersServices ordersServices)
     {
         _ordersServices = ordersServices;
     }
