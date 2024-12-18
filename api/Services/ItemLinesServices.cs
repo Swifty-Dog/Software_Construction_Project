@@ -49,15 +49,38 @@ public class ItemLineServices : IItemLine
         await _context.SaveChangesAsync();
         return itemLineToUpdate;
     }
+/* stappen voor restricten en valideren
+    1 kijken of item bij een item in gebruik is.
+    2a zo ja allesveranderen naar null
+    2b zo nee verwijderen.
+*/
+    public async Task<Item> GetItemByItemLineId(int id)
+    {
+        var searchedItem = await _context.Items.FindAsync(id);
+        if (searchedItem == null)
+        {
+            return null;
+        }
+        return searchedItem;
+    }
+
     public async Task<bool> DeleteItemLine(int id)
     {
-        var itemLine = await _context.ItemLines.FindAsync(id);
-        if (itemLine == null)
+        var itemSearch = GetItemByItemLineId(id);
+        if (itemSearch == null)
+        {
+            var itemLine = await _context.ItemLines.FindAsync(id);
+            if (itemLine == null)
+            {
+                return false;
+            }
+            _context.ItemLines.Remove(itemLine);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        else // nog bezig
         {
             return false;
         }
-        _context.ItemLines.Remove(itemLine);
-        await _context.SaveChangesAsync();
-        return true;
     }
 }
