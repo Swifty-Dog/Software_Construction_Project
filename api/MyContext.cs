@@ -2,9 +2,11 @@ using Microsoft.EntityFrameworkCore;
 
 public class MyContext : DbContext
 {
+    public MyContext() { }
+
     public MyContext(DbContextOptions<MyContext> options) : base(options) {}
 
-    public DbSet<Warehouse> Warehouse { get; set; }
+    public /* virtual */ DbSet<Warehouse> Warehouse { get; set; }
     public DbSet<Contact> Contact { get; set; }
     public DbSet<Locations> Locations {get;set;}
     public DbSet<Item> Items { get; set; }
@@ -14,7 +16,7 @@ public class MyContext : DbContext
     public DbSet<Supplier> Suppliers { get; set; }
     public DbSet<Transfer> Transfers { get; set; }
     public DbSet<TransfersItem> TransferItems { get; set; }
-    public DbSet<Client> Client { get; set; }
+    public virtual DbSet<Client> Client { get; set; }
     public DbSet<Inventory> Inventories { get; set; }
     public DbSet<InventoriesLocations> InventoriesLocations { get; set; }
     public DbSet<Shipment> Shipments { get; set; }
