@@ -45,19 +45,19 @@ public class OrdersTest
             TotalDiscount = 60.00m,
             TotalTax = 55.00m,
             TotalSurcharge = 12.00m,
-            Items = new List<Orders_Item>
+            Items = new List<OrdersItem>
             {
-                new Orders_Item
+                new OrdersItem
                 {
-                    uid = "P000001",
-                    code = "sjQ23408K",
-                    description = "Updated description for the item",
-                    short_description = "Updated brief description",
-                    upc_code = "6523540947122",
-                    model_number = "63-OFFTq0T",
-                    commodity_code = "oTo304",
-                    item_line = 11,
-                    item_group = 6,
+                    Uid = "P000001",
+                    Code = "sjQ23408K",
+                    Description = "Updated description for the item",
+                    ShortDescription = "Updated brief description",
+                    UpcCode = "6523540947122",
+                    ModelNumber = "63-OFFTq0T",
+                    CommodityCode = "oTo304",
+                    ItemLine = 11,
+                    ItemGroup = 6,
                 }
             },
             CreatedAt = DateTime.Parse("2024-10-22T10:00:00"),
@@ -119,19 +119,19 @@ public class OrdersTest
             TotalSurcharge = 15.00m,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
-            Items = new List<Orders_Item>
+            Items = new List<OrdersItem>
             {
-                new Orders_Item
+                new OrdersItem
                 {
-                    uid = "P000002",
-                    code = "sjQ23409K",
-                    description = "Updated description for the item",
-                    short_description = "Brief description",
-                    upc_code = "6523540947123",
-                    model_number = "63-OFFTq0U",
-                    commodity_code = "oTo305",
-                    item_line = 12,
-                    item_group = 74,
+                    Uid = "P000002",
+                    Code = "sjQ23409K",
+                    Description = "Updated description for the item",
+                    ShortDescription = "Brief description",
+                    UpcCode = "6523540947123",
+                    ModelNumber = "63-OFFTq0U",
+                    CommodityCode = "oTo305",
+                    ItemLine = 12,
+                    ItemGroup = 74,
                 },
             },
         };
@@ -166,19 +166,19 @@ public class OrdersTest
             TotalDiscount = 60.00m,
             TotalTax = 55.00m,
             TotalSurcharge = 12.00m,
-            Items = new List<Orders_Item>
+            Items = new List<OrdersItem>
             {
-                new Orders_Item
+                new OrdersItem
                 {
-                    uid = "P000001",
-                    code = "sjQ23408K_UPDATED",
-                    description = "Updated description for the item",
-                    short_description = "Updated brief description",
-                    upc_code = "6523540947122",
-                    model_number = "63-OFFTq0T",
-                    commodity_code = "oTo304",
-                    item_line = 11,
-                    item_group = 73
+                    Uid = "P000001",
+                    Code = "sjQ23408K_UPDATED",
+                    Description = "Updated description for the item",
+                    ShortDescription = "Updated brief description",
+                    UpcCode = "6523540947122",
+                    ModelNumber = "63-OFFTq0T",
+                    CommodityCode = "oTo304",
+                    ItemLine = 11,
+                    ItemGroup = 73
                 }
             },
             CreatedAt = DateTime.Parse("2024-10-22T10:00:00"),
