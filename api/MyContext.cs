@@ -20,6 +20,7 @@ public class MyContext : DbContext
     public DbSet<Shipment> Shipments { get; set; }
     public DbSet<ShipmentsItem> ShipmentsItems { get; set; }
     public DbSet<Orders> Orders { get; set; }
+    public DbSet<Orders_Item> OrdersItems { get; set; }
     public DbSet<User> Users { get; set; }
 
 
