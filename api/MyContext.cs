@@ -20,7 +20,7 @@ public class MyContext : DbContext
     public DbSet<Shipment> Shipments { get; set; }
     public DbSet<ShipmentsItem> ShipmentsItems { get; set; }
     public DbSet<Orders> Orders { get; set; }
-    public DbSet<Orders_Item> OrdersItems { get; set; }
+    public DbSet<OrdersItem> OrdersItems { get; set; }
     public DbSet<User> Users { get; set; }
 
 
@@ -74,7 +74,7 @@ public class MyContext : DbContext
         modelBuilder.Entity<TransfersItem>()
             .HasKey(ti => new { ti.TransferId, ti.ItemId });  // Composite key using TransferId and Item_Id
 
-        modelBuilder.Entity<Orders_Item>()
+        modelBuilder.Entity<OrdersItem>()
             .HasKey(o => new { o.OrderId});
 
         // Client configuration
