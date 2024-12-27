@@ -75,11 +75,16 @@ public class OrdersServices : IOrdersInterface
         await _context.SaveChangesAsync();
         return orderToUpdate;
     }
-
     public async Task<bool> DeleteOrder(int id)
     {
-        var orderToDelete = await _context.Orders.FindAsync(id);
+        var orderToDelete = await _context.Orders
+            .Include(o => o.Items)
+            .FirstOrDefaultAsync(o => o.Id == id);
+        
         if (orderToDelete == null) return false;
+
+        // Remove related items first
+        _context.OrdersItems.RemoveRange(orderToDelete.Items);
 
         _context.Orders.Remove(orderToDelete);
         await _context.SaveChangesAsync();
