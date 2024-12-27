@@ -75,7 +75,7 @@ public class MyContext : DbContext
             .HasKey(ti => new { ti.TransferId, ti.ItemId });  // Composite key using TransferId and Item_Id
 
         modelBuilder.Entity<OrdersItem>()
-            .HasKey(o => new { o.OrderId });
+            .HasKey(o => new { o.OrderId });  // Composite key using OrderId and ItemId
 
         // Client configuration
         modelBuilder.Entity<Client>()
