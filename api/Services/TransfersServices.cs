@@ -56,7 +56,12 @@ public class TransfersServices : ITransfers
                 item.ItemId = existingItem.ItemId;
                 item.Amount = existingItem.Amount;
             }
+            // if (!_context.Items.Any(i => i.Uid == item.ItemId)) // if item does not exist, set ItemId in trnasfersitems to null
+            // {
+            //     item.ItemId = "null";
+            // }
         }
+        
         // Check if the transfer already exists by checking the Reference (since it's unique)
         var existingTransfer = await _context.Transfers
             .FirstOrDefaultAsync(t => t.Id == transfer.Id);

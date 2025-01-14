@@ -87,7 +87,15 @@ public class ItemServices : IItem
     public async Task<bool> DeleteItem(string Uid)
     {
         var itemToDelete = await _context.Items.FindAsync(Uid);
-        if(itemToDelete != null){
+        if(itemToDelete != null)
+        {
+            var transferItemsWithThisItem = await _context.TransferItems.Where(ti => ti.ItemId == Uid).ToListAsync();
+            foreach (var transferItem in transferItemsWithThisItem)
+            {
+                transferItem.ItemId = "null";
+            }
+            await _context.SaveChangesAsync();
+            
             _context.Items.Remove(itemToDelete);
             await _context.SaveChangesAsync();
             return true;
