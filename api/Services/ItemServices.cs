@@ -27,19 +27,19 @@ public class ItemServices : IItem
     {
         if (!_context.ItemGroups.Any(ig => ig.Id == item.ItemGroup))
         {
-            throw new Exception ("Item group ID does not exist.");
+            item.ItemGroup = null;
         }
         if (!_context.ItemLines.Any(il => il.Id == item.ItemLine))
         {
-            throw new Exception ("Item line ID does not exist.");
+            item.ItemLine = null;
         }
         if (!_context.ItemTypes.Any(it => it.Id == item.ItemType))
         {
-            throw new Exception ("Item type ID does not exist.");
+            item.ItemType = null;
         }
         if (!_context.Suppliers.Any(s => s.Id == item.SupplierId))
         {
-            throw new Exception ("Supplier ID does not exist.");
+            item.SupplierId = null;
         }
 
         Item existingItem = await GetItemById(item.Uid);
