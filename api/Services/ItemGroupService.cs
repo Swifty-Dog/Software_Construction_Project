@@ -65,7 +65,8 @@ public class ItemGroupService: IItemGroup
         
     }
 
-    public async Task<bool> DeleteItemGroup(int id){
+    public async Task<bool> DeleteItemGroup(int id)
+    {
         if (id <= 0)
             return false;
         ItemGroup itemGroupToDelete = await _context.ItemGroups.FindAsync(id);
@@ -73,6 +74,13 @@ public class ItemGroupService: IItemGroup
         {
             throw new Exception("ItemGroup not found or has been deleted.");
         }
+        var itemsWithThisItemGroup = await _context.Items.Where(i => i.ItemGroup == id).ToListAsync();
+        foreach (var item in itemsWithThisItemGroup)
+        {
+            item.ItemGroup = null;
+        }
+
+        await _context.SaveChangesAsync();
         _context.ItemGroups.Remove(itemGroupToDelete);
         await _context.SaveChangesAsync();
         return true;
