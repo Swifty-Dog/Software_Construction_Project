@@ -37,7 +37,7 @@ Content-Type: application/json
 Api-Key: a1b2c3d4e5
 
 {
-    "Uid": "P000002",
+    "Uid": "TEST2",
     "Code": "sjQ23408K",
     "Description": "Face-to-face clear-thinking complexity",
     "ShortDescription": "must",
@@ -82,6 +82,9 @@ Api-Key: a1b2c3d4e5
 
 ### Del Delete Item by uid
 DELETE http://localhost:5000/api/v1/Item/P000001 HTTP/1.1
+Api-Key: a1b2c3d4e5
+### Del Delete Item by uid
+DELETE http://localhost:5000/api/v1/Item/TEST2 HTTP/1.1
 Api-Key: a1b2c3d4e5
 
 ### Get Inventory by Item uid
