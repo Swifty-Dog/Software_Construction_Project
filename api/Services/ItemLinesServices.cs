@@ -49,40 +49,25 @@ public class ItemLineServices : IItemLine
         await _context.SaveChangesAsync();
         return itemLineToUpdate;
     }
-/* stappen voor restricten en valideren
-    1 kijken of item bij een item in gebruik is via een method.
-    2a zo ja allesveranderen naar null
-    2b zo nee null returnen en zoals normaal ververwijderen.
-*/
-    public async Task<Item> GetItemByItemLineId(int id)
-    {
-    // probleem waar ik nu mee zit is dat item een uid is maar ik moet zoeken met een int.
-    //ik kan ook alles pakken als een list en daarin loopen om te checken of itemline id klopt maar dat kan lang duren.
-        var searchedItem = await _context.Items.;
-        if (searchedItem.ItemLine == null)
-        {
-            return null;
-        }
-        return searchedItem;
-    }
 
     public async Task<bool> DeleteItemLine(int id)
     {
-        var itemSearch = GetItemByItemLineId(id);
-        if (itemSearch == null)
-        {
-            var itemLine = await _context.ItemLines.FindAsync(id);
-            if (itemLine == null)
-            {
-                return false;
-            }
-            _context.ItemLines.Remove(itemLine);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-        else // nog bezig
+        var itemLineToDelete = await _context.ItemLines.FindAsync(id);
+        if (itemLineToDelete == null)
         {
             return false;
         }
+
+        var itemsWithThisItemLine = await _context.Items.Where(i => i.ItemLine == id).ToListAsync();
+        foreach (var item in itemsWithThisItemLine)
+        {
+            item.ItemLine = null;
+        }
+
+        await _context.SaveChangesAsync();
+
+        _context.ItemLines.Remove(itemLineToDelete);
+        await _context.SaveChangesAsync();
+        return true;
     }
 }
