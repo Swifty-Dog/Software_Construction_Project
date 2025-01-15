@@ -41,6 +41,7 @@ public class ItemController : Controller
             var result = await _item.AddItem(item);
             if (result == null)
             {
+                _logger.LogInformation("POST /api/v1/Item: Item could not be added or already exists.");
                 return BadRequest("Item could not be added or already exists.");
             }
             //_logger.LogInformation("POST /api/v1/Item: Item with ID {Uid} added successfully", item.Uid);
@@ -49,6 +50,7 @@ public class ItemController : Controller
         }
         catch (Exception ex)
         {
+            _logger.LogInformation("POST /api/v1/Item: Item could not be added or already exists.");
             return BadRequest(ex.Message);
         }
     }
@@ -61,6 +63,7 @@ public class ItemController : Controller
         {
             if (string.IsNullOrEmpty(uid))
             {
+                _logger.LogInformation("PUT /api/v1/Item: Item with id: {uid} could not be updated.", uid);
                 return BadRequest("Item ID is invalid or does not match the item ID in the request body.");
             }
 
@@ -69,6 +72,7 @@ public class ItemController : Controller
             var result = await _item.UpdateItem(uid, item);
             if (result == null)
             {
+                _logger.LogInformation("PUT /api/v1/Item: Item with id: {uid} could not be updated.", uid);
                 return BadRequest("Item could not be updated.");
             }
             _logger.LogInformation("PUT /api/v1/Item/{Uid}: Item updated. Old Item: {@OldItem}, New Item: {@UpdatedItem}",uid, oldItem, result);
@@ -77,6 +81,7 @@ public class ItemController : Controller
         }
         catch (Exception ex)
         {
+            _logger.LogInformation("PUT /api/v1/Item: Item with id: {uid} could not be updated.", uid);
             return BadRequest(ex.Message);
         }
     }
