@@ -1,15 +1,41 @@
+using System.Text.Json.Serialization;
+
 public class Inventory
 {
-    public int Id { get; set; }
-    public string ItemId { get; set; }
-    public string Description { get; set; }
-    public string ItemReference { get; set; }
-    public List<InventoriesLocations> Locations { get; set; }
-    public int TotalOnHand { get; set; }
-    public int TotalExpected { get; set; }
-    public int TotalOrdered { get; set; }
-    public int TotalAllocated { get; set; }
-    public int TotalAvailable { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    [JsonPropertyName("id")]
+    public required int Id { get; set; }
+
+    [JsonPropertyName("item_id")]
+    public required string ItemId { get; set; }
+
+    [JsonPropertyName("description")]
+    public required string Description { get; set; }
+
+    [JsonPropertyName("item_reference")]
+    public required string ItemReference { get; set; }
+
+    [JsonPropertyName("locations")]
+    public required List<int> Locations { get; set; } = new();
+    // public List<InventoriesLocations> Locations { get; set; }
+
+    [JsonPropertyName("total_on_hand")]
+    public required int TotalOnHand { get; set; }
+
+    [JsonPropertyName("total_expected")]
+    public required int TotalExpected { get; set; }
+
+    [JsonPropertyName("total_ordered")]
+    public required int TotalOrdered { get; set; }
+
+    [JsonPropertyName("total_allocated")]
+    public required int TotalAllocated { get; set; }
+
+    [JsonPropertyName("total_available")]
+    public required int TotalAvailable { get; set; }
+
+    [JsonPropertyName("created_at")]
+    public required DateTime CreatedAt { get; set; }
+
+    [JsonPropertyName("updated_at")]
+    public required DateTime UpdatedAt { get; set; }
 }
