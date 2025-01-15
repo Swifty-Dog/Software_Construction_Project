@@ -42,7 +42,8 @@ public class ItemController : Controller
             {
                 return BadRequest("Item could not be added or already exists.");
             }
-            _logger.LogInformation("POST /api/v1/Item: Item with ID {Uid} added successfully", item.Uid);
+            //_logger.LogInformation("POST /api/v1/Item: Item with ID {Uid} added successfully", item.Uid);
+            _logger.LogInformation("POST /api/v1/Item: Item added successfully. Details: {@Item}", item);
             return Ok(result);
         }
         catch (Exception ex)
@@ -61,12 +62,15 @@ public class ItemController : Controller
                 return BadRequest("Item ID is invalid or does not match the item ID in the request body.");
             }
 
+            var oldItem = await _item.GetItemById(uid);
+
             var result = await _item.UpdateItem(uid, item);
             if (result == null)
             {
                 return BadRequest("Item could not be updated.");
             }
-            _logger.LogInformation("PUT /api/v1/Item/{Uid}: Item with ID {Uid} updated successfully", uid, uid);
+            _logger.LogInformation("PUT /api/v1/Item/{Uid}: Item updated. Old Item: {@OldItem}, New Item: {@UpdatedItem}",uid, oldItem, result);
+            //_logger.LogInformation("PUT /api/v1/Item/{Uid}: Item updated successfully. Details: {@UpdatedItem}", uid, result);
             return Ok(result);
         }
         catch (Exception ex)
