@@ -2,34 +2,34 @@ using Microsoft.EntityFrameworkCore;
 
 public class ItemTypeServices : IItemTypes
 {
-    private readonly MyContext _myContext;
+    private readonly MyContext _context;
 
-    public ItemTypeServices(MyContext _myContext)
+    public ItemTypeServices(MyContext _context)
     {
-        this._myContext = _myContext;
+        this._context = _context;
     }
 
     public async Task<List<ItemType>> GetItemTypes()
     {
-        return await _myContext.ItemTypes.ToListAsync();
+        return await _context.ItemTypes.ToListAsync();
     }
 
     public async Task<ItemType> GetItemTypesById(int id)
     {
         if(id <= 0) return null;
-        return await _myContext.ItemTypes.FirstOrDefaultAsync(i => i.Id == id);
+        return await _context.ItemTypes.FirstOrDefaultAsync(i => i.Id == id);
     }
 
     public async Task<ItemType> AddItemType(ItemType itemTypes)
     {
         if(itemTypes == null) return null;
-        var itemTypesExists = await _myContext.ItemTypes.FirstOrDefaultAsync(i => i.Id == itemTypes.Id);
+        var itemTypesExists = await _context.ItemTypes.FirstOrDefaultAsync(i => i.Id == itemTypes.Id);
         if(itemTypesExists != null)
         {
             return null;
         }
-        await _myContext.ItemTypes.AddAsync(itemTypes);
-        await _myContext.SaveChangesAsync();
+        await _context.ItemTypes.AddAsync(itemTypes);
+        await _context.SaveChangesAsync();
         return itemTypes;
     }
 
@@ -37,7 +37,7 @@ public class ItemTypeServices : IItemTypes
     public async Task<ItemType> UpdateItemTypes(ItemType itemTypes)
     {
         if(itemTypes == null) return null;
-        ItemType itemTypesToUpdate = await _myContext.ItemTypes.FindAsync(itemTypes.Id);
+        ItemType itemTypesToUpdate = await _context.ItemTypes.FindAsync(itemTypes.Id);
         if(itemTypesToUpdate == null)
         {
             throw new Exception("Item types not found or has been deleted.");
@@ -47,20 +47,28 @@ public class ItemTypeServices : IItemTypes
         itemTypesToUpdate.CreatedAt = itemTypes.CreatedAt;
         itemTypesToUpdate.UpdatedAt = itemTypes.UpdatedAt;
 
-        await _myContext.SaveChangesAsync();
+        await _context.SaveChangesAsync();
         return itemTypes;
     }
 
     public async Task<bool> DeleteItemTypes(int id)
     {
         if(id <= 0) return false;
-        var itemTypes = await _myContext.ItemTypes.FindAsync(id);
+        var itemTypes = await _context.ItemTypes.FindAsync(id);
         if(itemTypes == null)
         {
             return false;
         }
-        _myContext.ItemTypes.Remove(itemTypes);
-        await _myContext.SaveChangesAsync();
+
+        var itemsWithThisItemType = await _context.Items.Where(i => i.ItemType == id).ToListAsync();
+        foreach (var item in itemsWithThisItemType)
+        {
+            item.ItemType = null;
+        }
+
+        await _context.SaveChangesAsync();
+        _context.ItemTypes.Remove(itemTypes);
+        await _context.SaveChangesAsync();
         return true;
     }
 }

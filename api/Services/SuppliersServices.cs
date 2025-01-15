@@ -75,6 +75,13 @@ public class SuppliersServices : ISuppliers
         {
             return false;
         }
+        var itemsWithThisSupplier = await _context.Items.Where(i => i.SupplierId == id).ToListAsync();
+        foreach (var item in itemsWithThisSupplier)
+        {
+            item.SupplierId = null;
+        }
+
+        await _context.SaveChangesAsync();
 
         _context.Suppliers.Remove(existingSupplier);
         await _context.SaveChangesAsync();

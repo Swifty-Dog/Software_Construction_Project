@@ -49,14 +49,24 @@ public class ItemLineServices : IItemLine
         await _context.SaveChangesAsync();
         return itemLineToUpdate;
     }
+
     public async Task<bool> DeleteItemLine(int id)
     {
-        var itemLine = await _context.ItemLines.FindAsync(id);
-        if (itemLine == null)
+        var itemLineToDelete = await _context.ItemLines.FindAsync(id);
+        if (itemLineToDelete == null)
         {
             return false;
         }
-        _context.ItemLines.Remove(itemLine);
+
+        var itemsWithThisItemLine = await _context.Items.Where(i => i.ItemLine == id).ToListAsync();
+        foreach (var item in itemsWithThisItemLine)
+        {
+            item.ItemLine = null;
+        }
+
+        await _context.SaveChangesAsync();
+
+        _context.ItemLines.Remove(itemLineToDelete);
         await _context.SaveChangesAsync();
         return true;
     }
