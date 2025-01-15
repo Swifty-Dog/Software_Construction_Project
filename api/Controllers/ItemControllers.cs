@@ -27,6 +27,7 @@ public class ItemController : Controller
         var item = await _item.GetItemById(uid);
         if (item == null)
         {
+            _logger.LogInformation("GET /api/v1/Item: Item with id {uid} not found.",uid);
             return NotFound("No Item found with that ID");
         }
         return Ok(item);
@@ -55,6 +56,7 @@ public class ItemController : Controller
     [HttpPut("Item/{uid}")]
     public async Task<IActionResult> UpdateItem([FromRoute] string uid, [FromBody] Item item)
     {
+        var oldItem = await _item.GetItemById(uid);
         try
         {
             if (string.IsNullOrEmpty(uid))
@@ -62,7 +64,7 @@ public class ItemController : Controller
                 return BadRequest("Item ID is invalid or does not match the item ID in the request body.");
             }
 
-            var oldItem = await _item.GetItemById(uid);
+            //var oldItem = await _item.GetItemById(uid);
 
             var result = await _item.UpdateItem(uid, item);
             if (result == null)
