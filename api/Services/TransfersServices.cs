@@ -99,6 +99,11 @@ public class TransfersServices : ITransfers
     {
         if (id <= 0) return false;
         var existingTransfer = await GetTransferById(id);
+        var isTransferUsed = await _context.TransferItems.AnyAsync(ti => ti.TransferId == id); // tijdelijk. moet nog aangepast worden op juiste class
+        if (isTransferUsed)
+        {
+            throw new ArgumentNullException("Transfer is in use and cannot be deleted.");
+        }
         if (existingTransfer == null) return false;
         _context.Transfers.Remove(existingTransfer);
         await _context.SaveChangesAsync();
