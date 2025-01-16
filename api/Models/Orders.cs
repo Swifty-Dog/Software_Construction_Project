@@ -61,10 +61,6 @@ public class Orders
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }
-<<<<<<< Updated upstream
-    public required List<OrdersItem> Items { get; set; }
-=======
->>>>>>> Stashed changes
 
     [JsonPropertyName("items")]
     public required List<OrdersItem> Items { get; set; } = new();
