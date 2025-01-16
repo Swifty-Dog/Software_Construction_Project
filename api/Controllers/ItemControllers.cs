@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using Newtonsoft.Json;
 
 [ApiController]
 [Route("/api/v1/")]
@@ -59,6 +60,8 @@ public class ItemController : Controller
     public async Task<IActionResult> UpdateItem([FromRoute] string uid, [FromBody] Item item)
     {
         var oldItem = await _item.GetItemById(uid);
+         var oldItemSnapshot = JsonConvert.DeserializeObject<Item>(JsonConvert.SerializeObject(oldItem));
+
         try
         {
             if (string.IsNullOrEmpty(uid))
@@ -73,7 +76,7 @@ public class ItemController : Controller
                 _logger.LogInformation("PUT /api/v1/Item: Item with id: {uid} could not be updated.", uid);
                 return BadRequest("Item could not be updated.");
             }
-            _logger.LogInformation("PUT /api/v1/Item/{Uid}: Item updated. Old Item: {@OldItem}, New Item: {@UpdatedItem}",uid, oldItem, result);
+            _logger.LogInformation("PUT /api/v1/Item/{Uid}: Item updated. Old Item: {@OldItem}, New Item: {@UpdatedItem}",uid, oldItemSnapshot, result);
             
             return Ok(result);
         }
