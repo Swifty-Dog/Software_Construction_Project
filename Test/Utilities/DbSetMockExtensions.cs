@@ -48,6 +48,9 @@ namespace Tests.Utilities
 
             dbSetMock.As<IQueryable<T>>().Setup(m => m.Provider).Returns(new TestAsyncQueryProvider<T>(queryableData.Provider));
 
+            dbSetMock.Setup(m => m.FindAsync(It.IsAny<object[]>())) // Mocks FindAsync
+                .ReturnsAsync((object[] ids) => queryableData.FirstOrDefault(d => (int)d.GetType().GetProperty("Id").GetValue(d, null) == (int)ids[0]));
+
             return dbSetMock;
         }
     }

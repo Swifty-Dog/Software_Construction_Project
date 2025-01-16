@@ -13,11 +13,12 @@ public class MyContext : DbContext
     public DbSet<ItemGroup> ItemGroups { get; set; }
     public DbSet<ItemLine> ItemLines { get; set; }
     public DbSet<ItemType> ItemTypes { get; set; }
-    public DbSet<Supplier> Suppliers { get; set; }
+    public virtual DbSet<Supplier> Suppliers { get; set; }
     public DbSet<Transfer> Transfers { get; set; }
     public DbSet<TransfersItem> TransferItems { get; set; }
     public virtual DbSet<Client> Client { get; set; }
     public DbSet<Inventory> Inventories { get; set; }
+    // public DbSet<InventoriesLocations> InventoriesLocations { get; set; }
     public DbSet<Shipment> Shipments { get; set; }
     public DbSet<ShipmentsItem> ShipmentsItems { get; set; }
     public DbSet<Orders> Orders { get; set; }
@@ -85,6 +86,18 @@ public class MyContext : DbContext
         // Inventory configuration
         modelBuilder.Entity<Inventory>()
             .HasKey(i => i.Id);  // Primary key for Inventory
+        
+        /*
+        modelBuilder.Entity<Inventory>()
+            .HasMany(i => i.Locations)
+            .WithOne()
+            .HasForeignKey(il => il.InventoryId)
+            .OnDelete(DeleteBehavior.Cascade);  // remove locations if inventory is deleted
+             
+        // InventoriesLocations configuration
+        modelBuilder.Entity<InventoriesLocations>()
+            .HasKey(il => new { il.InventoryId, il.LocationId });  // Composite key using inventoryId and locationId
+        */
 
         // Shipment configuration
         modelBuilder.Entity<Shipment>()
