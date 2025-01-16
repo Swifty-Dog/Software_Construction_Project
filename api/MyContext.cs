@@ -13,7 +13,7 @@ public class MyContext : DbContext
     public DbSet<ItemGroup> ItemGroups { get; set; }
     public DbSet<ItemLine> ItemLines { get; set; }
     public DbSet<ItemType> ItemTypes { get; set; }
-    public DbSet<Supplier> Suppliers { get; set; }
+    public virtual DbSet<Supplier> Suppliers { get; set; }
     public DbSet<Transfer> Transfers { get; set; }
     public DbSet<TransfersItem> TransferItems { get; set; }
     public virtual DbSet<Client> Client { get; set; }
