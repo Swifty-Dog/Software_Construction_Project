@@ -1,48 +1,51 @@
-using System.Text.Json;
-using Xunit;
-
-public class ItemLineSerializationTests
+namespace SerializationUnitTests
 {
-    [Fact]
-    public void DeserializeJsonTest()
+    using System.Text.Json;
+    using Xunit;
+
+    public class ItemLineSerializationTests
     {
-        // Arrange
-        string json = @"
+        [Fact]
+        public void DeserializeJsonTest()
         {
-            ""id"": 0,
-            ""name"": ""Tech Gadgets"",
-            ""description"": """",
-            ""created_at"": ""2022-08-18T07:05:25"",
-            ""updated_at"": ""2023-05-15T15:44:28""
-        }";
+            // Arrange
+            string json = @"
+            {
+                ""id"": 0,
+                ""name"": ""Tech Gadgets"",
+                ""description"": """",
+                ""created_at"": ""2022-08-18T07:05:25"",
+                ""updated_at"": ""2023-05-15T15:44:28""
+            }";
 
-        // Act
-        var itemLine = JsonSerializer.Deserialize<ItemGroup>(json);
+            // Act
+            var itemLine = JsonSerializer.Deserialize<ItemGroup>(json);
 
-        // Assert
-        Xunit.Assert.NotNull(itemLine);
-        Xunit.Assert.Equal(0, itemLine.Id);
-        Xunit.Assert.Equal("Tech Gadgets", itemLine.Name);
-    }
+            // Assert
+            Xunit.Assert.NotNull(itemLine);
+            Xunit.Assert.Equal(0, itemLine.Id);
+            Xunit.Assert.Equal("Tech Gadgets", itemLine.Name);
+        }
 
-    [Fact]
-    public void SerializeJsonTest()
-    {
-        // Arrange
-        var itemLine = new ItemGroup
+        [Fact]
+        public void SerializeJsonTest()
         {
-            Id = 0,
-            Name = "Tech Gadgets",
-            Description = "",
-            CreatedAt = new DateTime(2022, 8, 18, 7, 5, 25),
-            UpdatedAt = new DateTime(2023, 5, 15, 15, 44, 28)
-        };
+            // Arrange
+            var itemLine = new ItemGroup
+            {
+                Id = 0,
+                Name = "Tech Gadgets",
+                Description = "",
+                CreatedAt = new DateTime(2022, 8, 18, 7, 5, 25),
+                UpdatedAt = new DateTime(2023, 5, 15, 15, 44, 28)
+            };
 
-        // Act
-        var json = JsonSerializer.Serialize(itemLine);
+            // Act
+            var json = JsonSerializer.Serialize(itemLine);
 
-        // Assert
-        Xunit.Assert.Contains("\"id\":0", json);
-        Xunit.Assert.Contains("\"name\":\"Tech Gadgets\"", json);
+            // Assert
+            Xunit.Assert.Contains("\"id\":0", json);
+            Xunit.Assert.Contains("\"name\":\"Tech Gadgets\"", json);
+        }
     }
 }
