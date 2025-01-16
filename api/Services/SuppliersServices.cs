@@ -81,7 +81,7 @@ public class SuppliersServices : ISuppliers
             item.SupplierId = null;
         }
 
-        await _context.SaveChangesAsync();
+        // await _context.SaveChangesAsync();
 
         _context.Suppliers.Remove(existingSupplier);
         await _context.SaveChangesAsync();
