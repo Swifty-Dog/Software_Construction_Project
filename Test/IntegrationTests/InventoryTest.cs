@@ -23,21 +23,50 @@ public class InventoryTest
     private void SeedData()
     {
         _context.Inventories.RemoveRange(_context.Inventories);
-        _context.InventoriesLocations.RemoveRange(_context.InventoriesLocations);
+        _context.Locations.RemoveRange(_context.Locations);
+        _context.SaveChanges();
+
+        var locations = new List<Locations>
+        {
+            new Locations
+            {
+                Id = 19800,
+                WarehouseId = 1,
+                Code = "LOC-A",
+                Name = "Location A",
+                CreatedAt = DateTime.Parse("2023-01-01T10:00:00Z"),
+                UpdatedAt = DateTime.Parse("2023-12-31T15:00:00Z")
+            },
+            new Locations
+            {
+                Id = 23653,
+                WarehouseId = 2,
+                Code = "LOC-B",
+                Name = "Location B",
+                CreatedAt = DateTime.Parse("2023-03-15T08:00:00Z"),
+                UpdatedAt = DateTime.Parse("2023-12-30T18:00:00Z")
+            },
+            new Locations
+            {
+                Id = 43523,
+                WarehouseId = 3,
+                Code = "LOC-C",
+                Name = "Location C",
+                CreatedAt = DateTime.Parse("2023-06-20T09:00:00Z"),
+                UpdatedAt = DateTime.Parse("2024-01-01T12:00:00Z")
+            }
+        };
+
+        _context.Locations.AddRange(locations);
         _context.SaveChanges();
 
         var inventory = new Inventory
         {
-           Id = 100,
+            Id = 100,
             ItemId = "P000001",
             Description = "Focused transitional alliance",
             ItemReference = "nyg48736S",
-            Locations = new List<InventoriesLocations>
-            {
-                new InventoriesLocations { LocationId = 19800 },
-                new InventoriesLocations { LocationId = 23653 },
-                new InventoriesLocations { LocationId = 43523 }
-            },
+            Locations = new List<int> { 19800, 23653, 43523 },
             TotalOnHand = 194,
             TotalExpected = 0,
             TotalOrdered = 139,
@@ -50,6 +79,7 @@ public class InventoryTest
         _context.Inventories.Add(inventory);
         _context.SaveChanges();
     }
+
 
     [Fact]
     public async Task TestGetInventories()
@@ -71,7 +101,7 @@ public class InventoryTest
     }
 
     [Fact]
-    public async Task TestGet_Non_Existent_Inventory()
+    public async Task TestGetNonExistentInventory()
     {
         var result = await _controller.GetInventoryById(9999);
         Xunit.Assert.IsType<NotFoundObjectResult>(result);
@@ -82,8 +112,11 @@ public class InventoryTest
     {
         var result = await _controller.GetInventoryLocations(100);
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result);
-        var locations = Xunit.Assert.IsType<List<InventoriesLocations>>(okResult.Value);
+        var locations = Xunit.Assert.IsType<List<int>>(okResult.Value);
         Xunit.Assert.Equal(3, locations.Count);
+        Xunit.Assert.Contains(19800, locations);
+        Xunit.Assert.Contains(23653, locations);
+        Xunit.Assert.Contains(43523, locations);
     }
 
     [Fact]
@@ -95,11 +128,7 @@ public class InventoryTest
             ItemId = "P000002",
             Description = "Focused transitional alliance",
             ItemReference = "nyg48736S",
-            Locations = new List<InventoriesLocations>
-            {
-                new InventoriesLocations { LocationId = 19800 },
-                new InventoriesLocations { LocationId = 23653 }
-            },
+            Locations = new List<int> { 19800, 23653 },
             TotalOnHand = 194,
             TotalExpected = 0,
             TotalOrdered = 139,
@@ -122,10 +151,7 @@ public class InventoryTest
             ItemId = "P000001",
             Description = "Duplicate Inventory",
             ItemReference = "duplicateRef",
-            Locations = new List<InventoriesLocations>
-            {
-                new InventoriesLocations { LocationId = 12345 }
-            },
+            Locations = new List<int> { 12345 },
             TotalOnHand = 100,
             TotalExpected = 0,
             TotalOrdered = 50,

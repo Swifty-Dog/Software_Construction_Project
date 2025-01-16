@@ -65,3 +65,7 @@ dotnet test --configuration Release --collect:"XPlat Code Coverage" --verbosity 
 dotnet test --configuration Release --collect:"XPlat Code Coverage" --verbosity normal --filter FullyQualifiedName~ItemLineTest
 dotnet test --configuration Release --collect:"XPlat Code Coverage" --verbosity normal --filter FullyQualifiedName~ItemGroupsTest
 dotnet test --configuration Release --collect:"XPlat Code Coverage" --verbosity normal --filter FullyQualifiedName~ItemTest
+
+# for unit testing with Moq
+first: cd .\Test\
+then: dotnet add package Moq
