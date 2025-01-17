@@ -101,7 +101,7 @@ public class InventoryTest
     }
 
     [Fact]
-    public async Task TestGet_Non_Existent_Inventory()
+    public async Task TestGetNonExistentInventory()
     {
         var result = await _controller.GetInventoryById(9999);
         Xunit.Assert.IsType<NotFoundObjectResult>(result);
