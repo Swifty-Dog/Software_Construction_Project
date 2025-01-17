@@ -11,39 +11,39 @@ Content-Type: application/json
 Api-Key: a1b2c3d4e5
 
 {
-    "id": 2,
-    "sourceId": 1,
-    "orderDate": "2024-10-22T10:00:00",
-    "requestDate": "2024-10-23T10:00:00",
+    "id": 1,
+    "source_Id": 1,
+    "order_Date": "2024-10-22T10:00:00",
+    "request_Date": "2024-10-23T10:00:00",
     "reference": "ORD1234",
-    "referenceExtra": "ORD_EXTRA_001",
-    "orderStatus": "Pending",
+    "reference_Extra": "ORD_EXTRA_001",
+    "order_Status": "Pending",
     "notes": "Please process as soon as possible.",
-    "shippingNotes": "Fragile items.",
-    "pickingNotes": "Pick items in the correct order.",
-    "warehouseId": 1,
-    "shipTo": 123,
-    "billTo": 456,
-    "shipmentId": 101,
-    "totalAmount": 1000.00,
-    "totalDiscount": 50.00,
-    "totalTax": 50.00,
-    "totalSurcharge": 10.00,
+    "shipping_Notes": "Fragile items.",
+    "picking_Notes": "Pick items in the correct order.",
+    "warehouse_Id": 1,
+    "ship_To": 123,
+    "bill_To": 456,
+    "shipment_Id": 101,
+    "total_Amount": 1000.00,
+    "total_Discount": 50.00,
+    "total_Tax": 50.00,
+    "total_Surcharge": 10.00,
     "items": [
         {
             "Uid": "P000001",
             "code": "sjQ23408K",
             "description": "Face-to-face clear-thinking complexity",
-            "shortdescription": "Brief description here",
-            "upccode": "6523540947122",
-            "modelnumber": "63-OFFTq0T",
-            "commoditycode": "oTo304",
-            "itemline": 11,
-            "itemgroup": 73
+            "short_description": "Brief description here",
+            "upc_code": "6523540947122",
+            "model_number": "63-OFFTq0T",
+            "commodity_code": "oTo304",
+            "item_line": 11,
+            "item_group": 73
         }
     ],
-    "createdAt": "2024-10-22T10:00:00",
-    "updatedAt": "2024-10-22T10:00:00"
+    "created_At": "2024-10-22T10:00:00",
+    "updated_At": "2024-10-22T10:00:00"
 }
 ###
 
@@ -58,40 +58,40 @@ Api-Key: a1b2c3d4e5
 {
     "id": 2,
     "sourceId": 1,
-    "orderDate": "2024-10-22T10:00:00",
-    "requestDate": "2024-10-23T10:00:00",
+    "order_Date": "2024-10-22T10:00:00",
+    "request_Date": "2024-10-23T10:00:00",
     "reference": "ORD1234",
-    "referenceExtra": "ORD_EXTRA_001",
-    "orderStatus": "Pending",
+    "reference_Extra": "ORD_EXTRA_001",
+    "order_Status": "Pending",
     "notes": "Edited. New notes for the order.",
-    "shippingNotes": "Fragile items.",
-    "pickingNotes": "Pick items in the correct order.",
-    "warehouseId": 1,
-    "shipTo": 123,
-    "billTo": 456,
-    "shipmentId": 101,
-    "totalAmount": 1050.00,
-    "totalDiscount": 60.00,
-    "totalTax": 55.00,
-    "totalSurcharge": 12.00,
+    "shipping_Notes": "Fragile items.",
+    "picking_Notes": "Pick items in the correct order.",
+    "warehouse_Id": 1,
+    "ship_To": 123,
+    "bill_To": 456,
+    "shipment_Id": 101,
+    "total_Amount": 1050.00,
+    "total_Discount": 60.00,
+    "total_Tax": 55.00,
+    "total_Surcharge": 12.00,
     "items": [
         {
             "Uid": "P000001",
             "code": "sjQ23408K",
             "description": "Updated description for the item",
-            "shortdescription": "Updated brief description",
-            "upccode": "6523540947122",
-            "modelnumber": "63-OFFTq0T",
-            "commoditycode": "oTo304",
-            "itemline": 11,
-            "itemgroup": 73
+            "short_description": "Updated brief description",
+            "upc_code": "6523540947122",
+            "model_number": "63-OFFTq0T",
+            "commodity_code": "oTo304",
+            "item_line": 11,
+            "item_group": 73
         }
     ],
-    "createdAt": "2024-10-22T10:00:00",
-    "updatedAt": "2024-10-22T12:00:00"
+    "created_At": "2024-10-22T10:00:00",
+    "updated_At": "2024-10-22T12:00:00"
 }
 
 ###
-DELETE http://localhost:5000/api/v1/orders/2  
+DELETE http://localhost:5000/api/v1/orders/1
 Api-Key: a1b2c3d4e5
 
