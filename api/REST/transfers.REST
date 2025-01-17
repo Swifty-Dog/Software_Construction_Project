@@ -18,23 +18,23 @@ Api-Key: a1b2c3d4e5
 {
     "id": 4,
     "reference": "TR00001",
-    "transferfrom": 2323,
-    "transferto": 9229,
-    "transferstatus": "Completed",
-    "createdat": "2000-03-11T13:11:14Z",
-    "updatedat": "2000-03-12T16:11:14Z",
+    "transfer_from": 2323,
+    "transfer_to": 9229,
+    "transfer_status": "Completed",
+    "created_at": "2000-03-11T13:11:14Z",
+    "updated_at": "2000-03-12T16:11:14Z",
     "items": [
         {
-            "ItemId": "P007435",
-            "Amount": 2
+            "item_id": "P007435",
+            "amount": 2
         },
         {
-            "ItemId": "TEST2",
-            "Amount": 2333
+            "item_id": "TEST2",
+            "amount": 2333
         },
         {
-            "ItemId": "TEST3",
-            "Amount": 3242
+            "item_id": "TEST3",
+            "amount": 3242
         }
     ]
 }
@@ -48,15 +48,15 @@ Api-Key: a1b2c3d4e5
 {
     "id": 4,
     "reference": "TR00001",
-    "transferfrom": null,
-    "transferto": 9229,
-    "transferstatus": "Completed update",
-    "createdat": "2000-03-11T13:11:14Z",
-    "updatedat": "2000-03-12T16:11:14Z",
+    "transfer_from": null,
+    "transfer_to": 9229,
+    "transfer_status": "Completed update",
+    "created_at": "2000-03-11T13:11:14Z",
+    "updated_at": "2000-03-12T16:11:14Z",
     "items": [
         {
             
-            "itemid": "P007435",
+            "item_id": "P007435",
             "amount": 55555
         }
     ]
