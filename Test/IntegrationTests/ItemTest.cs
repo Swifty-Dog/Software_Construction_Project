@@ -21,7 +21,7 @@ public class ItemTest
         SeedData();
 
         var service = new ItemServices(_context);
-        _controller = new ItemController(service);
+        _controller = new ItemController(service, null);
         var lineService = new ItemLineServices(_context);
         _controllerLines = new ItemLinesController(lineService);
         var typeService = new ItemTypeServices(_context);

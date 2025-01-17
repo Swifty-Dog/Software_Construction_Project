@@ -1,6 +1,20 @@
+using Serilog;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.File("logs/app.log", rollingInterval: RollingInterval.Day)
+    .WriteTo.Console(restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information)
+    .Filter.ByIncludingOnly(logEvent =>
+        logEvent.MessageTemplate.Text.Contains("api/v1"))
+
+    .CreateLogger();
+    
+//nu ziet het er raar uit
+
+builder.Logging.ClearProviders(); //voor geen dubbel code met asp.net
+builder.Logging.AddSerilog();
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<MyContext>(x => x.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
