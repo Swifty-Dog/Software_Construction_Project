@@ -63,6 +63,6 @@ public class OrdersController : ControllerBase
         var success = await _ordersServices.DeleteOrder(id);
         if (!success)
             return NotFound("Order not found.");
-        return NoContent();
+        return Ok("Order deleted.");
     }
 }
