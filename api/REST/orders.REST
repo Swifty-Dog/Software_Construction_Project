@@ -51,13 +51,13 @@ GET http://localhost:5000/api/v1/orders/2
 Api-Key: a1b2c3d4e5
 ###
 
-PUT http://localhost:5000/api/v1/orders/2
+PUT http://localhost:5000/api/v1/orders/1
 Content-Type: application/json
 Api-Key: a1b2c3d4e5
 
 {
-    "id": 2,
-    "sourceId": 1,
+    "id": 1,
+    "source_Id": 1,
     "order_Date": "2024-10-22T10:00:00",
     "request_Date": "2024-10-23T10:00:00",
     "reference": "ORD1234",
