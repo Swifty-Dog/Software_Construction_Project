@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 public class OrdersTest
 {
@@ -196,7 +197,7 @@ public class OrdersTest
     public async Task TestDeleteOrder()
     {
         var result = await _controller.DeleteOrder(2);
-        Xunit.Assert.IsType<NoContentResult>(result);
+        Xunit.Assert.IsType<OkObjectResult>(result);
 
         var getResult = await _controller.GetOrderById(2);
         Xunit.Assert.IsType<NotFoundObjectResult>(getResult);

@@ -17,106 +17,106 @@ Api-Key: a1b2c3d4e5
 
 {
     "id": 1,
-    "orderid": 1,
-    "sourceid": 33,
-    "orderdate": "2000-03-09",
-    "requestdate": "2000-03-11",
-    "shipmentdate": "2000-03-13",
-    "shipmenttype": "I",
-    "shipmentstatus": "Pending",
+    "order_id": 1,
+    "source_id": 33,
+    "order_date": "2000-03-09",
+    "request_date": "2000-03-11",
+    "shipment_date": "2000-03-13",
+    "shipment_type": "I",
+    "shipment_status": "Pending",
     "notes": "Zee vertrouwen klas rots heet lachen oneven begrijpen.",
-    "carriercode": "DPD",
-    "carrierdescription": "Dynamic Parcel Distribution",
-    "servicecode": "Fastest",
-    "paymenttype": "Manual",
-    "transfermode": "Ground",
-    "totalpackagecount": 31,
-    "totalpackageweight": 594.42,
-    "createdat": "2000-03-10T11:11:14Z",
-    "updatedat": "2000-03-11T13:11:14Z",
+    "carrier_code": "DPD",
+    "carrier_description": "Dynamic Parcel Distribution",
+    "service_code": "Fastest",
+    "payment_type": "Manual",
+    "transfer_mode": "Ground",
+    "total_package_count": 31,
+    "total_package_weight": 594.42,
+    "created_at": "2000-03-10T11:11:14Z",
+    "updated_at": "2000-03-11T13:11:14Z",
     "items": [
         {
-            "ItemId": "P007435",
+            "Item_Id": "P007435",
             "amount": 23
         },
         {
-            "ItemId": "P009557",
+            "Item_Id": "P009557",
             "amount": 1
         },
         {
-            "ItemId": "P009553",
+            "Item_Id": "P009553",
             "amount": 50
         },
         {
-            "ItemId": "P010015",
+            "Item_Id": "P010015",
             "amount": 16
         },
         {
-            "ItemId": "P002084",
+            "Item_Id": "P002084",
             "amount": 33
         },
         {
-            "ItemId": "P009663",
+            "Item_Id": "P009663",
             "amount": 18
         },
         {
-            "ItemId": "P010125",
+            "Item_Id": "P010125",
             "amount": 18
         },
         {
-            "ItemId": "P005768",
+            "Item_Id": "P005768",
             "amount": 26
         },
         {
-            "ItemId": "P004051",
+            "Item_Id": "P004051",
             "amount": 1
         },
         {
-            "ItemId": "P005026",
+            "Item_Id": "P005026",
             "amount": 29
         },
         {
-            "ItemId": "P000726",
+            "Item_Id": "P000726",
             "amount": 22
         },
         {
-            "ItemId": "P008107",
+            "Item_Id": "P008107",
             "amount": 47
         },
         {
-            "ItemId": "P001598",
+            "Item_Id": "P001598",
             "amount": 32
         },
         {
-            "ItemId": "P002855",
+            "Item_Id": "P002855",
             "amount": 20
         },
         {
-            "ItemId": "P010404",
+            "Item_Id": "P010404",
             "amount": 30
         },
         {
-            "ItemId": "P010446",
+            "Item_Id": "P010446",
             "amount": 6
         },
         {
-            "ItemId": "P001517",
+            "Item_Id": "P001517",
             "amount": 9
         },
         {
-            "ItemId": "P009265",
+            "Item_Id": "P009265",
             "amount": 2
         },
         {
-            "ItemId": "P001108",
+            "Item_Id": "P001108",
             "amount": 20
         },
         {
-            "ItemId": "P009110",
+            "Item_Id": "P009110",
             "amount": 18
         },
         {
-            "ItemId": "P009686",
+            "Item_Id": "P009686",
             "amount": 13
         }
     ]
@@ -130,38 +130,38 @@ Api-Key: a1b2c3d4e5
 
 {
     "id": 1,
-    "orderid": 1,
-    "sourceid": 33,
-    "orderdate": "2000-03-09",
-    "requestdate": "2000-03-11",
-    "shipmentdate": "2000-03-13",
-    "shipmenttype": "I",
-    "shipmentstatus": "Pending",
+    "order_id": 1,
+    "source_id": 33,
+    "order_date": "2000-03-09",
+    "request_date": "2000-03-11",
+    "shipment_date": "2000-03-13",
+    "shipment_type": "I",
+    "shipment_status": "Pending",
     "notes": "test test test.",
-    "carriercode": "DPD",
-    "carrierdescription": "Dynamic Parcel Distribution",
-    "servicecode": "Fastest",
-    "paymenttype": "Manual",
-    "transfermode": "Ground",
-    "totalpackagecount": 31,
-    "totalpackageweight": 594.42,
-    "createdat": "2000-03-10T11:11:14Z",
-    "updatedat": "2000-03-11T13:11:14Z",
+    "carrier_code": "DPD",
+    "carrier_description": "Dynamic Parcel Distribution",
+    "service_code": "Fastest",
+    "payment_type": "Manual",
+    "transfer_mode": "Ground",
+    "total_package_count": 31,
+    "total_package_weight": 594.42,
+    "created_at": "2000-03-10T11:11:14Z",
+    "updated_at": "2000-03-11T13:11:14Z",
     "items": [
         {
-            "ItemId": "P007435",
+            "Item_Id": "P007435",
             "amount": 1
         },
         {
-            "ItemId": "P009557",
+            "Item_Id": "P009557",
             "amount": 2
         },
         {
-            "ItemId": "P009553",
+            "Item_Id": "P009553",
             "amount": 3
         },
         {
-            "ItemId": "P010015",
+            "Item_Id": "P010015",
             "amount": 4
         }
     ]
