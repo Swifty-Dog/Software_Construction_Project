@@ -12,24 +12,24 @@ Content-Type: application/json
 Api-Key: a1b2c3d4e5
 
 {
-    "Uid": "P000001",
-    "Code": "sjQ23408K",
-    "Description": "Face-to-face clear-thinking complexity",
-    "ShortDescription": "must",
-    "UpcCode": "6523540947122",
-    "ModelNumber": "63-OFFTq0T",
-    "CommodityCode": "oTo304",
-    "ItemLine": 1,
-    "ItemGroup": 1,
-    "ItemType": 2,
-    "UnitPurchaseQuantity": 47,
-    "UnitOrderQuantity": 13,
-    "PackOrderQuantity": 11,
-    "SupplierId": 1,
-    "SupplierCode": "SUP423",
-    "SupplierPartNumber": "E-86805-uTM",
-    "CreatedAt": "2015-02-19T16:08:24Z",
-    "UpdatedAt": "2015-09-26T06:37:56Z"
+    "uid": "P000001",
+    "code": "sjQ23408K",
+    "description": "Face-to-face clear-thinking complexity",
+    "short_description": "must",
+    "upc_code": "6523540947122",
+    "model_number": "63-OFFTq0T",
+    "commodity_code": "oTo304",
+    "item_line": 1,
+    "item_group": 1,
+    "item_type": 2,
+    "unit_purchase_quantity": 47,
+    "unit_order_quantity": 13,
+    "pack_order_quantity": 11,
+    "supplier_id": 1,
+    "supplier_code": "SUP423",
+    "supplier_part_number": "E-86805-uTM",
+    "created_at": "2015-02-19T16:08:24Z",
+    "updated_at": "2015-09-26T06:37:56Z"
 }
 ### Post Item based on body given
 POST http://localhost:5000/api/v1/Item HTTP/1.1
@@ -37,21 +37,21 @@ Content-Type: application/json
 Api-Key: a1b2c3d4e5
 
 {
-    "Uid": "P000002",
-    "Code": "sjQ23408K",
-    "Description": "Face-to-face clear-thinking complexity",
-    "ShortDescription": "must",
-    "UpcCode": "6523540947122",
-    "ModelNumber": "63-OFFTq0T",
-    "CommodityCode": "oTo304",
-    "UnitPurchaseQuantity": 47,
-    "UnitOrderQuantity": 13,
-    "PackOrderQuantity": 11,
-    "SupplierId": 1,
-    "SupplierCode": "SUP423",
-    "SupplierPartNumber": "E-86805-uTM",
-    "CreatedAt": "2015-02-19T16:08:24Z",
-    "UpdatedAt": "2015-09-26T06:37:56Z"
+    "uid": "P000002",
+    "code": "sjQ23408K",
+    "description": "Face-to-face clear-thinking complexity",
+    "short_description": "must",
+    "upc_code": "6523540947122",
+    "model_number": "63-OFFTq0T",
+    "commodity_code": "oTo304",
+    "unit_purchase_quantity": 47,
+    "unit_order_quantity": 13,
+    "pack_order_quantity": 11,
+    "supplier_id": 1,
+    "supplier_code": "SUP423",
+    "supplier_part_number": "E-86805-uTM",
+    "created_at": "2015-02-19T16:08:24Z",
+    "updated_at": "2015-09-26T06:37:56Z"
 }
 
 ### Put Update Item based on body given
@@ -60,24 +60,24 @@ Content-Type: application/json
 Api-Key: a1b2c3d4e5
 
 {
-    "Uid": "P000001",
-    "Code": "sjQ23408K",
-    "Description": "Update worked!!!!!!!!!!!!!!",
-    "ShortDescription": "must",
-    "UpcCode": "6523540947122",
-    "ModelNumber": "63-OFFTq0T",
-    "CommodityCode": "oTo304",
-    "ItemLine": 1,
-    "ItemGroup": 1,
-    "ItemType": 2,
-    "UnitPurchaseQuantity": 47,
-    "UnitOrderQuantity": 13,
-    "PackOrderQuantity": 11,
-    "SupplierId": 1,
-    "SupplierCode": "SUP423",
-    "SupplierPartNumber": "E-86805-uTM",
-    "CreatedAt": "2015-02-19T16:08:24Z",
-    "UpdatedAt": "2015-09-26T06:37:56Z"
+    "uid": "P000001",
+    "code": "sjQ23408K",
+    "description": "Update worked!!!!!!!!!!!!!!",
+    "short_description": "must",
+    "upc_code": "6523540947122",
+    "model_number": "63-OFFTq0T",
+    "commodity_code": "oTo304",
+    "item_line": 1,
+    "item_group": 1,
+    "item_type": 2,
+    "unit_purchase_quantity": 47,
+    "unit_order_quantity": 13,
+    "pack_order_quantity": 11,
+    "supplier_id": 1,
+    "supplier_code": "SUP423",
+    "supplier_part_number": "E-86805-uTM",
+    "created_at": "2015-02-19T16:08:24Z",
+    "updated_at": "2015-09-26T06:37:56Z"
 }
 
 ### Del Delete Item by uid
