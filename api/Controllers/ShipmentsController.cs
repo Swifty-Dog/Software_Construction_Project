@@ -66,7 +66,7 @@ public class ShipmentsController : ControllerBase
         }
 
         _logger?.LogInformation("POST /api/v1/Shipment: Shipment with ID {Id} already exists.", shipment.Id);
-        return BadRequest("Shipment with the same ID already exists.");
+        return BadRequest("Shipment with the same id already exists.");
     }
 
     [HttpPut("Shipment/{id}")]
