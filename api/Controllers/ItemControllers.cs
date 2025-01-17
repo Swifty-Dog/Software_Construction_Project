@@ -28,7 +28,7 @@ public class ItemController : Controller
         var item = await _item.GetItemById(uid);
         if (item == null)
         {
-            _logger.LogInformation("GET /api/v1/Item: Item with id {uid} not found.",uid);
+            _logger?.LogInformation("GET /api/v1/Item: Item with id {uid} not found.",uid);
             return NotFound("No Item found with that ID");
         }
         return Ok(item);
@@ -42,16 +42,16 @@ public class ItemController : Controller
             var result = await _item.AddItem(item);
             if (result == null)
             {
-                _logger.LogInformation("POST /api/v1/Item: Item could not be added or already exists.");
+                _logger?.LogInformation("POST /api/v1/Item: Item could not be added or already exists.");
                 return BadRequest("Item could not be added or already exists.");
             }
             //_logger.LogInformation("POST /api/v1/Item: Item with ID {Uid} added successfully", item.Uid);
-            _logger.LogInformation("POST /api/v1/Item: Item added successfully. Details: {@Item}", item);
+            _logger?.LogInformation("POST /api/v1/Item: Item added successfully. Details: {@Item}", item);
             return Ok(result);
         }
         catch (Exception ex)
         {
-            _logger.LogInformation("POST /api/v1/Item: Item could not be added or already exists.");
+            _logger?.LogInformation("POST /api/v1/Item: Item could not be added or already exists.");
             return BadRequest(ex.Message);
         }
     }
@@ -66,23 +66,23 @@ public class ItemController : Controller
         {
             if (string.IsNullOrEmpty(uid))
             {
-                _logger.LogInformation("PUT /api/v1/Item: Item with id: {uid} could not be updated.", uid);
+                _logger?.LogInformation("PUT /api/v1/Item: Item with id: {uid} could not be updated.", uid);
                 return BadRequest("Item ID is invalid or does not match the item ID in the request body.");
             }
 
             var result = await _item.UpdateItem(uid, item);
             if (result == null)
             {
-                _logger.LogInformation("PUT /api/v1/Item: Item with id: {uid} could not be updated.", uid);
+                _logger?.LogInformation("PUT /api/v1/Item: Item with id: {uid} could not be updated.", uid);
                 return BadRequest("Item could not be updated.");
             }
-            _logger.LogInformation("PUT /api/v1/Item/{Uid}: Item updated. Old Item: {@OldItem}, New Item: {@UpdatedItem}",uid, oldItemSnapshot, result);
+            _logger?.LogInformation("PUT /api/v1/Item/{Uid}: Item updated. Old Item: {@OldItem}, New Item: {@UpdatedItem}",uid, oldItemSnapshot, result);
             
             return Ok(result);
         }
         catch (Exception ex)
         {
-            _logger.LogInformation("PUT /api/v1/Item: Item with id: {uid} could not be updated.", uid);
+            _logger?.LogInformation("PUT /api/v1/Item: Item with id: {uid} could not be updated.", uid);
             return BadRequest(ex.Message);
         }
     }
@@ -97,7 +97,7 @@ public class ItemController : Controller
             {
                 return BadRequest("Item could not be deleted.");
             }
-            _logger.LogInformation("DELETE /api/v1/Item/{Uid}: Item with ID {Uid} deleted successfully", uid,uid);
+            _logger?.LogInformation("DELETE /api/v1/Item/{Uid}: Item with ID {Uid} deleted successfully", uid,uid);
             return NoContent();
         }
         catch (Exception ex)
