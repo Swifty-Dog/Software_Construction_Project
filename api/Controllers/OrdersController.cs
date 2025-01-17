@@ -16,6 +16,8 @@ public class OrdersController : ControllerBase
     public async Task<IActionResult> GetOrders()
     {
         var orders = await _ordersServices.GetAll();
+        if (orders == null)
+            return NotFound("No orders found.");
         return Ok(orders);
     }
 
