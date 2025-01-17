@@ -9,7 +9,7 @@ public class ItemController : Controller
     private readonly ItemServices _item;
     private readonly ILogger<ItemController> _logger;
 
-    public ItemController(ItemServices item, ILogger<ItemController> logger)
+    public ItemController(ItemServices item, ILogger<ItemController>? logger = null)
     {
         _item = item;
         _logger = logger;
