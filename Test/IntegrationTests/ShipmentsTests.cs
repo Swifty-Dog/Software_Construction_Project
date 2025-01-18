@@ -178,7 +178,7 @@ public class ShipmentsTest
     public async Task TestDeleteNonExistentShipment()
     {
         var result = await _controller.DeleteShipment(9999);
-        var badRequestResult = Xunit.Assert.IsType<BadRequestObjectResult>(result);
-        Xunit.Assert.Equal("Shipment could not be deleted or does not exist.", badRequestResult.Value);
+        var notFoundResult = Xunit.Assert.IsType<NotFoundObjectResult>(result);
+        Xunit.Assert.Equal("Shipment not found or already deleted.", notFoundResult.Value);
     }
 }
