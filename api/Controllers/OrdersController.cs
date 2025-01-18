@@ -16,6 +16,8 @@ public class OrdersController : ControllerBase
     public async Task<IActionResult> GetOrders()
     {
         var orders = await _ordersServices.GetAll();
+        if (orders == null)
+            return NotFound("No orders found.");
         return Ok(orders);
     }
 
@@ -63,6 +65,6 @@ public class OrdersController : ControllerBase
         var success = await _ordersServices.DeleteOrder(id);
         if (!success)
             return NotFound("Order not found.");
-        return NoContent();
+        return Ok("Order deleted.");
     }
 }

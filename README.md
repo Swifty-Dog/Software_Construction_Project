@@ -12,10 +12,16 @@ dotnet add package Microsoft.EntityFrameworkCore.Tools
 dotnet add package Microsoft.EntityFrameworkCore.Design
 dotnet add package Microsoft.EntityFrameworkCore.Sqlite
 
-# testing packages
+# Testing packages
 dotnet add package Microsoft.NET.Test.Sdk
 dotnet add package Moq
 dotnet add package Microsoft.AspNetCore.Mvc.Testing
+
+# Logger packages
+dotnet add package Serilog
+dotnet add package Serilog.Extensions.Logging
+dotnet add package Serilog.Sinks.File
+dotnet add package Serilog.AspNetCore
 
 (pip install razor als je Razor language version downgrade hebt) 
 
@@ -34,6 +40,7 @@ dotnet ef database update
 - **ASP.NET Core packages**: These are needed to handle MVC or Web API functionalities, authentication, and identity management.
 - **Entity Framework Core packages**: These are necessary for database interactions using Entity Framework Core with SQLite as the provider.
 - **Migration commands**: Instructions for creating and applying database migrations.
+- **Serilog packages**: These are needed to log the changes in the database.
 
 # maybe needed
 dotnet add package xunit

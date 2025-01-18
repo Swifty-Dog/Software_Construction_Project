@@ -3,22 +3,22 @@ using System.Text.Json.Serialization;
 public class Orders
 {
     [JsonPropertyName("id")]
-    public int Id { get; set; }
+    public required int Id { get; set; }
 
     [JsonPropertyName("source_id")]
-    public int SourceId { get; set; }
+    public required int SourceId { get; set; }
 
     [JsonPropertyName("order_date")]
-    public DateTime OrderDate { get; set; }
+    public required DateTime OrderDate { get; set; }
 
     [JsonPropertyName("request_date")]
-    public DateTime RequestDate { get; set; }
+    public required DateTime RequestDate { get; set; }
 
     [JsonPropertyName("reference")]
-    public string Reference { get; set; }
+    public required string Reference { get; set; }
 
     [JsonPropertyName("reference_extra")]
-    public string ReferenceExtra { get; set; }
+    public required string ReferenceExtra { get; set; }
 
     [JsonPropertyName("order_status")]
     public required string OrderStatus { get; set; }
@@ -36,10 +36,10 @@ public class Orders
     public required int WarehouseId { get; set; }
 
     [JsonPropertyName("ship_to")]
-    public required int ShipTo { get; set; }
+    public int? ShipTo { get; set; } = null;
 
     [JsonPropertyName("bill_to")]
-    public required int BillTo { get; set; }
+    public int? BillTo { get; set; } = null;
 
     [JsonPropertyName("shipment_id")]
     public required int ShipmentId { get; set; }
