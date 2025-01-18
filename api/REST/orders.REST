@@ -47,7 +47,7 @@ Api-Key: a1b2c3d4e5
 }
 ###
 
-GET http://localhost:5000/api/v1/orders/2
+GET http://localhost:5000/api/v1/orders/1
 Api-Key: a1b2c3d4e5
 ###
 
