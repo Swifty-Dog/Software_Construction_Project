@@ -34,7 +34,7 @@ public class OrdersController : ControllerBase
         var order = await _ordersServices.GetById(id);
         if (order == null)
         {
-            _logger?.LogInformation("GET /api/v1/orders/{Id}: Order with ID {Id} not found.", id);
+            _logger?.LogInformation("GET /api/v1/orders/{id}: Order with ID {id} not found.", id);
             return NotFound("Order not found.");
         }
 
