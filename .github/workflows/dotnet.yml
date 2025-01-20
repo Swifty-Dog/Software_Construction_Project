@@ -5,10 +5,12 @@ on:
     branches:
       - main
       - 6.2.workflow
+      - 6.5_Deployment
   pull_request:
     branches:
       - main
       - 6.2.workflow
+      - 6.5_Deployment
 
 jobs:
   build:
