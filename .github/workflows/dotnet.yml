@@ -87,18 +87,18 @@ jobs:
         fi
         echo "Code coverage meets the required threshold."
     
-    - name: Generate HTML Coverage Report
-      run: |
-        dotnet tool install --global dotnet-reportgenerator-globaltool
-        reportgenerator -reports:"./**/TestResults/**/coverage.cobertura.xml" -targetdir:"./coverage-html" -reporttypes:Html;MarkdownSummaryGithub
+    # - name: Generate HTML Coverage Report
+    #   run: |
+    #     dotnet tool install --global dotnet-reportgenerator-globaltool
+    #     reportgenerator -reports:"./**/TestResults/**/coverage.cobertura.xml" -targetdir:"./coverage-html" -reporttypes:Html;MarkdownSummaryGithub
 
-    # - name: reportgenerator
-    #   uses: danielpalme/ReportGenerator-GitHub-Action@v5
-    #   with:
-    #     reports: cobertura.Html
-    #     targetdir: Test
-    #     reporttypes: Html;MarkdownSummaryGithub
-
+    - name: ReportGenerator
+      uses: danielpalme/ReportGenerator-GitHub-Action@5
+      with:
+        reports: '*Test*/TestResults/*/coverage.cobertura.xml'
+        targetdir: "./coverage-html"
+        reporttypes: "Html;MarkdownSummaryGithub"
+    
     - name: Upload HTML Coverage Report Artifact
       uses: actions/upload-artifact@v4
       with:
