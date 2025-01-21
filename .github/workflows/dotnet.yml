@@ -91,16 +91,20 @@ jobs:
 
     - name: Generate HTML Coverage Report
       run: |
-        dotnet tool install --global dotnet-reportgenerator-globaltool
-        reportgenerator -reports:"./**/TestResults/**/coverage.cobertura.xml" -targetdir:"./coverage-html" -reporttypes:Html
-
-
-    - name: Upload HTML Coverage Report
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+          reportgenerator -reports:"./**/TestResults/**/coverage.cobertura.xml" -targetdir:"./coverage-html" -reporttypes:Html
+  
+    - name: Upload HTML Coverage Report Artifact
       uses: actions/upload-artifact@v3
       with:
         name: html-coverage-report
         path: ./coverage-html/
-
+  
+    - name: Upload HTML Coverage Report to GitHub Pages
+      uses: actions/upload-pages-artifact@v1
+      with:
+        path: ./coverage-html/
+  
 
   publish:
     runs-on: ubuntu-latest
