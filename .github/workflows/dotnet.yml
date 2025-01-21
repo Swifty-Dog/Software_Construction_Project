@@ -58,17 +58,14 @@ jobs:
 
     - name: Restore Test Project Dependencies
       run: dotnet restore Test/Test.csproj
-
-
+      
     - name: Build Test Project
       run: dotnet build --no-restore --configuration Release Test/Test.csproj
-
-
+      
     - name: Run Tests with Code Coverage
       run: |
         dotnet test ./Test --collect:"XPlat Code Coverage" --results-directory ./Test/TestResults
-
-
+      
     - name: Extract Coverage Percentage
       run: |
         COVERAGE_FILE=$(find . -path "./Test/TestResults/**/coverage.cobertura.xml" | head -n 1)
@@ -77,34 +74,27 @@ jobs:
           exit 1
         fi
         echo "Coverage file found at $COVERAGE_FILE"
-     
+      
         COVERAGE=$(grep -oP '(?<=line-rate=")[^"]*' "$COVERAGE_FILE" | awk '{s+=$1; c++} END {print (c > 0) ? s/c*100 : 0}')
         echo "Calculated coverage: $COVERAGE%"
-     
+      
         REQUIRED_COVERAGE=20
         if (( $(echo "$COVERAGE < $REQUIRED_COVERAGE" | bc -l) )); then
           echo "Code coverage is below the required threshold of $REQUIRED_COVERAGE%. Failing the workflow."
           exit 1
         fi
         echo "Code coverage meets the required threshold."
-
-
+    
     - name: Generate HTML Coverage Report
       run: |
-          dotnet tool install --global dotnet-reportgenerator-globaltool
-          reportgenerator -reports:"./**/TestResults/**/coverage.cobertura.xml" -targetdir:"./coverage-html" -reporttypes:Html
-  
+        dotnet tool install --global dotnet-reportgenerator-globaltool
+        reportgenerator -reports:"./**/TestResults/**/coverage.cobertura.xml" -targetdir:"./coverage-html" -reporttypes:Html
+    
     - name: Upload HTML Coverage Report Artifact
       uses: actions/upload-artifact@v3
       with:
         name: html-coverage-report
-        path: ./coverage-html/
-  
-    - name: Upload HTML Coverage Report to GitHub Pages
-      uses: actions/upload-pages-artifact@v1
-      with:
-        path: ./coverage-html/
-  
+        path: ./coverage-html/  
 
   publish:
     runs-on: ubuntu-latest
