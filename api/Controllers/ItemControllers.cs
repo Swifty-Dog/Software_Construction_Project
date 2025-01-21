@@ -18,6 +18,7 @@ public class ItemController : Controller
     [HttpGet("Items")]
     public async Task<IActionResult> GetItems()
     {
+        _logger?.LogInformation("GET /api/v1/Item: Retrieved all items.");
         var items = await _item.GetItems();
         return Ok(items);
     }
@@ -31,6 +32,7 @@ public class ItemController : Controller
             _logger?.LogInformation("GET /api/v1/Item: Item with id {uid} not found.",uid);
             return NotFound("No Item found with that ID");
         }
+        _logger?.LogInformation("GET /api/v1/Item/{Id}: Item with ID {Id} retrieved.", uid);
         return Ok(item);
     }
 
