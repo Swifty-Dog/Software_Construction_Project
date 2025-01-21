@@ -90,10 +90,7 @@ jobs:
     - name: Generate HTML Coverage Report
       run: |
         dotnet tool install --global dotnet-reportgenerator-globaltool
-        reportgenerator 
-        -reports:"./**/TestResults/**/coverage.cobertura.xml" 
-        -targetdir:"./coverage-html" 
-        -reporttypes:Html;MarkdownSummaryGithub
+        reportgenerator -reports:"./**/TestResults/**/coverage.cobertura.xml" -targetdir:"./coverage-html" -reporttypes:Html;MarkdownSummaryGithub
 
     # - name: reportgenerator
     #   uses: danielpalme/ReportGenerator-GitHub-Action@v5
