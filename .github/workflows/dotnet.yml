@@ -8,12 +8,14 @@ on:
       - 6.2.workflow
       - cicd_deploy
       - publish
+      - cicd_tester
   pull_request:
     branches:
       - main
       - 6.2.workflow
       - cicd_deploy
       - publish
+      - cicd_tester
 
 
 jobs:
