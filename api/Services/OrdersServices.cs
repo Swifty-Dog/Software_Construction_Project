@@ -77,6 +77,11 @@ public class OrdersServices : IOrdersInterface
     }
     public async Task<bool> DeleteOrder(int id)
     {
+        var isOrderUsed = await _context.Shipments.AnyAsync(s => s.OrderId == id);
+        if (isOrderUsed)
+        {
+            throw new Exception("Order is used in a shipment and cannot be deleted.");
+        }
         var orderToDelete = await _context.Orders
             .Include(o => o.Items)
             .FirstOrDefaultAsync(o => o.Id == id);

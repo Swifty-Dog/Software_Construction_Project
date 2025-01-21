@@ -1,56 +1,73 @@
 name: .NET Tests with Coverage Checks for WarehousesTest
 
+
 on:
   push:
     branches:
       - main
       - 6.2.workflow
+      - cicd_deploy
+      - publish
   pull_request:
     branches:
       - main
       - 6.2.workflow
+      - cicd_deploy
+      - publish
+
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '8.0.100'
 
+
     - name: Restore dependencies
       run: dotnet restore
 
+
     - name: Build the project
       run: dotnet build --no-restore --configuration Release
+
 
   test:
     runs-on: ubuntu-latest
     needs: build
 
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '8.0.100'
 
+
     - name: Restore Test Project Dependencies
       run: dotnet restore Test/Test.csproj
+
 
     - name: Build Test Project
       run: dotnet build --no-restore --configuration Release Test/Test.csproj
 
+
     - name: Run Tests with Code Coverage
       run: |
         dotnet test ./Test --collect:"XPlat Code Coverage" --results-directory ./Test/TestResults
+
 
     - name: Extract Coverage Percentage
       run: |
@@ -60,22 +77,23 @@ jobs:
           exit 1
         fi
         echo "Coverage file found at $COVERAGE_FILE"
-      
+     
         COVERAGE=$(grep -oP '(?<=line-rate=")[^"]*' "$COVERAGE_FILE" | awk '{s+=$1; c++} END {print (c > 0) ? s/c*100 : 0}')
         echo "Calculated coverage: $COVERAGE%"
-      
+     
         REQUIRED_COVERAGE=20
         if (( $(echo "$COVERAGE < $REQUIRED_COVERAGE" | bc -l) )); then
           echo "Code coverage is below the required threshold of $REQUIRED_COVERAGE%. Failing the workflow."
           exit 1
         fi
         echo "Code coverage meets the required threshold."
-          
+
 
     - name: Generate HTML Coverage Report
       run: |
         dotnet tool install --global dotnet-reportgenerator-globaltool
         reportgenerator -reports:"./**/TestResults/**/coverage.cobertura.xml" -targetdir:"./coverage-html" -reporttypes:Html
+
 
     - name: Upload HTML Coverage Report
       uses: actions/upload-artifact@v3
@@ -83,4 +101,28 @@ jobs:
         name: html-coverage-report
         path: ./coverage-html/
 
-  
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: test
+    if: ${{ github.ref_name == 'publish' }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.100'
+   
+    - name: Restore dependencies
+      run: dotnet restore
+   
+    - name: Dotnet publish
+      run: dotnet publish -c Release -r linux-x64 --self-contained -o ./publish
+   
+    - name: Upload Linux x64 published artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: linux-artifact
+        path: ./publish
