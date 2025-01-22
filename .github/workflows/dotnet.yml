@@ -8,12 +8,14 @@ on:
       - 6.2.workflow
       - cicd_deploy
       - publish
+      - cicd_tester
   pull_request:
     branches:
       - main
       - 6.2.workflow
       - cicd_deploy
       - publish
+      - cicd_tester
 
 
 jobs:
@@ -58,17 +60,14 @@ jobs:
 
     - name: Restore Test Project Dependencies
       run: dotnet restore Test/Test.csproj
-
-
+      
     - name: Build Test Project
       run: dotnet build --no-restore --configuration Release Test/Test.csproj
-
-
+      
     - name: Run Tests with Code Coverage
       run: |
         dotnet test ./Test --collect:"XPlat Code Coverage" --results-directory ./Test/TestResults
-
-
+      
     - name: Extract Coverage Percentage
       run: |
         COVERAGE_FILE=$(find . -path "./Test/TestResults/**/coverage.cobertura.xml" | head -n 1)
@@ -77,30 +76,38 @@ jobs:
           exit 1
         fi
         echo "Coverage file found at $COVERAGE_FILE"
-     
+      
         COVERAGE=$(grep -oP '(?<=line-rate=")[^"]*' "$COVERAGE_FILE" | awk '{s+=$1; c++} END {print (c > 0) ? s/c*100 : 0}')
         echo "Calculated coverage: $COVERAGE%"
-     
+      
         REQUIRED_COVERAGE=20
         if (( $(echo "$COVERAGE < $REQUIRED_COVERAGE" | bc -l) )); then
           echo "Code coverage is below the required threshold of $REQUIRED_COVERAGE%. Failing the workflow."
           exit 1
         fi
         echo "Code coverage meets the required threshold."
+    
+    # - name: Generate HTML Coverage Report
+    #   run: |
+    #     dotnet tool install --global dotnet-reportgenerator-globaltool
+    #     reportgenerator -reports:"./**/TestResults/**/coverage.cobertura.xml" -targetdir:"./coverage-html" -reporttypes:Html;MarkdownSummaryGithub
 
-
-    - name: Generate HTML Coverage Report
-      run: |
-        dotnet tool install --global dotnet-reportgenerator-globaltool
-        reportgenerator -reports:"./**/TestResults/**/coverage.cobertura.xml" -targetdir:"./coverage-html" -reporttypes:Html
-
-
-    - name: Upload HTML Coverage Report
-      uses: actions/upload-artifact@v3
+    - name: ReportGenerator
+      uses: danielpalme/ReportGenerator-GitHub-Action@5
+      with:
+        reports: '*Test*/TestResults/*/coverage.cobertura.xml'
+        targetdir: "./coverage-html"
+        reporttypes: "Html;MarkdownSummaryGithub"
+    
+    - name: Upload HTML Coverage Report Artifact
+      uses: actions/upload-artifact@v4
       with:
         name: html-coverage-report
-        path: ./coverage-html/
-
+        path: ./coverage-html/ 
+ 
+    - name: Publish coverage in build summary # alleen mogelijk met MarkdownSummaryGithub
+      run: cat coverage-html/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
+      shell: bash
 
   publish:
     runs-on: ubuntu-latest
