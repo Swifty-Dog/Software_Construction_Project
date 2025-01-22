@@ -1,57 +1,73 @@
 name: .NET Tests with Coverage Checks for WarehousesTest
 
+
 on:
   push:
     branches:
       - main
       - 6.2.workflow
+      - cicd_deploy
+      - publish
+      - cicd_tester
   pull_request:
     branches:
       - main
       - 6.2.workflow
+      - cicd_deploy
+      - publish
+      - cicd_tester
+
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '8.0.100'
 
+
     - name: Restore dependencies
       run: dotnet restore
 
+
     - name: Build the project
       run: dotnet build --no-restore --configuration Release
+
 
   test:
     runs-on: ubuntu-latest
     needs: build
 
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '8.0.100'
 
+
     - name: Restore Test Project Dependencies
       run: dotnet restore Test/Test.csproj
-
+      
     - name: Build Test Project
       run: dotnet build --no-restore --configuration Release Test/Test.csproj
-
+      
     - name: Run Tests with Code Coverage
       run: |
         dotnet test ./Test --collect:"XPlat Code Coverage" --results-directory ./Test/TestResults
-
+      
     - name: Extract Coverage Percentage
       run: |
         COVERAGE_FILE=$(find . -path "./Test/TestResults/**/coverage.cobertura.xml" | head -n 1)
@@ -70,18 +86,50 @@ jobs:
           exit 1
         fi
         echo "Code coverage meets the required threshold."
-          
+    
+    # - name: Generate HTML Coverage Report
+    #   run: |
+    #     dotnet tool install --global dotnet-reportgenerator-globaltool
+    #     reportgenerator -reports:"./**/TestResults/**/coverage.cobertura.xml" -targetdir:"./coverage-html" -reporttypes:Html;MarkdownSummaryGithub
 
-    - name: Generate HTML Coverage Report
-      run: |
-        dotnet tool install --global dotnet-reportgenerator-globaltool
-        reportgenerator -reports:"./**/TestResults/**/coverage.cobertura.xml" -targetdir:"./coverage-html" -reporttypes:Html
-
-    - name: Upload HTML Coverage Report
-      uses: actions/upload-artifact@v3
+    - name: ReportGenerator
+      uses: danielpalme/ReportGenerator-GitHub-Action@5
+      with:
+        reports: '*Test*/TestResults/*/coverage.cobertura.xml'
+        targetdir: "./coverage-html"
+        reporttypes: "Html;MarkdownSummaryGithub"
+    
+    - name: Upload HTML Coverage Report Artifact
+      uses: actions/upload-artifact@v4
       with:
         name: html-coverage-report
-        path: ./coverage-html/
+        path: ./coverage-html/ 
+ 
+    - name: Publish coverage in build summary # alleen mogelijk met MarkdownSummaryGithub
+      run: cat coverage-html/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
+      shell: bash
 
-#test will change later
-  
+  publish:
+    runs-on: ubuntu-latest
+    needs: test
+    if: ${{ github.ref_name == 'publish' }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.100'
+   
+    - name: Restore dependencies
+      run: dotnet restore
+   
+    - name: Dotnet publish
+      run: dotnet publish -c Release -r linux-x64 --self-contained -o ./publish
+   
+    - name: Upload Linux x64 published artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: linux-artifact
+        path: ./publish
