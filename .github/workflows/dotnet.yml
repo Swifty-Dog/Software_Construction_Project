@@ -1,4 +1,4 @@
-name: .NET Tests with Coverage Checks for WarehousesTest
+name: .NET Tests with Coverage Checks for unittests and integration tests
 
 
 on:
