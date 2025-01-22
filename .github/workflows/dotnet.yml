@@ -1,57 +1,78 @@
-name: .NET Tests with Coverage Checks for WarehousesTest
+name: .NET Tests with Coverage Checks for unittests and integration tests
+
 
 on:
   push:
     branches:
       - main
       - 6.2.workflow
+      - cicd_deploy
+      - publish
+      - cicd_tester
+      - 6.4-webhook-deel-maken
   pull_request:
     branches:
       - main
       - 6.2.workflow
+      - cicd_deploy
+      - publish
+      - cicd_tester
+      - 6.4-webhook-deel-maken
+    types: [opened, closed]
+  issues:
+    types: [opened, closed]
+
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '8.0.100'
 
+
     - name: Restore dependencies
       run: dotnet restore
 
+
     - name: Build the project
       run: dotnet build --no-restore --configuration Release
+
 
   test:
     runs-on: ubuntu-latest
     needs: build
 
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '8.0.100'
 
+
     - name: Restore Test Project Dependencies
       run: dotnet restore Test/Test.csproj
-
+      
     - name: Build Test Project
       run: dotnet build --no-restore --configuration Release Test/Test.csproj
-
+      
     - name: Run Tests with Code Coverage
       run: |
         dotnet test ./Test --collect:"XPlat Code Coverage" --results-directory ./Test/TestResults
-
+      
     - name: Extract Coverage Percentage
       run: |
         COVERAGE_FILE=$(find . -path "./Test/TestResults/**/coverage.cobertura.xml" | head -n 1)
@@ -70,17 +91,145 @@ jobs:
           exit 1
         fi
         echo "Code coverage meets the required threshold."
-          
+    
+    # - name: Generate HTML Coverage Report
+    #   run: |
+    #     dotnet tool install --global dotnet-reportgenerator-globaltool
+    #     reportgenerator -reports:"./**/TestResults/**/coverage.cobertura.xml" -targetdir:"./coverage-html" -reporttypes:Html;MarkdownSummaryGithub
 
-    - name: Generate HTML Coverage Report
-      run: |
-        dotnet tool install --global dotnet-reportgenerator-globaltool
-        reportgenerator -reports:"./**/TestResults/**/coverage.cobertura.xml" -targetdir:"./coverage-html" -reporttypes:Html
-
-    - name: Upload HTML Coverage Report
-      uses: actions/upload-artifact@v3
+    - name: ReportGenerator
+      uses: danielpalme/ReportGenerator-GitHub-Action@5
+      with:
+        reports: '*Test*/TestResults/*/coverage.cobertura.xml'
+        targetdir: "./coverage-html"
+        reporttypes: "Html;MarkdownSummaryGithub"
+    
+    - name: Upload HTML Coverage Report Artifact
+      uses: actions/upload-artifact@v4
       with:
         name: html-coverage-report
-        path: ./coverage-html/
+        path: ./coverage-html/ 
+ 
+    - name: Publish coverage in build summary # alleen mogelijk met MarkdownSummaryGithub
+      run: cat coverage-html/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
+      shell: bash
+    
+    - name: Send Discord Notification (Tests Failed)
+      if: failure()
+      run: |
+        curl -H "Content-Type: application/json" -X POST \
+          -d '{
+                "embeds": [
+                  {
+                    "title": ":x: Tests Failed",
+                    "description": "**Workflow**: `${{ github.workflow }}`\n**Branch**: `${{ github.ref_name }}`\n**User**: `${{ github.actor }}`",
+                    "color": 15158332,
+                    "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                  }
+                ],
+                "username": "GitHub Actions",
+                "avatar_url": "https://github.com/${{ github.actor }}.png"
+              }' \
+          ${{ secrets.DISCORD_WEBHOOK_URL }}
 
-  
+  publish:
+    runs-on: ubuntu-latest
+    needs: test
+    if: ${{ github.ref_name == 'publish' }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.100'
+   
+    - name: Restore dependencies
+      run: dotnet restore
+   
+    - name: Dotnet publish
+      run: dotnet publish -c Release -r linux-x64 --self-contained -o ./publish
+   
+    - name: Upload Linux x64 published artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: linux-artifact
+        path: ./publish
+
+  notifications:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Notify Pull Request Opened
+      if: ${{ github.event_name == 'pull_request' && github.event.action == 'opened' }}
+      run: |
+        curl -H "Content-Type: application/json" -X POST \
+          -d '{
+                "embeds": [
+                  {
+                    "title": ":handshake: Pull Request Opened",
+                    "description": "**Title**: `${{ github.event.pull_request.title }}`\n**User**: `${{ github.event.pull_request.user.login }}` opened a pull request.",
+                    "color": 3447003,
+                    "url": "${{ github.event.pull_request.html_url }}"
+                  }
+                ],
+                "username": "${{ github.event.pull_request.user.login }}",
+                "avatar_url": "${{ github.event.pull_request.user.avatar_url }}"
+              }' \
+          ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+    - name: Notify Pull Request Merged or Closed
+      if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' }}
+      run: |
+        curl -H "Content-Type: application/json" -X POST \
+          -d '{
+                "embeds": [
+                  {
+                    "title": ":white_check_mark: Pull Request Merged/Closed",
+                    "description": "**Title**: `${{ github.event.pull_request.title }}`\n**User**: `${{ github.event.pull_request.user.login }}` merged/closed this pull request.",
+                    "color": 3066993,
+                    "url": "${{ github.event.pull_request.html_url }}"
+                  }
+                ],
+                "username": "${{ github.event.pull_request.user.login }}",
+                "avatar_url": "${{ github.event.pull_request.user.avatar_url }}"
+              }' \
+          ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+    - name: Notify Issue Opened
+      if: ${{ github.event_name == 'issues' && github.event.action == 'opened' }}
+      run: |
+        curl -H "Content-Type: application/json" -X POST \
+          -d '{
+                "embeds": [
+                  {
+                    "title": ":scroll: Issue Opened",
+                    "description": "**Title**: `${{ github.event.issue.title }}`\n**User**: `${{ github.event.issue.user.login }}` opened an issue.",
+                    "color": 3447003,
+                    "url": "${{ github.event.issue.html_url }}"
+                  }
+                ],
+                "username": "${{ github.event.issue.user.login }}",
+                "avatar_url": "${{ github.event.issue.user.avatar_url }}"
+              }' \
+          ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+    - name: Notify Issue Closed
+      if: ${{ github.event_name == 'issues' && github.event.action == 'closed' }}
+      run: |
+        curl -H "Content-Type: application/json" -X POST \
+          -d '{
+                "embeds": [
+                  {
+                    "title": ":white_check_mark: Issue Closed",
+                    "description": "**Title**: `${{ github.event.issue.title }}`\n**User**: `${{ github.event.issue.user.login }}` closed this issue.",
+                    "color": 15158332,
+                    "url": "${{ github.event.issue.html_url }}"
+                  }
+                ],
+                "username": "${{ github.event.issue.user.login }}",
+                "avatar_url": "${{ github.event.issue.user.avatar_url }}"
+              }' \
+          ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+# test
