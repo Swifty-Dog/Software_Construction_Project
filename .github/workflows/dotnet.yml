@@ -105,8 +105,7 @@ jobs:
         name: html-coverage-report
         path: ./coverage-html/ 
  
-    - name: Publish coverage in build summary # Only applicable if 'MarkdownSummaryGithub' or one of the other Markdown report types is generated
-      #run: cat coveragereport/SummaryGithub.md >> $GITHUB_STEP_SUMMARY # Adjust path and filename if necessary
+    - name: Publish coverage in build summary # alleen mogelijk met MarkdownSummaryGithub
       run: cat coverage-html/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
       shell: bash
 
